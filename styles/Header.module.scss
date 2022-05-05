@@ -5,6 +5,9 @@
   align-items: center;
   justify-content: space-around;
   background-color: var(--color-blue);
+  border-radius: 1rem;
+  margin: 1rem;
+  box-shadow: 0 0 1rem var(--color-black);
 
   .title {
     color: var(--color-primary);

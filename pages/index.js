@@ -1,8 +1,11 @@
 import Head from 'next/head';
+import Login from './auth/login';
+
+import styles from '../styles/Home.module.scss';
 
 export default function Home() {
   return (
-    <div>
+    <div className={styles.home}>
       <Head>
         <title>Enveebook</title>
         <meta name='description' content='A simple facebook clone' />
@@ -12,11 +15,16 @@ export default function Home() {
         />
         <link rel='icon' href='../public/favicon.ico' />
       </Head>
-      <h1>Welcome to Enveebook!</h1>
-      <p>
-        A new but familiar social networking community. Connect with old friends
-        and meet new ones. Browse and share your interests and stories.
-      </p>
+      <div>
+        <h1>Welcome to Enveebook!</h1>
+        <p>
+          A new but familiar social networking community. Connect with old
+          friends and meet new ones. Browse and share your interests and
+          stories. Login or create a new account to get started.
+        </p>
+      </div>
+
+      <Login />
     </div>
   );
 }
