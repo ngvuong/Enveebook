@@ -19,4 +19,5 @@ const commentSchema = new Schema({
   likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 });
 
-export default mongoose.model('Comment', commentSchema);
+export default mongoose.models.Comment ||
+  mongoose.model('Comment', commentSchema);

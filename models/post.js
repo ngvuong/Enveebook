@@ -15,4 +15,4 @@ const postSchema = new Schema({
   likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 });
 
-export default mongoose.model('Post', postSchema);
+export default mongoose.models.Post || mongoose.model('Post', postSchema);

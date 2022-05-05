@@ -4,14 +4,17 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   username: {
     type: String,
+    unique: true,
     required: true,
   },
   email: {
     type: String,
+    unique: true,
     required: true,
   },
   password: {
     type: String,
+    minlength: 6,
     required: true,
   },
   profile: {
@@ -21,4 +24,4 @@ const userSchema = new Schema({
   posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
 });
 
-export default mongoose.model('User', userSchema);
+export default mongoose.models.User || mongoose.model('User', userSchema);
