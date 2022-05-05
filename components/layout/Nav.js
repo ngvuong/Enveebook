@@ -6,10 +6,10 @@ function Nav() {
     <nav className={styles.nav}>
       <ul>
         <li>
-          <Link href='/auth/login'>Login</Link>
+          <Link href='/auth/login'>Log in</Link>
         </li>
         <li>
-          <Link href='/auth/register'>Signup</Link>
+          <Link href='/auth/register'>Sign up</Link>
         </li>
       </ul>
     </nav>
