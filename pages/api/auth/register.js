@@ -28,28 +28,52 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     const { username, email, password, confirmPassword } = req.body;
 
-    if (username && email && password && password === confirmPassword) {
-      try {
-        const isValidUsername = await validateUsername(username);
-
-        const isValidEmail = await validateEmail(email);
-
-        const hashedPassword = await bcrypt.hash(password, 12);
-        const newUser = await User.create({
-          username,
-          email,
-          password: hashedPassword,
+    // if (username && email && password && password === confirmPassword) {
+    try {
+      const newUser = { username, email, password };
+      const { error } = User.validateUser(newUser);
+      if (error) {
+        console.log(error);
+        return res.status(400).json({
+          error: error.details.map((detail) => ({
+            param: detail.context.key,
+            message: detail.message,
+          })),
         });
-
-        res.status(201).json({ newUser });
-      } catch (err) {
-        res.status(500).json({ error: err.message });
       }
-    } else {
-      res
-        .status(400)
-        .json({ error: 'Please provide username, email and password' });
+
+      const existingUsername = await User.findOne({ username });
+      const existingEmail = await User.findOne({ email });
+      const duplicationErrors = [];
+
+      if (existingUsername) {
+        duplicationErrors.push({
+          param: 'username',
+          message: 'Username already exists',
+        });
+      }
+      if (existingEmail) {
+        duplicationErrors.push({
+          param: 'email',
+          message: 'Email already exists',
+        });
+      }
+
+      if (duplicationErrors.length) {
+        return res.status(400).json({ error: duplicationErrors });
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 12);
+      await User.create({ ...newUser, password: hashedPassword });
+      res.status(201).json({ message: 'User created successfully' });
+    } catch (err) {
+      res.status(500).json({ error: [err.message] });
     }
+    // } else {
+    //   res
+    //     .status(400)
+    //     .json({ error: ['Please provide username, email and password'] });
+    // }
   } else {
     res.status(405).json({ error: 'Method not allowed' });
   }
