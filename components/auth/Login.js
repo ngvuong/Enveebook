@@ -1,16 +1,21 @@
-import AuthForm from '../../components/auth/AuthForm';
-import Link from 'next/link';
+import AuthForm from './AuthForm';
 
-import { AiFillFacebook, AiOutlineLogin } from 'react-icons/ai';
+import {
+  AiFillFacebook,
+  AiOutlineLogin,
+  AiOutlineUserAdd,
+} from 'react-icons/ai';
 import styles from '../../styles/AuthForm.module.scss';
 
-function Login() {
+function Login({ onSignup }) {
   return (
     <AuthForm>
-      <h1>Log In</h1>
+      <h2>Log In</h2>
       <hr />
       <div>
-        <label htmlFor='email'>Email</label>
+        <label htmlFor='email'>
+          Email<span>*</span>
+        </label>
         <input
           type='email'
           name='email'
@@ -20,7 +25,9 @@ function Login() {
         />
       </div>
       <div>
-        <label htmlFor='password'>Password</label>
+        <label htmlFor='password'>
+          Password<span>*</span>
+        </label>
         <input
           type='password'
           name='password'
@@ -37,8 +44,8 @@ function Login() {
         <AiFillFacebook /> Log In with Facebook
       </button>
       <hr />
-      <button type='button' className={styles.btn_green}>
-        <Link href='/auth/register'>Sign Up</Link>
+      <button type='button' className={styles.btn_green} onClick={onSignup}>
+        <AiOutlineUserAdd /> Sign Up
       </button>
     </AuthForm>
   );

@@ -1,18 +1,75 @@
 .navbar {
   position: absolute;
-  top: 7rem;
+  top: 0;
   left: 1rem;
   bottom: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
   width: 5rem;
   background-color: #252525;
   padding: 1rem;
   border-radius: 1rem;
 
   svg {
+    color: var(--color-grey-2);
     font-size: 2.5rem;
+  }
+
+  @mixin label {
+    position: absolute;
+    top: 0;
+    left: 150%;
+    color: var(--color-blue);
+    font-size: 1.2rem;
+    background-color: var(--color-grey-1);
+    padding: 0.2rem;
+    border-radius: 1rem;
+  }
+
+  .profile {
+    position: relative;
+
+    &:hover::after {
+      content: 'Profile';
+      @include label;
+    }
+  }
+
+  .home {
+    position: relative;
+
+    &:hover::after {
+      content: 'Home';
+      @include label;
+    }
+  }
+
+  .friends {
+    position: relative;
+
+    &:hover::after {
+      content: 'Friends';
+      @include label;
+    }
+  }
+
+  .search {
+    position: relative;
+
+    &:hover::after {
+      content: 'Search';
+      @include label;
+    }
+  }
+
+  .settings {
+    position: relative;
+
+    &:hover::after {
+      content: 'Settings';
+      @include label;
+    }
   }
 }
