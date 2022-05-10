@@ -31,9 +31,8 @@ export default function Welcome() {
 
       <Login onSignup={() => setShowModal(true)} />
       {showModal && (
-        <Overlay onClose={() => setShowModal(false)}>
-          {' '}
-          <Register onClose={() => setShowModal(false)} />{' '}
+        <Overlay>
+          <Register onClose={() => setShowModal(false)} />
         </Overlay>
       )}
     </div>

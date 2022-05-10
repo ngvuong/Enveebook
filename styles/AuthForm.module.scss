@@ -41,8 +41,16 @@
       border-color: var(--color-red);
     }
 
-    input:focus {
-      outline: 1px solid var(--color-blue);
+    input:not(:placeholder-shown):valid {
+      border-color: var(--color-green);
+    }
+
+    input:focus:placeholder-shown {
+      outline: 3px solid var(--color-primary);
+    }
+
+    input:focus-visible {
+      outline: none;
     }
 
     span {
@@ -58,6 +66,14 @@
     color: var(--color-white);
     padding: 1rem;
     border-radius: 0.6rem;
+  }
+
+  button:focus {
+    outline: 3px solid var(--color-primary);
+  }
+
+  button:active {
+    outline: none;
   }
 
   .btn_purple {
@@ -78,8 +94,10 @@
 
   .btn_close {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
+    top: 1rem;
+    right: 1rem;
     color: var(--color-black);
+    line-height: 1;
+    padding: 0;
   }
 }

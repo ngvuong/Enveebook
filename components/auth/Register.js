@@ -24,15 +24,23 @@ function Register({ onClose }) {
 
   const onChange = (e) => {
     const { name, value } = e.target;
-    console.log(password, confirmPassword, value);
-    if (name === 'password' || name === 'confirmPassword') {
-      if (password !== value || confirmPassword !== value) {
-        setErrors({ ...errors, [name + 'Error']: 'Passwords do not match' });
-      } else {
-        setErrors({ ...errors, [name + 'Error']: '' });
+
+    setFormData((prevData) => {
+      const newData = { ...prevData, [name]: value };
+
+      if (name === 'password' || name === 'confirmPassword') {
+        if (
+          newData.password !== newData.confirmPassword &&
+          newData.confirmPassword
+        ) {
+          setErrors({ ...errors, [name + 'Error']: 'Passwords do not match' });
+        } else {
+          setErrors({ ...errors, passwordError: '', confirmPasswordError: '' });
+        }
       }
-    }
-    setFormData({ ...formData, [name]: value });
+
+      return newData;
+    });
   };
 
   const onSubmit = (e) => {
@@ -44,6 +52,7 @@ function Register({ onClose }) {
       passwordError: '',
       confirmPasswordError: '',
     });
+    console.log(errors);
     fetch('/api/auth/register', {
       method: 'POST',
       headers: {
@@ -55,6 +64,8 @@ function Register({ onClose }) {
       .then((data) => {
         if (data.error) {
           data.error.forEach((error) => {
+            console.log(error);
+            console.log(errors.emailError);
             setErrors({ ...errors, [error.param + 'Error']: error.message });
           });
         } else {
@@ -67,13 +78,6 @@ function Register({ onClose }) {
     <AuthForm onSubmit={onSubmit}>
       <h2>Sign Up</h2>
       <hr />
-      <button
-        type='button'
-        className={styles.btn_close}
-        onClick={() => onClose()}
-      >
-        ✕
-      </button>
       <div>
         <label htmlFor='username'>
           Username<span>*</span>
@@ -86,6 +90,7 @@ function Register({ onClose }) {
           value={username}
           placeholder='Username'
           minLength='3'
+          autoFocus
           required
         />
         {usernameError && <span role='alert'>{usernameError}</span>}
@@ -144,6 +149,13 @@ function Register({ onClose }) {
       </button>
       <button type='button' className={styles.btn_blue}>
         <AiFillFacebook /> Sign Up with Facebook
+      </button>
+      <button
+        type='button'
+        className={styles.btn_close}
+        onClick={() => onClose()}
+      >
+        ✕
       </button>
     </AuthForm>
   );
