@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import AuthForm from './AuthForm';
 
-import { AiFillFacebook, AiOutlineUserAdd } from 'react-icons/ai';
+import {
+  AiFillFacebook,
+  AiOutlineUserAdd,
+  AiFillCheckCircle,
+  AiFillExclamationCircle,
+} from 'react-icons/ai';
 import styles from '../../styles/AuthForm.module.scss';
 
 function Register({ onClose }) {
@@ -37,8 +42,9 @@ function Register({ onClose }) {
         } else {
           setErrors({ ...errors, passwordError: '', confirmPasswordError: '' });
         }
+      } else {
+        setErrors({ ...errors, [name + 'Error']: '' });
       }
-
       return newData;
     });
   };
@@ -52,7 +58,7 @@ function Register({ onClose }) {
       passwordError: '',
       confirmPasswordError: '',
     });
-    console.log(errors);
+
     fetch('/api/auth/register', {
       method: 'POST',
       headers: {
@@ -64,9 +70,10 @@ function Register({ onClose }) {
       .then((data) => {
         if (data.error) {
           data.error.forEach((error) => {
-            console.log(error);
-            console.log(errors.emailError);
-            setErrors({ ...errors, [error.param + 'Error']: error.message });
+            setErrors((prevErrors) => ({
+              ...prevErrors,
+              [error.param + 'Error']: error.message,
+            }));
           });
         } else {
           console.log('Successfully registered');
@@ -88,12 +95,18 @@ function Register({ onClose }) {
           id='username'
           onChange={onChange}
           value={username}
+          className={usernameError ? styles.invalid : ''}
           placeholder='Username'
           minLength='3'
           autoFocus
           required
         />
-        {usernameError && <span role='alert'>{usernameError}</span>}
+        {usernameError ? (
+          <AiFillExclamationCircle className={styles.icon} />
+        ) : (
+          <AiFillCheckCircle className={styles.icon} />
+        )}
+        {usernameError && <p role='alert'>{usernameError}</p>}
       </div>
       <div>
         <label htmlFor='signup_email'>
@@ -105,10 +118,16 @@ function Register({ onClose }) {
           id='signup_email'
           onChange={onChange}
           value={email}
+          className={emailError ? styles.invalid : ''}
           placeholder='Email'
           required
         />
-        {emailError && <span role='alert'>{emailError}</span>}
+        {emailError ? (
+          <AiFillExclamationCircle className={styles.icon} />
+        ) : (
+          <AiFillCheckCircle className={styles.icon} />
+        )}
+        {emailError && <p role='alert'>{emailError}</p>}
       </div>
       <div>
         <label htmlFor='signup_password'>
@@ -120,11 +139,17 @@ function Register({ onClose }) {
           id='signup_password'
           onChange={onChange}
           value={password}
+          className={passwordError ? styles.invalid : ''}
           placeholder='Password'
           minLength='6'
           required
         />
-        {passwordError && <span role='alert'>{passwordError}</span>}
+        {passwordError ? (
+          <AiFillExclamationCircle className={styles.icon} />
+        ) : (
+          <AiFillCheckCircle className={styles.icon} />
+        )}
+        {passwordError && <p role='alert'>{passwordError}</p>}
       </div>
       <div>
         <label htmlFor='confirmPassword'>
@@ -136,13 +161,17 @@ function Register({ onClose }) {
           id='confirmPassword'
           onChange={onChange}
           value={confirmPassword}
+          className={confirmPasswordError ? styles.invalid : ''}
           placeholder='Confirm Password'
           minLength='6'
           required
         />
-        {confirmPasswordError && (
-          <span role='alert'>{confirmPasswordError}</span>
+        {confirmPasswordError ? (
+          <AiFillExclamationCircle className={styles.icon} />
+        ) : (
+          <AiFillCheckCircle className={styles.icon} />
         )}
+        {confirmPasswordError && <p role='alert'>{confirmPasswordError}</p>}
       </div>
       <button type='submit' className={styles.btn_green}>
         <AiOutlineUserAdd /> Sign Up

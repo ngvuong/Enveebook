@@ -1,5 +1,4 @@
 .form {
-  position: relative;
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -10,19 +9,8 @@
   border-radius: 0.6rem;
   box-shadow: 0 0 1rem 1rem var(--color-black);
 
-  p {
-    color: var(--color-black);
-
-    a {
-      color: var(--color-blue);
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
-
   div {
+    position: relative;
     display: flex;
     flex-direction: column;
     color: var(--color-black);
@@ -30,6 +18,10 @@
     label {
       width: max-content;
       font-weight: bold;
+
+      span {
+        color: var(--color-red);
+      }
     }
 
     input {
@@ -39,10 +31,38 @@
 
     input:not(:placeholder-shown):invalid {
       border-color: var(--color-red);
+
+      & ~ .icon {
+        display: none;
+      }
     }
 
-    input:not(:placeholder-shown):valid {
+    input:not(:placeholder-shown).invalid {
+      border-color: var(--color-red);
+
+      & ~ .icon {
+        position: absolute;
+        top: 3.4rem;
+        right: 1rem;
+        color: var(--color-red);
+        font-size: 2rem;
+      }
+    }
+
+    input:not(:placeholder-shown):not(.invalid):valid {
       border-color: var(--color-green);
+
+      & ~ .icon {
+        position: absolute;
+        top: 3.4rem;
+        right: 1rem;
+        color: var(--color-green);
+        font-size: 2rem;
+      }
+    }
+
+    input:placeholder-shown ~ .icon {
+      display: none;
     }
 
     input:focus:placeholder-shown {
@@ -53,8 +73,10 @@
       outline: none;
     }
 
-    span {
+    p {
       color: var(--color-red);
+      font-size: 1.4rem;
+      font-style: italic;
     }
   }
 
