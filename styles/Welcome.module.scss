@@ -1,0 +1,23 @@
+.welcome {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 5rem 10vw;
+  padding: 5rem 5vw;
+
+  div {
+    grid-column: span 4 / span 4;
+    flex: 1 1 40%;
+  }
+
+  form {
+    grid-column: span 4 / span 4;
+    width: 100%;
+    flex: 1 1 40%;
+  }
+}
+
+@media (max-width: 768px) {
+  .home {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

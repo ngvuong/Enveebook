@@ -1,11 +1,11 @@
 import Head from 'next/head';
 import Login from './auth/login';
 
-import styles from '../styles/Home.module.scss';
+import styles from '../styles/Welcome.module.scss';
 
-export default function Home() {
+export default function Welcome() {
   return (
-    <div className={styles.home}>
+    <div className={styles.welcome}>
       <Head>
         <title>Enveebook</title>
         <meta name='description' content='A simple facebook clone' />
