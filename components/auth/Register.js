@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import Link from 'next/link';
 import AuthForm from './AuthForm';
 
 import { AiFillFacebook, AiOutlineUserAdd } from 'react-icons/ai';
 import styles from '../../styles/AuthForm.module.scss';
 
-function Register() {
+function Register({ onClose }) {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -66,14 +65,15 @@ function Register() {
 
   return (
     <AuthForm onSubmit={onSubmit}>
-      <div>
-        <h2>Sign Up</h2>
-        <p>
-          Already a member?
-          <Link href='/auth/login'> Log In</Link>
-        </p>
-      </div>
+      <h2>Sign Up</h2>
       <hr />
+      <button
+        type='button'
+        className={styles.btn_close}
+        onClick={() => onClose()}
+      >
+        ✕
+      </button>
       <div>
         <label htmlFor='username'>
           Username<span>*</span>
@@ -91,13 +91,13 @@ function Register() {
         {usernameError && <span role='alert'>{usernameError}</span>}
       </div>
       <div>
-        <label htmlFor='email'>
+        <label htmlFor='signup_email'>
           Email<span>*</span>
         </label>
         <input
           type='email'
           name='email'
-          id='email'
+          id='signup_email'
           onChange={onChange}
           value={email}
           placeholder='Email'
@@ -106,13 +106,13 @@ function Register() {
         {emailError && <span role='alert'>{emailError}</span>}
       </div>
       <div>
-        <label htmlFor='password'>
+        <label htmlFor='signup_password'>
           Password<span>*</span>
         </label>
         <input
           type='password'
           name='password'
-          id='password'
+          id='signup_password'
           onChange={onChange}
           value={password}
           placeholder='Password'
@@ -139,7 +139,7 @@ function Register() {
           <span role='alert'>{confirmPasswordError}</span>
         )}
       </div>
-      <button type='submit' className={styles.btn_submit}>
+      <button type='submit' className={styles.btn_green}>
         <AiOutlineUserAdd /> Sign Up
       </button>
       <button type='button' className={styles.btn_blue}>

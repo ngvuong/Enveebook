@@ -6,18 +6,20 @@
 
   div {
     grid-column: span 4 / span 4;
-    flex: 1 1 40%;
   }
 
-  form {
+  h1 {
+    color: var(--color-primary);
+  }
+
+  & > form {
     grid-column: span 4 / span 4;
     width: 100%;
-    flex: 1 1 40%;
   }
 }
 
 @media (max-width: 768px) {
-  .home {
+  .welcome {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }

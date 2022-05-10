@@ -1,0 +1,24 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 1;
+
+  form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40vw;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 0.5rem var(--color-black);
+  }
+
+  @media (max-width: 768px) {
+    form {
+      width: 80vw;
+    }
+  }
+}

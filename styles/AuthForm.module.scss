@@ -1,15 +1,25 @@
 .form {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 2rem;
   width: 50%;
-  padding: 2rem;
+  color: var(--color-black);
   background: var(--color-white);
+  padding: 2rem;
   border-radius: 0.6rem;
   box-shadow: 0 0 1rem 1rem var(--color-black);
 
-  h1 {
+  p {
     color: var(--color-black);
+
+    a {
+      color: var(--color-blue);
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 
   div {
@@ -27,8 +37,16 @@
       border-radius: 0.6rem;
     }
 
+    input:not(:placeholder-shown):invalid {
+      border-color: var(--color-red);
+    }
+
     input:focus {
       outline: 1px solid var(--color-blue);
+    }
+
+    span {
+      color: var(--color-red);
     }
   }
 
@@ -37,17 +55,17 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
+    color: var(--color-white);
+    padding: 1rem;
     border-radius: 0.6rem;
   }
 
   .btn_purple {
     background-color: var(--color-purple);
-    padding: 1rem;
   }
 
   .btn_blue {
     background-color: var(--color-blue);
-    padding: 1rem;
 
     svg {
       font-size: 2rem;
@@ -55,17 +73,13 @@
   }
 
   .btn_green {
-    display: block;
     background-color: var(--color-green);
-
-    a {
-      display: block;
-      padding: 1rem;
-    }
   }
 
-  .btn_submit {
-    background-color: var(--color-green);
-    padding: 1rem;
+  .btn_close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    color: var(--color-black);
   }
 }

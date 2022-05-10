@@ -1,4 +1,3 @@
-import Header from './Header';
 import styles from '../../styles/Layout.module.scss';
 
 function Layout({ children }) {
