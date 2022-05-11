@@ -1,5 +1,6 @@
-import Link from 'next/link';
 import { useState } from 'react';
+import { signOut } from 'next-auth/react';
+import Link from 'next/link';
 
 import {
   FaHome,
@@ -12,7 +13,7 @@ import {
 } from 'react-icons/fa';
 import styles from '../../styles/Navbar.module.scss';
 
-function Navbar() {
+function Navbar({ session }) {
   const [showSearch, setShowSearch] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
 
@@ -28,7 +29,11 @@ function Navbar() {
     <section className={styles.navbar}>
       <Link href='/profile'>
         <a className={styles.profile}>
-          <FaUserCircle />
+          {session?.user?.image ? (
+            <img src={session?.user?.image} alt='Profile avatar' />
+          ) : (
+            <FaUserCircle />
+          )}
         </a>
       </Link>
       <Link href='/home'>
@@ -55,7 +60,7 @@ function Navbar() {
                 <FaUserCog /> <span>Settings</span>
               </a>
             </Link>
-            <button>
+            <button onClick={() => signOut()}>
               <FaSignOutAlt /> <span>Log Out</span>
             </button>
           </div>

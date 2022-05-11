@@ -88,7 +88,11 @@ function Login({ onSignup }) {
       <button type='submit' className={styles.btn_purple}>
         <AiOutlineLogin /> Log In
       </button>
-      <button type='button' className={styles.btn_blue}>
+      <button
+        type='button'
+        className={styles.btn_blue}
+        onClick={() => signIn('facebook')}
+      >
         <AiFillFacebook /> Log In with Facebook
       </button>
       <hr />

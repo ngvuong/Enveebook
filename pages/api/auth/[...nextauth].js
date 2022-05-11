@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import FacebookProvider from 'next-auth/providers/facebook';
 import bcrypt from 'bcryptjs';
 import User from '../../../models/user';
 import dbConnect from '../../../lib/db';
@@ -10,6 +11,10 @@ export default NextAuth({
     maxAge: 60 * 60 * 24, // 1 day
   },
   providers: [
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_ID,
+      clientSecret: process.env.FACEBOOK_SECRET,
+    }),
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
@@ -21,7 +26,7 @@ export default NextAuth({
         },
       },
       async authorize(credentials) {
-        // await dbConnect();
+        await dbConnect();
 
         const { email, password } = credentials;
 

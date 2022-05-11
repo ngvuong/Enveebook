@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { signIn } from 'next-auth/react';
 import AuthForm from './AuthForm';
 
 import {
@@ -76,7 +77,11 @@ function Register({ onClose }) {
             }));
           });
         } else {
-          console.log('Successfully registered');
+          signIn('credentials', {
+            email,
+            password,
+            callbackUrl: '/home',
+          });
         }
       });
   };
@@ -176,7 +181,11 @@ function Register({ onClose }) {
       <button type='submit' className={styles.btn_green}>
         <AiOutlineUserAdd /> Sign Up
       </button>
-      <button type='button' className={styles.btn_blue}>
+      <button
+        type='button'
+        className={styles.btn_blue}
+        onClick={() => signIn('facebook')}
+      >
         <AiFillFacebook /> Sign Up with Facebook
       </button>
       <button
