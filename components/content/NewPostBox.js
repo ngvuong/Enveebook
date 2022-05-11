@@ -7,7 +7,7 @@ import styles from '../../styles/NewPostBox.module.scss';
 function NewPostBox({ session }) {
   const [showModal, setShowModal] = useState(false);
   const { user } = session;
-  const username = user?.name.split(' ')[0] || user.username;
+  const username = user?.name?.split(' ')[0];
 
   return (
     <div className={styles.container}>
@@ -19,6 +19,7 @@ function NewPostBox({ session }) {
       <input
         type='text'
         onClick={() => setShowModal(true)}
+        readOnly
         placeholder={`What's on your mind, ${username}?`}
       />
       {showModal && (

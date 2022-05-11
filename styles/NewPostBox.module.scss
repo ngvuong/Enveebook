@@ -6,11 +6,15 @@
   width: 50vw;
   background-color: var(--color-dark);
   padding: 2rem;
-  margin: 0 auto;
+  margin: -2rem auto;
   border-radius: 1rem;
 
   img {
     border-radius: 50%;
+  }
+
+  svg {
+    font-size: 5rem;
   }
 
   input {
