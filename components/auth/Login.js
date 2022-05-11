@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
+import { signIn } from 'next-auth/react';
 import AuthForm from './AuthForm';
 
 import {
@@ -10,7 +12,9 @@ import styles from '../../styles/AuthForm.module.scss';
 
 function Login({ onSignup }) {
   const [formData, setFormData] = useState({ email: '', password: '' });
+  const [error, setError] = useState('');
   const emailRef = useRef(null);
+  const router = useRouter();
 
   const { email, password } = formData;
 
@@ -25,10 +29,32 @@ function Login({ onSignup }) {
     setFormData({ ...formData, [name]: value });
   };
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    signIn('credentials', {
+      email,
+      password,
+      callbackUrl: '/home',
+      redirect: false,
+    }).then((res) => {
+      if (res.error) {
+        setError(res.error);
+      } else {
+        router.replace(res.url);
+      }
+    });
+  };
+
   return (
-    <AuthForm>
+    <AuthForm onSubmit={onSubmit}>
       <h2>Log In</h2>
       <hr />
+      {error && (
+        <div role='alert'>
+          <p className={styles.error}>{error}</p>
+        </div>
+      )}
       <div>
         <label htmlFor='email'>
           Email<span>*</span>

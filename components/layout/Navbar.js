@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useState } from 'react';
 
 import {
   FaHome,
@@ -6,10 +7,23 @@ import {
   FaUserFriends,
   FaSearch,
   FaCog,
+  FaUserCog,
+  FaSignOutAlt,
 } from 'react-icons/fa';
 import styles from '../../styles/Navbar.module.scss';
 
 function Navbar() {
+  const [showSearch, setShowSearch] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+
+  const toggleSearch = () => {
+    setShowSearch(!showSearch);
+  };
+
+  const toggleSettings = () => {
+    setShowSettings(!showSettings);
+  };
+
   return (
     <section className={styles.navbar}>
       <Link href='/profile'>
@@ -27,16 +41,26 @@ function Navbar() {
           <FaUserFriends />
         </a>
       </Link>
-      <Link href='/search'>
-        <a className={styles.search}>
-          <FaSearch />
-        </a>
-      </Link>
-      <Link href='/settings'>
-        <a className={styles.settings}>
+      <button className={styles.search}>
+        <FaSearch />
+      </button>
+      <div>
+        <button className={styles.settings} onClick={toggleSettings}>
           <FaCog />
-        </a>
-      </Link>
+        </button>
+        {showSettings && (
+          <div className={styles.settingsMenu}>
+            <Link href='/settings'>
+              <a>
+                <FaUserCog /> <span>Settings</span>
+              </a>
+            </Link>
+            <button>
+              <FaSignOutAlt /> <span>Log Out</span>
+            </button>
+          </div>
+        )}
+      </div>
     </section>
   );
 }

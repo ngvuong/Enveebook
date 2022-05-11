@@ -1,13 +1,32 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Login from '../components/auth/Login';
 import Overlay from '../components/layout/Overlay';
+import Spinner from '../components/layout/Spinner';
 import Register from '../components/auth/Register';
 
 import styles from '../styles/Welcome.module.scss';
 
 export default function Welcome() {
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    getSession().then((session) => {
+      if (session) {
+        router.replace('/home');
+      } else {
+        setIsLoading(false);
+      }
+    });
+  }, []);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <div className={styles.welcome}>
