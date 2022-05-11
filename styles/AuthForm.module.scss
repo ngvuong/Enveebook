@@ -80,6 +80,19 @@
     }
   }
 
+  div[role='alert'] {
+    align-items: center;
+    background-color: #fee;
+    padding: 1rem;
+    border: 1px solid #d31;
+
+    p {
+      color: inherit;
+      font-size: 1.4rem;
+      font-style: normal;
+    }
+  }
+
   button {
     display: flex;
     align-items: center;

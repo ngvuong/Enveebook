@@ -27,23 +27,24 @@ const userSchema = new Schema({
 
 userSchema.statics.validateUser = function (user) {
   const schema = Joi.object({
-    username: Joi.string().min(3).max(20).required().messages({
+    username: Joi.string().trim().min(3).max(20).required().messages({
       'string.empty': 'Username is required',
       'string.min': 'Username must be at least 3 characters long',
       'string.max': 'Username must be less than 20 characters long',
       'any.required': 'Username is required',
     }),
-    email: Joi.string().email().required().messages({
+    email: Joi.string().trim().email().required().messages({
       'string.empty': 'Email is required',
       'string.email': 'Email is not valid',
       'any.required': 'Email is required',
     }),
-    password: Joi.string().min(6).required().messages({
+    password: Joi.string().trim().min(6).required().messages({
       'string.empty': 'Password is required',
       'string.min': 'Password must be at least 6 characters long',
       'any.required': 'Password is required',
     }),
     profile: Joi.string()
+      .trim()
       .optional()
       .messages({ 'string.empty': 'Profile is required' }),
     friends: Joi.array()
