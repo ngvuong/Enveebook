@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 50vw;
+  background-color: var(--color-dark);
+  padding: 2rem;
+  margin: 0 auto;
+  border-radius: 1rem;
+
+  img {
+    border-radius: 50%;
+  }
+
+  input {
+    flex: 1;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    width: 70vw;
+  }
+}

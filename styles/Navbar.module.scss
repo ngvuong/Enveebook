@@ -8,7 +8,7 @@
   align-items: center;
   gap: 2rem;
   width: 5rem;
-  background-color: #252525;
+  background-color: var(--color-dark);
   padding: 1rem;
   border-radius: 1rem;
 
@@ -86,7 +86,7 @@
 
   div {
     position: relative;
-    background-color: #252525;
+    background-color: var(--color-dark);
     line-height: 1;
 
     .settingsMenu {
