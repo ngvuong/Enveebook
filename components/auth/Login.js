@@ -13,6 +13,7 @@ import styles from '../../styles/AuthForm.module.scss';
 function Login({ onSignup }) {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const emailRef = useRef(null);
   const router = useRouter();
 
@@ -32,6 +33,7 @@ function Login({ onSignup }) {
   const onSubmit = (e) => {
     e.preventDefault();
 
+    setIsLoading(true);
     signIn('credentials', {
       email,
       password,
@@ -40,6 +42,7 @@ function Login({ onSignup }) {
     }).then((res) => {
       if (res.error) {
         setError(res.error);
+        setIsLoading(false);
       } else {
         router.replace(res.url);
       }
@@ -55,6 +58,7 @@ function Login({ onSignup }) {
           <p className={styles.error}>{error}</p>
         </div>
       )}
+      {isLoading && <span className={styles.spinner}></span>}
       <div>
         <label htmlFor='email'>
           Email<span>*</span>
@@ -91,7 +95,10 @@ function Login({ onSignup }) {
       <button
         type='button'
         className={styles.btn_blue}
-        onClick={() => signIn('facebook')}
+        onClick={() => {
+          setIsLoading(true);
+          signIn('facebook');
+        }}
       >
         <AiFillFacebook /> Log In with Facebook
       </button>

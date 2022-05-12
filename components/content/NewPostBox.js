@@ -5,9 +5,8 @@ import useClickOutside from '../../hooks/useClickOutside';
 
 import styles from '../../styles/NewPostBox.module.scss';
 
-function NewPostBox({ session }) {
+function NewPostBox({ user }) {
   const { triggerRef, nodeRef, show, setShow } = useClickOutside(false);
-  const { user } = session;
   const username = user?.name;
 
   return (

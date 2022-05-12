@@ -18,7 +18,6 @@ export default NextAuth({
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        username: { label: 'Username', type: 'text' },
         email: { label: 'Email', type: 'email', placeholder: 'Email' },
         password: {
           label: 'Password',
@@ -65,7 +64,7 @@ export default NextAuth({
           : token.user.username;
         session.user.image = session?.user?.image
           ? session.user.image
-          : token.user.profile;
+          : token.user.image;
       }
       return session;
     },
