@@ -24,7 +24,7 @@
     align-items: center;
     gap: 1rem;
 
-    span:last-child {
+    & > span {
       width: fit-content;
       height: fit-content;
       font-size: 1.6rem;
@@ -41,8 +41,14 @@
     box-shadow: none;
 
     textarea {
-      min-height: 4rem;
+      max-height: 25rem;
+      line-height: normal;
+      word-break: break-all;
       resize: none;
+    }
+
+    textarea:focus {
+      outline: none;
     }
 
     img {
@@ -76,7 +82,7 @@
 
       svg {
         font-size: 2rem;
-        color: #48e;
+        color: #7b6;
       }
     }
 
