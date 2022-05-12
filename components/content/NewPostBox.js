@@ -1,13 +1,13 @@
-import { useState } from 'react';
 import NewPostModal from './NewPostModal';
+import useClickOutside from '../../hooks/useClickOutside';
 
 import { FaUserCircle } from 'react-icons/fa';
 import styles from '../../styles/NewPostBox.module.scss';
 
 function NewPostBox({ session }) {
-  const [showModal, setShowModal] = useState(false);
   const { user } = session;
   const username = user?.name?.split(' ')[0];
+  const { triggerRef, nodeRef, show, setShow } = useClickOutside(false);
 
   return (
     <div className={styles.container}>
@@ -18,12 +18,16 @@ function NewPostBox({ session }) {
       )}
       <input
         type='text'
-        onClick={() => setShowModal(true)}
+        ref={triggerRef}
         readOnly
         placeholder={`What's on your mind, ${username}?`}
       />
-      {showModal && (
-        <NewPostModal username={username} onClose={() => setShowModal(false)} />
+      {show && (
+        <NewPostModal
+          username={username}
+          ref={nodeRef}
+          onClose={() => setShow(false)}
+        />
       )}
     </div>
   );

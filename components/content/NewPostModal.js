@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, forwardRef } from 'react';
 import Overlay from '../layout/Overlay';
 
 import styles from '../../styles/NewPostModal.module.scss';
 import { FaFileImage } from 'react-icons/fa';
 
-function NewPostModal({ username, onClose }) {
+const NewPostModal = forwardRef(({ username, onClose }, ref) => {
   const [formData, setFormData] = useState({ content: '', image: '' });
 
   const { content, image } = formData;
@@ -16,7 +16,7 @@ function NewPostModal({ username, onClose }) {
 
   return (
     <Overlay>
-      <div className={styles.container}>
+      <div className={styles.container} ref={ref}>
         <h2>Create post</h2>
         <hr />
         <form>
@@ -45,6 +45,6 @@ function NewPostModal({ username, onClose }) {
       </div>
     </Overlay>
   );
-}
+});
 
 export default NewPostModal;

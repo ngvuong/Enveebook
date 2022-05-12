@@ -18,7 +18,7 @@ const userSchema = new Schema({
     minLength: [6, 'Password must be at least 6 characters long'],
     required: [true, 'Password is required'],
   },
-  profile: {
+  image: {
     type: String,
   },
   friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
@@ -43,7 +43,7 @@ userSchema.statics.validateUser = function (user) {
       'string.min': 'Password must be at least 6 characters long',
       'any.required': 'Password is required',
     }),
-    profile: Joi.string()
+    image: Joi.string()
       .trim()
       .optional()
       .messages({ 'string.empty': 'Profile is required' }),

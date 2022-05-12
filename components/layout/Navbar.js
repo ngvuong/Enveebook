@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
+import useClickOutside from '../../hooks/useClickOutside';
 
 import {
   FaHome,
@@ -14,16 +14,12 @@ import {
 import styles from '../../styles/Navbar.module.scss';
 
 function Navbar({ session }) {
-  const [showSearch, setShowSearch] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
-
-  const toggleSearch = () => {
-    setShowSearch(!showSearch);
-  };
-
-  const toggleSettings = () => {
-    setShowSettings(!showSettings);
-  };
+  const {
+    triggerRef: settingsTriggerRef,
+    nodeRef: settingsNodeRef,
+    show: settingsShow,
+    setShow: settingsSetShow,
+  } = useClickOutside(false);
 
   return (
     <section className={styles.navbar}>
@@ -50,13 +46,13 @@ function Navbar({ session }) {
         <FaSearch />
       </button>
       <div>
-        <button className={styles.settings} onClick={toggleSettings}>
+        <button className={styles.settings} ref={settingsTriggerRef}>
           <FaCog />
         </button>
-        {showSettings && (
-          <div className={styles.settingsMenu}>
+        {settingsShow && (
+          <div className={styles.settingsMenu} ref={settingsNodeRef}>
             <Link href='/settings'>
-              <a>
+              <a onClick={() => settingsSetShow(false)}>
                 <FaUserCog /> <span>Settings</span>
               </a>
             </Link>

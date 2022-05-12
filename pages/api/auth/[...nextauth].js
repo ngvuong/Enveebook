@@ -18,6 +18,7 @@ export default NextAuth({
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
+        username: { label: 'Username', type: 'text' },
         email: { label: 'Email', type: 'email', placeholder: 'Email' },
         password: {
           label: 'Password',
@@ -45,18 +46,28 @@ export default NextAuth({
         if (!validCredentials) {
           throw new Error('Invalid email or password');
         }
+
         return user;
       },
     }),
   ],
-  // callbacks: {
-  //   jwt: async (token, user) => {
-  //     user && (token.user = user);
-  //     return token;
-  //   },
-  //   session: async (session, token) => {
-  //     session.user = token.user;
-  //     return session;
-  //   },
-  // },
+  callbacks: {
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.user = user;
+      }
+      return token;
+    },
+    session: async ({ session, token }) => {
+      if (session?.user) {
+        session.user.name = session?.user?.name
+          ? session.user.name
+          : token.user.username;
+        session.user.image = session?.user?.image
+          ? session.user.image
+          : token.user.profile;
+      }
+      return session;
+    },
+  },
 });
