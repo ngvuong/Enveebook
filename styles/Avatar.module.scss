@@ -1,0 +1,16 @@
+.avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-gold-dark);
+  font-weight: bold;
+  text-transform: capitalize;
+  background-color: var(--color-grey-2);
+  border-radius: 50%;
+  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.5);
+}
+
+.image {
+  border-radius: 50%;
+  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.5);
+}

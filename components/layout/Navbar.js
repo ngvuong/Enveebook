@@ -1,10 +1,10 @@
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
+import Avatar from '../content/Avatar';
 import useClickOutside from '../../hooks/useClickOutside';
 
 import {
   FaHome,
-  FaUserCircle,
   FaUserFriends,
   FaSearch,
   FaCog,
@@ -20,16 +20,13 @@ function Navbar({ session }) {
     show: settingsShow,
     setShow: settingsSetShow,
   } = useClickOutside(false);
+  const { user } = session;
 
   return (
     <section className={styles.navbar}>
       <Link href='/profile'>
         <a className={styles.profile}>
-          {session?.user?.image ? (
-            <img src={session?.user?.image} alt='Profile avatar' />
-          ) : (
-            <FaUserCircle />
-          )}
+          <Avatar user={user} />
         </a>
       </Link>
       <Link href='/home'>

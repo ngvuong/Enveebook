@@ -3,8 +3,10 @@ import Overlay from '../layout/Overlay';
 
 import styles from '../../styles/NewPostModal.module.scss';
 import { FaFileImage } from 'react-icons/fa';
+import Avatar from './Avatar';
+import Link from 'next/link';
 
-const NewPostModal = forwardRef(({ username, onClose }, ref) => {
+const NewPostModal = forwardRef(({ user, onClose }, ref) => {
   const [formData, setFormData] = useState({ content: '', image: '' });
 
   const { content, image } = formData;
@@ -19,6 +21,14 @@ const NewPostModal = forwardRef(({ username, onClose }, ref) => {
       <div className={styles.container} ref={ref}>
         <h2>Create post</h2>
         <hr />
+        <div>
+          <Link href='/profile'>
+            <a>
+              <Avatar user={user} />
+            </a>
+          </Link>
+          <span>{user.name}</span>
+        </div>
         <form>
           <textarea
             name='post'
@@ -26,7 +36,7 @@ const NewPostModal = forwardRef(({ username, onClose }, ref) => {
             onChange={(e) =>
               setFormData({ ...formData, content: e.target.value })
             }
-            placeholder={`What's on your mind, ${username}?`}
+            placeholder={`What's on your mind, ${user.name.split(' ')[0]}?`}
             cols='30'
             rows='5'
           ></textarea>

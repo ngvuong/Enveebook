@@ -1,30 +1,31 @@
+import Link from 'next/link';
 import NewPostModal from './NewPostModal';
+import Avatar from './Avatar';
 import useClickOutside from '../../hooks/useClickOutside';
 
-import { FaUserCircle } from 'react-icons/fa';
 import styles from '../../styles/NewPostBox.module.scss';
 
 function NewPostBox({ session }) {
-  const { user } = session;
-  const username = user?.name?.split(' ')[0];
   const { triggerRef, nodeRef, show, setShow } = useClickOutside(false);
+  const { user } = session;
+  const username = user?.name;
 
   return (
     <div className={styles.container}>
-      {user?.image ? (
-        <img src={user.image} alt='Profile avatar' />
-      ) : (
-        <FaUserCircle />
-      )}
+      <Link href='/profile'>
+        <a>
+          <Avatar user={user} />
+        </a>
+      </Link>
       <input
         type='text'
         ref={triggerRef}
         readOnly
-        placeholder={`What's on your mind, ${username}?`}
+        placeholder={`What's on your mind, ${username.split(' ')[0]}?`}
       />
       {show && (
         <NewPostModal
-          username={username}
+          user={user}
           ref={nodeRef}
           onClose={() => setShow(false)}
         />

@@ -19,6 +19,19 @@
     border-color: var(--color-grey-1);
   }
 
+  div {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    span:last-child {
+      width: fit-content;
+      height: fit-content;
+      font-size: 1.6rem;
+      text-transform: capitalize;
+    }
+  }
+
   form {
     position: static;
     display: flex;
