@@ -23,6 +23,7 @@ function Register({ onClose }) {
     passwordError: '',
     confirmPasswordError: '',
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const { username, email, password, confirmPassword } = formData;
   const { usernameError, emailError, passwordError, confirmPasswordError } =
@@ -60,6 +61,8 @@ function Register({ onClose }) {
       confirmPasswordError: '',
     });
 
+    setIsLoading(true);
+
     fetch('/api/auth/register', {
       method: 'POST',
       headers: {
@@ -70,6 +73,7 @@ function Register({ onClose }) {
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {
+          setIsLoading(false);
           data.error.forEach((error) => {
             setErrors((prevErrors) => ({
               ...prevErrors,
@@ -90,6 +94,7 @@ function Register({ onClose }) {
     <AuthForm onSubmit={onSubmit}>
       <h2>Sign Up</h2>
       <hr />
+      {isLoading && <span className={styles.spinner}></span>}
       <div>
         <label htmlFor='username'>
           Username<span>*</span>
@@ -178,13 +183,30 @@ function Register({ onClose }) {
         )}
         {confirmPasswordError && <p role='alert'>{confirmPasswordError}</p>}
       </div>
-      <button type='submit' className={styles.btn_green}>
+      <button
+        type='submit'
+        className={styles.btn_green}
+        disabled={
+          !username ||
+          !email ||
+          !password ||
+          !confirmPassword ||
+          usernameError ||
+          emailError ||
+          passwordError ||
+          confirmPasswordError
+        }
+      >
         <AiOutlineUserAdd /> Sign Up
       </button>
       <button
         type='button'
         className={styles.btn_blue}
-        onClick={() => signIn('facebook')}
+        onClick={() => {
+          setErrors({});
+          setIsLoading(true);
+          signIn('facebook');
+        }}
       >
         <AiFillFacebook /> Sign Up with Facebook
       </button>

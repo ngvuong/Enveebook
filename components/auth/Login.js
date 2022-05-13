@@ -7,6 +7,8 @@ import {
   AiFillFacebook,
   AiOutlineLogin,
   AiOutlineUserAdd,
+  AiFillCheckCircle,
+  AiFillExclamationCircle,
 } from 'react-icons/ai';
 import styles from '../../styles/AuthForm.module.scss';
 
@@ -33,6 +35,7 @@ function Login({ onSignup }) {
   const onSubmit = (e) => {
     e.preventDefault();
 
+    setError('');
     setIsLoading(true);
     signIn('credentials', {
       email,
@@ -73,6 +76,11 @@ function Login({ onSignup }) {
           placeholder='Email'
           required
         />
+        {error ? (
+          <AiFillExclamationCircle className={styles.icon} />
+        ) : (
+          <AiFillCheckCircle className={styles.icon} />
+        )}
       </div>
       <div>
         <label htmlFor='password'>
@@ -88,8 +96,17 @@ function Login({ onSignup }) {
           minLength='6'
           required
         />
+        {error ? (
+          <AiFillExclamationCircle className={styles.icon} />
+        ) : (
+          <AiFillCheckCircle className={styles.icon} />
+        )}
       </div>
-      <button type='submit' className={styles.btn_purple}>
+      <button
+        type='submit'
+        className={styles.btn_purple}
+        disabled={error || !email || !password}
+      >
         <AiOutlineLogin /> Log In
       </button>
       <button

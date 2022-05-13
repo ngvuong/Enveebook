@@ -133,6 +133,11 @@
     outline: none;
   }
 
+  button:disabled {
+    background-color: var(--color-grey-2);
+    cursor: not-allowed;
+  }
+
   .btn_purple {
     background-color: var(--color-purple);
   }
