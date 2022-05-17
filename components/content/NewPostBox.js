@@ -13,7 +13,7 @@ function NewPostBox({ user }) {
     <div className={styles.container}>
       <Link href='/profile'>
         <a>
-          <Avatar user={user} />
+          <Avatar />
         </a>
       </Link>
       <input
@@ -24,7 +24,7 @@ function NewPostBox({ user }) {
       />
       {show && (
         <NewPostModal
-          user={user}
+          username={username}
           ref={nodeRef}
           onClose={() => setShow(false)}
         />

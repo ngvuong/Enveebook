@@ -6,7 +6,7 @@ import Avatar from './Avatar';
 import { FaFileImage } from 'react-icons/fa';
 import styles from '../../styles/NewPostModal.module.scss';
 
-const NewPostModal = forwardRef(({ user, onClose }, ref) => {
+const NewPostModal = forwardRef(({ username, onClose }, ref) => {
   const [formData, setFormData] = useState({ content: '', image: '' });
 
   const { content, image } = formData;
@@ -31,17 +31,17 @@ const NewPostModal = forwardRef(({ user, onClose }, ref) => {
         <div>
           <Link href='/profile'>
             <a>
-              <Avatar user={user} />
+              <Avatar />
             </a>
           </Link>
-          <span>{user.name}</span>
+          <span>{username}</span>
         </div>
         <form>
           <textarea
             name='content'
             value={content}
             onChange={onChange}
-            placeholder={`What's on your mind, ${user.name.split(' ')[0]}?`}
+            placeholder={`What's on your mind, ${username.split(' ')[0]}?`}
             cols='30'
             rows='4'
             autoFocus
