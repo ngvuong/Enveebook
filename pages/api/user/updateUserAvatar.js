@@ -1,69 +1,99 @@
 import cloudinary from 'cloudinary';
+import { IncomingForm } from 'formidable';
+import fs from 'fs';
 import User from '../../../models/user';
 import dbConnect from '../../../lib/db';
 
-// export const config = {
-//   api: {
-//     bodyParser: false,
-//   },
-// };
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
 export default async function handler(req, res) {
-  // if (!session) {
-  //   return res.redirect('/');
-  // }
-
-  console.log(req.body);
-
   if (req.method !== 'PUT') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // console.log(req.body);
-  await dbConnect();
-  const user = await User.findById(req.body.id);
-  if (user.image) {
-    const public_id =
-      'enveebook_avatars/' + user.image.split('/').pop().split('.')[0];
-    cloudinary.v2.uploader.destroy(public_id, (err, result) => {
-      if (err) {
-        console.log(err);
+  const form = new IncomingForm({
+    uploadDir: './',
+  });
+
+  return new Promise((resolve) => {
+    form.parse(req, async (err, fields, files) => {
+      const { image } = files;
+      const { user_id } = fields;
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+      if (
+        err ||
+        !allowedTypes.includes(image.mimetype) ||
+        image.size > 5000000
+      ) {
+        res.status(400).json({ error: 'Image could not be uploaded' });
+        fs.unlink(image.filepath, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+        return;
       }
-      console.log(result);
+
+      try {
+        await dbConnect();
+        const user = await User.findById(user_id);
+
+        if (user.image.url) {
+          cloudinary.v2.uploader.destroy(user.image.public_id, (err) => {
+            if (err) {
+              throw err;
+            }
+          });
+        }
+
+        const result = await cloudinary.v2.uploader.upload(image.filepath, {
+          transformation: [
+            {
+              width: 150,
+              height: 150,
+              gravity: 'face',
+              crop: 'thumb',
+            },
+          ],
+          resource_type: 'image',
+          public_id: `enveebook_avatars/${image.newFilename}`,
+          overwrite: true,
+        });
+
+        user.image = { url: result.secure_url, public_id: result.public_id };
+        await user.save();
+
+        const updatedUser = {
+          id: user._id,
+          image: user.image,
+          name: user.username,
+          email: user.email,
+        };
+
+        fs.unlink(image.filepath, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+
+        res.status(200).json(updatedUser);
+        return resolve();
+      } catch (error) {
+        res.status(400).json({ error: error.message });
+
+        fs.unlink(image.filepath, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+
+        return resolve();
+      }
     });
-  }
-
-  await User.findByIdAndUpdate(
-    req.body.id,
-    {
-      image: req.body.image,
-    },
-    { runValidators: true }
-  );
-
-  res.status(200).json({ message: 'User updated successfully' });
-
-  // const formData = new FormData();
-
-  // formData.append('file', file);
-  // formData.append('upload_preset', 'enveebook_avatars');
-
-  // try {
-  //   const data = await fetch(
-  //     'https://api.cloudinary.com/v1_1/envee/image/upload',
-  //     {
-  //       method: 'POST',
-  //       body: formData,
-  //     }
-  //   ).then((res) => res.json());
-
-  //   await User.findByIdAndUpdate(
-  //     userId,
-  //     {
-  //       image: data.secure_url,
-  //     },
-  //     { new: true, runValidators: true }
-  //   );
-  // } catch (error) {
-  //   console.error(error);
-  // }
+  });
 }

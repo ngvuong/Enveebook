@@ -19,7 +19,8 @@ const userSchema = new Schema({
     required: [true, 'Password is required'],
   },
   image: {
-    type: String,
+    url: String,
+    public_id: String,
   },
   friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
@@ -50,10 +51,18 @@ userSchema.statics.validateUser = function (user) {
       'string.min': 'Password must be at least 6 characters long',
       'any.required': 'Password is required',
     }),
-    image: Joi.string()
-      .trim()
+    image: Joi.object({
+      url: Joi.string().trim().required().messages({
+        'string.empty': 'Image url is required',
+        'any.required': 'Image url is required',
+      }),
+      public_id: Joi.string().trim().required().messages({
+        'string.empty': 'Image public id is required',
+        'any.required': 'Image public id is required',
+      }),
+    })
       .optional()
-      .messages({ 'string.empty': 'Profile is required' }),
+      .messages({ 'object.empty': 'Image is required' }),
     friends: Joi.array()
       .optional()
       .messages({ 'array.empty': 'Friends is required' }),

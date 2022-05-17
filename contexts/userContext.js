@@ -1,52 +1,26 @@
-import { createContext, useReducer, useContext } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 const userContext = createContext();
 
-function userReducer(state, action) {
-  switch (action.type) {
-    case 'FETCH_USER':
-      return {
-        ...state,
-        user: action.user,
-        isLoading: false,
-      };
-    case 'LOADING':
-      return {
-        ...state,
-        isLoading: true,
-      };
-    case 'STOP_LOADING':
-      return {
-        ...state,
-        isLoading: false,
-      };
-    case 'RESET_USER':
-      return {
-        ...state,
-        user: [],
-        isLoading: false,
-      };
-    default:
-      throw new Error(`Unhandled action type: ${action.type}`);
-  }
-}
+export function UserProvider({ children }) {
+  const { data: session } = useSession();
+  const [user, setUser] = useState();
 
-function UserProvider({ children }) {
-  const [state, dispatch] = useReducer(userReducer, {
-    user: '',
-    isLoading: false,
-  });
+  useEffect(() => {
+    if (session) {
+      setUser(session.user);
+    }
+  }, [session]);
 
-  const value = [state, dispatch];
+  const value = [user, setUser];
   return <userContext.Provider value={value}>{children}</userContext.Provider>;
 }
 
-function useUser() {
+export function useUser() {
   const context = useContext(userContext);
   if (context === undefined) {
     throw new Error('useUser must be used within a UserProvider');
   }
   return context;
 }
-
-export { UserProvider, useUser };
