@@ -6,7 +6,7 @@ import { useUser } from '../../contexts/userContext';
 import styles from '../../styles/Avatar.module.scss';
 
 function Avatar() {
-  const [{ user: currentUser }] = useUser();
+  const [currentUser] = useUser();
   const [user, setUser] = useState(currentUser);
   const { data: session } = useSession();
 
