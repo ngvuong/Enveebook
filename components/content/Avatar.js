@@ -21,12 +21,12 @@ function Avatar() {
   return (
     <>
       {user &&
-        (user?.image ? (
+        (user?.image.url ? (
           <Image
-            src={user.image}
+            src={user.image.url}
             className={styles.image}
-            width={50}
-            height={50}
+            width={150}
+            height={150}
             quality={80}
             alt='Profile avatar'
           />
