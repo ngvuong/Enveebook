@@ -13,20 +13,19 @@ import {
 } from 'react-icons/fa';
 import styles from '../../styles/Navbar.module.scss';
 
-function Navbar({ session }) {
+function Navbar() {
   const {
     triggerRef: settingsTriggerRef,
     nodeRef: settingsNodeRef,
     show: settingsShow,
     setShow: settingsSetShow,
   } = useClickOutside(false);
-  const { user } = session;
 
   return (
     <section className={styles.navbar}>
       <Link href='/profile'>
         <a className={styles.profile}>
-          <Avatar user={user} />
+          <Avatar />
         </a>
       </Link>
       <Link href='/home'>

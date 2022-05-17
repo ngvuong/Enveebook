@@ -5,8 +5,7 @@ import Navbar from './Navbar';
 import styles from '../../styles/Layout.module.scss';
 
 function Layout({ children }) {
-  const { data: session, status } = useSession();
-
+  const { data: session } = useSession();
   return (
     <>
       <Head>
@@ -17,7 +16,7 @@ function Layout({ children }) {
           content='web development, nextjs, facebook clone, envee'
         />
       </Head>
-      {status === 'authenticated' && <Navbar session={session} />}
+      {session && <Navbar />}
       <div className={styles.container}>
         <main className={styles.main}>{children}</main>
       </div>
