@@ -1,6 +1,6 @@
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
-import Avatar from '../content/Avatar';
+import Avatar from '../ui/Avatar';
 import useClickOutside from '../../hooks/useClickOutside';
 
 import {
