@@ -43,7 +43,7 @@ export default async function handler(req, res) {
         await dbConnect();
         const user = await User.findById(user_id);
 
-        if (user.image.url) {
+        if (user.image.url && user.image.public_id) {
           cloudinary.v2.uploader.destroy(user.image.public_id, (err) => {
             if (err) {
               throw err;
@@ -66,12 +66,12 @@ export default async function handler(req, res) {
         });
 
         user.image = { url: result.secure_url, public_id: result.public_id };
-        await user.save();
+        await user.save({ validateBeforeSave: false });
 
         const updatedUser = {
           id: user._id,
           image: user.image,
-          name: user.username,
+          name: user.name,
           email: user.email,
         };
 

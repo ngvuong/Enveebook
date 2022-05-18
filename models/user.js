@@ -23,6 +23,7 @@ const userSchema = new Schema({
     public_id: String,
   },
   friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  friendRequests: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
 });
 
@@ -60,6 +61,9 @@ userSchema.statics.validateUser = function (user) {
     friends: Joi.array()
       .optional()
       .messages({ 'array.empty': 'Friends is required' }),
+    friendRequests: Joi.array()
+      .optional()
+      .messages({ 'array.empty': 'Friend requests is required' }),
     posts: Joi.array()
       .optional()
       .messages({ 'array.empty': 'Posts is required' }),

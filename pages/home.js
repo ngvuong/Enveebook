@@ -1,5 +1,5 @@
 import { getSession } from 'next-auth/react';
-import NewPostBox from '../components/content/NewPostBox';
+import NewPostBox from '../components/ui/NewPostBox';
 
 import styles from '../styles/Home.module.scss';
 

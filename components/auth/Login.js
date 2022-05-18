@@ -32,6 +32,11 @@ function Login({ onSignup }) {
     setFormData({ ...formData, [name]: value });
   };
 
+  const onFacebookSignIn = () => {
+    setIsLoading(true);
+    signIn('facebook');
+  };
+
   const onSubmit = (e) => {
     e.preventDefault();
 
@@ -112,10 +117,7 @@ function Login({ onSignup }) {
       <button
         type='button'
         className={styles.btn_blue}
-        onClick={() => {
-          setIsLoading(true);
-          signIn('facebook');
-        }}
+        onClick={onFacebookSignIn}
       >
         <AiFillFacebook /> Log In with Facebook
       </button>

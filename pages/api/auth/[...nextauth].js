@@ -4,12 +4,15 @@ import FacebookProvider from 'next-auth/providers/facebook';
 import bcrypt from 'bcryptjs';
 import User from '../../../models/user';
 import dbConnect from '../../../lib/db';
+import { MongoDBAdapter } from '@next-auth//mongodb-adapter';
+import clientPromise from '../../../lib/mongodb';
 
 export default NextAuth({
   session: {
-    jwt: true,
+    strategy: 'jwt',
     maxAge: 60 * 60 * 24, // 1 day
   },
+  adapter: MongoDBAdapter(clientPromise),
   providers: [
     FacebookProvider({
       clientId: process.env.FACEBOOK_ID,
@@ -58,14 +61,10 @@ export default NextAuth({
       return token;
     },
     session: async ({ session, token }) => {
-      if (session?.user) {
-        session.user.id = token.user._id;
-        session.user.name = session?.user?.name
-          ? session.user.name
-          : token.user.username;
-        session.user.image = session?.user?.image
-          ? session.user.image
-          : token.user.image;
+      session.user.id = token.user._id || token.user.id;
+      if (!session.user.image.url) {
+        session.user.image = {};
+        session.user.image.url = token.user.image;
       }
       return session;
     },
