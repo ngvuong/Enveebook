@@ -5,7 +5,7 @@ import { useUser } from '../../contexts/userContext';
 
 import styles from '../../styles/Avatar.module.scss';
 
-function Avatar() {
+function Avatar({ height, width }) {
   const [currentUser] = useUser();
   const [user, setUser] = useState(currentUser);
   const { data: session } = useSession();
@@ -25,10 +25,11 @@ function Avatar() {
           <Image
             src={user.image.url}
             className={styles.image}
-            width={150}
-            height={150}
+            width={width}
+            height={height}
             quality={80}
             alt='Profile avatar'
+            draggable='false'
           />
         ) : (
           <span className={styles.avatar}>{user?.name[0]}</span>

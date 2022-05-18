@@ -13,7 +13,7 @@ function NewPostBox({ user }) {
     <div className={styles.container}>
       <Link href='/profile'>
         <a>
-          <Avatar />
+          <Avatar height='50' width='50' />
         </a>
       </Link>
       <input

@@ -31,7 +31,7 @@ const NewPostModal = forwardRef(({ username, onClose }, ref) => {
         <div>
           <Link href='/profile'>
             <a>
-              <Avatar />
+              <Avatar height='50' width='50' />
             </a>
           </Link>
           <span>{username}</span>

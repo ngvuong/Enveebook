@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/router';
+import router from 'next/router';
 import { signIn } from 'next-auth/react';
 import AuthForm from './AuthForm';
 
@@ -17,7 +17,6 @@ function Login({ onSignup }) {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const emailRef = useRef(null);
-  const router = useRouter();
 
   const { email, password } = formData;
 

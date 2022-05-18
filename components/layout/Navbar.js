@@ -25,7 +25,7 @@ function Navbar() {
     <section className={styles.navbar}>
       <Link href='/profile'>
         <a className={styles.profile}>
-          <Avatar />
+          <Avatar height='50' width='50' />
         </a>
       </Link>
       <Link href='/home'>
