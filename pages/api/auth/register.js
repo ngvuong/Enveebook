@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   await dbConnect();
 
   if (req.method === 'POST') {
-    const { username, email, password, confirmPassword } = req.body;
+    const { name, email, password, confirmPassword } = req.body;
 
     try {
       const errors = [];
@@ -17,7 +17,7 @@ export default async function handler(req, res) {
         });
       }
 
-      const newUser = { username, email, password };
+      const newUser = { name, email, password };
       const { error } = User.validateUser(newUser);
       if (error) {
         errors.push(
@@ -28,12 +28,12 @@ export default async function handler(req, res) {
         );
       }
 
-      const existingUsername = await User.findOne({ username });
+      const existingName = await User.findOne({ name });
       const existingEmail = await User.findOne({ email });
 
-      if (existingUsername) {
+      if (existingName) {
         errors.push({
-          param: 'username',
+          param: 'name',
           message: 'Username already exists',
         });
       }

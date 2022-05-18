@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 import Joi from 'joi';
 
 const userSchema = new Schema({
-  username: {
+  name: {
     type: String,
     unique: true,
     required: [true, 'Username is required'],
@@ -28,19 +28,13 @@ const userSchema = new Schema({
 
 userSchema.statics.validateUser = function (user) {
   const schema = Joi.object({
-    username: Joi.string()
-      .alphanum()
-      .trim()
-      .min(3)
-      .max(20)
-      .required()
-      .messages({
-        'string.empty': 'Username is required',
-        'string.min': 'Username must be at least 3 characters long',
-        'string.max': 'Username must be less than 20 characters long',
-        'string.alphanum': 'Username contains invalid characters',
-        'any.required': 'Username is required',
-      }),
+    name: Joi.string().alphanum().trim().min(3).max(20).required().messages({
+      'string.empty': 'Username is required',
+      'string.min': 'Username must be at least 3 characters long',
+      'string.max': 'Username must be less than 20 characters long',
+      'string.alphanum': 'Username contains invalid characters',
+      'any.required': 'Username is required',
+    }),
     email: Joi.string().trim().email().required().messages({
       'string.empty': 'Email is required',
       'string.email': 'Email is not valid',

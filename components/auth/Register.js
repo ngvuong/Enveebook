@@ -12,22 +12,21 @@ import styles from '../../styles/AuthForm.module.scss';
 
 function Register({ onClose }) {
   const [formData, setFormData] = useState({
-    username: '',
+    name: '',
     email: '',
     password: '',
     confirmPassword: '',
   });
   const [errors, setErrors] = useState({
-    usernameError: '',
+    nameError: '',
     emailError: '',
     passwordError: '',
     confirmPasswordError: '',
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  const { username, email, password, confirmPassword } = formData;
-  const { usernameError, emailError, passwordError, confirmPasswordError } =
-    errors;
+  const { name, email, password, confirmPassword } = formData;
+  const { nameError, emailError, passwordError, confirmPasswordError } = errors;
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -55,7 +54,7 @@ function Register({ onClose }) {
     e.preventDefault();
 
     setErrors({
-      usernameError: '',
+      nameError: '',
       emailError: '',
       passwordError: '',
       confirmPasswordError: '',
@@ -96,27 +95,27 @@ function Register({ onClose }) {
       <hr />
       {isLoading && <span className={styles.spinner}></span>}
       <div>
-        <label htmlFor='username'>
-          Username<span>*</span>
+        <label htmlFor='name'>
+          Name<span>*</span>
         </label>
         <input
           type='text'
-          name='username'
-          id='username'
+          name='name'
+          id='name'
           onChange={onChange}
-          value={username}
-          className={usernameError ? styles.invalid : ''}
-          placeholder='Username'
+          value={name}
+          className={nameError ? styles.invalid : ''}
+          placeholder='Name'
           minLength='3'
           autoFocus
           required
         />
-        {usernameError ? (
+        {nameError ? (
           <AiFillExclamationCircle className={styles.icon} />
         ) : (
           <AiFillCheckCircle className={styles.icon} />
         )}
-        {usernameError && <p role='alert'>{usernameError}</p>}
+        {nameError && <p role='alert'>{nameError}</p>}
       </div>
       <div>
         <label htmlFor='signup_email'>
@@ -187,11 +186,11 @@ function Register({ onClose }) {
         type='submit'
         className={styles.btn_green}
         disabled={
-          !username ||
+          !name ||
           !email ||
           !password ||
           !confirmPassword ||
-          usernameError ||
+          nameError ||
           emailError ||
           passwordError ||
           confirmPasswordError
