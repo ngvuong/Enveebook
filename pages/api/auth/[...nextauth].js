@@ -57,11 +57,19 @@ export default NextAuth({
     jwt: async ({ token, user }) => {
       if (user) {
         token.user = user;
+      } else {
+        dbConnect();
+        const user = await User.findById(token.sub);
+        if (user) {
+          token.user = user;
+        }
       }
       return token;
     },
     session: async ({ session, token }) => {
       session.user.id = token.user._id || token.user.id;
+      session.user.image = token.user.image;
+      session.user.bio = token.user.bio;
       if (!session.user.image.url) {
         session.user.image = {};
         session.user.image.url = token.user.image;
