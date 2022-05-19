@@ -18,6 +18,10 @@ const userSchema = new Schema({
     minLength: [6, 'Password must be at least 6 characters long'],
     required: [true, 'Password is required'],
   },
+  bio: {
+    type: String,
+    maxLength: [140, 'Bio must be less than 140 characters long'],
+  },
   image: {
     url: String,
     public_id: String,
@@ -45,6 +49,9 @@ userSchema.statics.validateUser = function (user) {
       'string.empty': 'Password is required',
       'string.min': 'Password must be at least 6 characters long',
       'any.required': 'Password is required',
+    }),
+    bio: Joi.string().trim().max(140).messages({
+      'string.max': 'Bio must be less than 140 characters long',
     }),
     image: Joi.object({
       url: Joi.string().trim().required().messages({

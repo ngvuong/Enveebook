@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { getSession } from 'next-auth/react';
 import router from 'next/router';
 import Head from 'next/head';
 import Navbar from './Navbar';
@@ -11,7 +12,11 @@ function Layout({ children }) {
 
   useEffect(() => {
     if (!user) {
-      router.replace('/');
+      getSession().then((session) => {
+        if (!session) {
+          router.replace('/');
+        }
+      });
     }
   }, [user]);
 
