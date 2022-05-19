@@ -1,0 +1,10 @@
+.textarea {
+  max-height: 25rem;
+  line-height: normal;
+  word-break: break-all;
+  resize: none;
+}
+
+.textarea:focus {
+  outline: none;
+}

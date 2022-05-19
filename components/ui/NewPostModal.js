@@ -2,8 +2,9 @@ import { useState, forwardRef } from 'react';
 import Link from 'next/link';
 import Overlay from '../layout/Overlay';
 import Avatar from './Avatar';
+import FileInput from './FileInput';
+import AutosizeTextarea from './AutosizeTextarea';
 
-import { FaFileImage } from 'react-icons/fa';
 import styles from '../../styles/NewPostModal.module.scss';
 
 const NewPostModal = forwardRef(({ username, onClose }, ref) => {
@@ -11,16 +12,17 @@ const NewPostModal = forwardRef(({ username, onClose }, ref) => {
 
   const { content, image } = formData;
 
-  const onChange = (e) => {
-    const target = e.target;
-    setFormData({ ...formData, content: target.value });
-    target.style.height = 'auto';
-    target.style.height = `${target.scrollHeight}px`;
+  const onTextareaChange = (e) => {
+    setFormData({ ...formData, content: e.target.value });
   };
 
-  const onUpload = (e) => {
+  const onInputChange = (e) => {
     const file = e.target.files[0];
-    setFormData({ ...formData, image: URL.createObjectURL(file) });
+    if (file) {
+      setFormData({ ...formData, image: URL.createObjectURL(file) });
+    } else {
+      setFormData({ ...formData, image: '' });
+    }
   };
 
   return (
@@ -37,20 +39,21 @@ const NewPostModal = forwardRef(({ username, onClose }, ref) => {
           <span>{username}</span>
         </div>
         <form>
-          <textarea
+          <AutosizeTextarea
             name='content'
             value={content}
-            onChange={onChange}
+            onChange={onTextareaChange}
             placeholder={`What's on your mind, ${username.split(' ')[0]}?`}
             cols='30'
             rows='4'
             autoFocus
-          ></textarea>
+          />
           {image && <img src={image} alt='Preview' />}
-          <input type='file' name='image' id='image' onChange={onUpload} />
-          <label htmlFor='image'>
-            Upload photo <FaFileImage />
-          </label>
+          <FileInput
+            name='image'
+            label='Upload photo'
+            onInputChange={onInputChange}
+          />
           <button type='submit' disabled={!content && !image}>
             Post
           </button>
