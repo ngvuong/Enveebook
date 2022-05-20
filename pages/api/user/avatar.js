@@ -73,6 +73,7 @@ export default async function handler(req, res) {
           image: user.image,
           name: user.name,
           email: user.email,
+          bio: user.bio,
         };
 
         fs.unlink(image.filepath, (err) => {

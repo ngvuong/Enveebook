@@ -8,13 +8,15 @@ import { useUser } from '../../contexts/userContext';
 import styles from '../../styles/Layout.module.scss';
 
 function Layout({ children }) {
-  const [user] = useUser();
+  const [user, setUser] = useUser();
 
   useEffect(() => {
     if (!user) {
       getSession().then((session) => {
         if (!session) {
           router.replace('/');
+        } else {
+          setUser(session.user);
         }
       });
     }
