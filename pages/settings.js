@@ -10,7 +10,7 @@ import { FaPen } from 'react-icons/fa';
 import styles from '../styles/Settings.module.scss';
 
 function Settings({ user }) {
-  const [, setUser] = useUser();
+  const [currentUser, setUser] = useUser();
   const [activeForm, setActiveForm] = useState('');
   const [filename, setFileName] = useState('');
   const [textareaValue, setTextareaValue] = useState(user.bio);
@@ -74,6 +74,35 @@ function Settings({ user }) {
       });
       fileInput.value = null;
       setFileName('');
+      setActiveForm('');
+    }
+  };
+
+  const onRemoveAvatar = async () => {
+    if (!user.image.url) {
+      return toast.error('You do not have an avatar', {
+        toastId: 'avatar-error',
+      });
+    }
+
+    const formData = new FormData();
+    formData.append('user_id', user.id);
+
+    const data = await fetch('/api/user/avatar', {
+      method: 'PUT',
+      body: formData,
+    }).then((res) => res.json());
+
+    if (data.error) {
+      return toast.error(data.error, {
+        toastId: 'avatar-error',
+      });
+    } else {
+      setUser(data);
+      toast.success('Avatar removed successfully', {
+        toastId: 'avatar-success',
+      });
+      setActiveForm('');
     }
   };
 
@@ -110,6 +139,7 @@ function Settings({ user }) {
       toast.success('Bio updated successfully', {
         toastId: 'bio-success',
       });
+      setActiveForm('');
     }
   };
 
@@ -133,6 +163,12 @@ function Settings({ user }) {
       });
     }
 
+    if (newPassword.length < 6) {
+      return toast.error('Password must be at least 6 characters', {
+        toastId: 'password-error',
+      });
+    }
+
     const data = await fetch('/api/user/password', {
       method: 'PUT',
       headers: {
@@ -141,6 +177,7 @@ function Settings({ user }) {
       body: JSON.stringify({
         currentPassword,
         newPassword,
+        confirmPassword,
         user_id: user.id,
       }),
     }).then((res) => res.json());
@@ -151,14 +188,16 @@ function Settings({ user }) {
       });
     }
 
-    toast.success('Password updated successfully', {
+    toast.success(data.message, {
       toastId: 'password-success',
     });
+    setActiveForm('');
   };
 
   return (
     <div className={styles.container}>
       <Avatar height='75' width='75' />
+      <p>{currentUser?.bio || user.bio}</p>
       <div>
         <button
           onClick={() => {
@@ -217,6 +256,9 @@ function Settings({ user }) {
         <button type='submit' disabled={!filename}>
           Update
         </button>
+        <button type='button' onClick={onRemoveAvatar}>
+          Remove avatar
+        </button>
       </form>
       <form
         action=''
@@ -235,10 +277,7 @@ function Settings({ user }) {
           placeholder='About me'
           ref={bioRef}
         />
-        <button
-          type='submit'
-          disabled={!textareaValue || user?.bio === textareaValue}
-        >
+        <button type='submit' disabled={user?.bio === textareaValue}>
           Update
         </button>
       </form>

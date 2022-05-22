@@ -5,6 +5,12 @@
   align-items: center;
   width: 60%;
 
+  span {
+    width: 7.5rem;
+    height: 7.5rem;
+    font-size: 4.5rem;
+  }
+
   div {
     display: flex;
     gap: 1rem;
