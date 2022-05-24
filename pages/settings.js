@@ -183,6 +183,12 @@ function Settings({ user }) {
     }).then((res) => res.json());
 
     if (data.error) {
+      setPasswordFormData({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+      });
+
       return toast.error(data.error, {
         toastId: 'password-error',
       });

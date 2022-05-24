@@ -19,7 +19,7 @@
     border-color: var(--color-grey-1);
   }
 
-  div {
+  .profileWrapper {
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -36,15 +36,31 @@
     position: static;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 2rem;
     transform: none;
     box-shadow: none;
 
-    img {
-      align-self: center;
-      width: 25%;
-      height: 25%;
-      border-radius: 0;
+    div {
+      position: relative;
+      display: flex;
+      justify-content: center;
+
+      img {
+        width: 25%;
+        height: 25%;
+        border-radius: 0;
+      }
+
+      .btn_remove {
+        position: absolute;
+        top: -1rem;
+        right: 0;
+        width: 2rem;
+        height: 2rem;
+        background-color: transparent;
+        padding: 0;
+      }
     }
 
     button {

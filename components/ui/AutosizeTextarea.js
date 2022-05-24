@@ -1,5 +1,6 @@
+import { forwardRef } from 'react';
 import styles from '../../styles/AutosizeTextarea.module.scss';
-function AutosizeTextarea(props) {
+const AutosizeTextarea = forwardRef((props, ref) => {
   const onChange = (e) => {
     props.onChange(e);
     const target = e.target;
@@ -8,8 +9,13 @@ function AutosizeTextarea(props) {
   };
 
   return (
-    <textarea {...props} onChange={onChange} className={styles.textarea} />
+    <textarea
+      {...props}
+      onChange={onChange}
+      className={styles.textarea}
+      ref={ref}
+    />
   );
-}
+});
 
 export default AutosizeTextarea;
