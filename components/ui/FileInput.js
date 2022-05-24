@@ -1,7 +1,8 @@
+import { forwardRef } from 'react';
 import { FaFileImage } from 'react-icons/fa';
 import styles from '../../styles/FileInput.module.scss';
 
-function FileInput({ name, label, onInputChange }) {
+const FileInput = forwardRef(({ name, label, onInputChange }, ref) => {
   return (
     <div className={styles.formGroup}>
       <input
@@ -9,6 +10,7 @@ function FileInput({ name, label, onInputChange }) {
         name={name}
         id={name}
         onChange={onInputChange}
+        ref={ref}
         accept='image/png, image/jpeg, image/jpg'
       />
       <label htmlFor={name}>
@@ -16,6 +18,6 @@ function FileInput({ name, label, onInputChange }) {
       </label>
     </div>
   );
-}
+});
 
 export default FileInput;
