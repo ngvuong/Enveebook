@@ -1,4 +1,5 @@
 import { getSession } from 'next-auth/react';
+import Feed from '../components/content/Feed';
 import NewPostBox from '../components/ui/NewPostBox';
 
 import styles from '../styles/Home.module.scss';
@@ -7,6 +8,7 @@ function Home({ user }) {
   return (
     <div className={styles.home}>
       <NewPostBox user={user} />
+      <Feed user={user} />
     </div>
   );
 }

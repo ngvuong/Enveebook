@@ -54,7 +54,8 @@ userSchema.statics.validateUser = function (user) {
       'string.max': 'Bio must be less than 140 characters long',
     }),
     image: Joi.object({
-      url: Joi.string().trim().required().messages({
+      url: Joi.string().trim().required().uri().messages({
+        'string.uri': 'Image url is not valid',
         'string.empty': 'Image url is required',
         'any.required': 'Image url is required',
       }),
