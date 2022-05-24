@@ -1,23 +1,10 @@
-import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
+import { useState } from 'react';
 import Image from 'next/image';
-import { useUser } from '../../contexts/userContext';
 
 import styles from '../../styles/Avatar.module.scss';
 
-function Avatar({ height, width }) {
-  const [currentUser] = useUser();
-  const [user, setUser] = useState(currentUser);
+function Avatar({ height, width, user }) {
   const [isError, setIsError] = useState(false);
-  const { data: session } = useSession();
-
-  useEffect(() => {
-    if (!currentUser) {
-      setUser(session?.user);
-    } else {
-      setUser(currentUser);
-    }
-  }, [currentUser, session]);
 
   return (
     <>

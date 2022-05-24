@@ -29,6 +29,12 @@ export default async function handler(req, res) {
     await dbConnect();
     const user = await User.findById(user_id);
 
+    if (!user.password) {
+      return res.status(400).json({
+        error: 'Cannot change the password for this user',
+      });
+    }
+
     const isValidPassword = await bcrypt.compare(
       currentPassword,
       user.password

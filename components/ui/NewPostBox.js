@@ -7,24 +7,23 @@ import styles from '../../styles/NewPostBox.module.scss';
 
 function NewPostBox({ user }) {
   const { triggerRef, nodeRef, show, setShow } = useClickOutside(false);
-  const username = user?.name;
 
   return (
     <div className={styles.container}>
       <Link href='/profile'>
         <a>
-          <Avatar height='50' width='50' />
+          <Avatar height='50' width='50' user={user} />
         </a>
       </Link>
       <input
         type='text'
         ref={triggerRef}
         readOnly
-        placeholder={`What's on your mind, ${username.split(' ')[0]}?`}
+        placeholder={`What's on your mind, ${user.name.split(' ')[0]}?`}
       />
       {show && (
         <NewPostModal
-          username={username}
+          user={user}
           ref={nodeRef}
           onClose={() => setShow(false)}
         />

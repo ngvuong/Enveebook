@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 
     if (user.bio !== bio) {
       user.bio = bio;
-      await user.save();
+      await user.save({ validateBeforeSave: false });
     }
 
     const updatedUser = {

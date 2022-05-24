@@ -1,0 +1,13 @@
+.feed {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 50vw;
+  margin: 5rem auto;
+
+  @media (max-width: 768px) {
+    width: 70vw;
+  }
+}

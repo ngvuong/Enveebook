@@ -5,12 +5,10 @@ import Overlay from '../layout/Overlay';
 import Avatar from './Avatar';
 import FileInput from './FileInput';
 import AutosizeTextarea from './AutosizeTextarea';
-import { useUser } from '../../contexts/userContext';
 
 import styles from '../../styles/NewPostModal.module.scss';
 
-const NewPostModal = forwardRef(({ username, onClose }, ref) => {
-  const [user] = useUser();
+const NewPostModal = forwardRef(({ user, onClose }, ref) => {
   const [formData, setFormData] = useState({ text: '', image: '' });
   const fileRef = useRef(null);
 
@@ -79,14 +77,14 @@ const NewPostModal = forwardRef(({ username, onClose }, ref) => {
               <Avatar height='50' width='50' />
             </a>
           </Link>
-          <span>{username}</span>
+          <span>{user.name}</span>
         </div>
         <form action='' method='POST' onSubmit={onSubmit}>
           <AutosizeTextarea
             name='text'
             value={text}
             onChange={onTextareaChange}
-            placeholder={`What's on your mind, ${username.split(' ')[0]}?`}
+            placeholder={`What's on your mind, ${user.name.split(' ')[0]}?`}
             cols='30'
             rows='4'
             autoFocus

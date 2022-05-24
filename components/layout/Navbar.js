@@ -13,7 +13,7 @@ import {
 } from 'react-icons/fa';
 import styles from '../../styles/Navbar.module.scss';
 
-function Navbar() {
+function Navbar({ user }) {
   const {
     triggerRef: settingsTriggerRef,
     nodeRef: settingsNodeRef,
@@ -25,7 +25,7 @@ function Navbar() {
     <section className={styles.navbar}>
       <Link href='/profile'>
         <a className={styles.profile}>
-          <Avatar height='50' width='50' />
+          <Avatar height='50' width='50' user={user} />
         </a>
       </Link>
       <Link href='/home'>

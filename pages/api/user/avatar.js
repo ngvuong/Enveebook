@@ -27,8 +27,8 @@ export default async function handler(req, res) {
 
       if (
         err ||
-        !allowedTypes.includes(image.mimetype) ||
-        image.size > 5000000
+        (image &&
+          (!allowedTypes.includes(image.mimetype) || image.size > 5000000))
       ) {
         res.status(400).json({ error: 'Image could not be uploaded' });
         fs.unlink(image.filepath, (err) => {
@@ -51,22 +51,33 @@ export default async function handler(req, res) {
           });
         }
 
-        const result = await cloudinary.v2.uploader.upload(image.filepath, {
-          transformation: [
-            {
-              width: 150,
-              height: 150,
-              gravity: 'face',
-              crop: 'thumb',
-            },
-          ],
-          resource_type: 'image',
-          public_id: `enveebook_avatars/${image.newFilename}`,
-          overwrite: true,
-        });
+        if (image) {
+          const result = await cloudinary.v2.uploader.upload(image.filepath, {
+            transformation: [
+              {
+                width: 150,
+                height: 150,
+                gravity: 'face',
+                crop: 'thumb',
+              },
+            ],
+            resource_type: 'image',
+            public_id: `enveebook_avatars/${image.newFilename}`,
+            overwrite: true,
+          });
 
-        user.image = { url: result.secure_url, public_id: result.public_id };
-        await user.save({ validateBeforeSave: false });
+          user.image = { url: result.secure_url, public_id: result.public_id };
+          await user.save({ validateBeforeSave: false });
+
+          fs.unlink(image.filepath, (err) => {
+            if (err) {
+              throw err;
+            }
+          });
+        } else {
+          user.image = { url: '', public_id: '' };
+          await user.save({ validateBeforeSave: false });
+        }
 
         const updatedUser = {
           id: user._id,
@@ -75,12 +86,6 @@ export default async function handler(req, res) {
           email: user.email,
           bio: user.bio,
         };
-
-        fs.unlink(image.filepath, (err) => {
-          if (err) {
-            throw err;
-          }
-        });
 
         res.status(200).json(updatedUser);
         return resolve();
