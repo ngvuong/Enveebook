@@ -13,9 +13,11 @@ export default async function handler(req, res) {
     await dbConnect();
     const user = await User.findById(userid);
     const authorList = [user._id, ...user.friends];
-    const posts = await Post.find({ author: { $in: authorList } }).sort({
-      createdAt: -1,
-    });
+    const posts = await Post.find({ author: { $in: authorList } })
+      .populate('author', 'name image')
+      .sort({
+        createdAt: -1,
+      });
     return res.status(200).json(posts);
   } catch (err) {
     return res.status(500).json({ error: err.message });

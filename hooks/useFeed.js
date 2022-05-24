@@ -6,7 +6,7 @@ function useFeed(userid) {
   const { data, error, mutate } = useSWR(`/api/user/${userid}/feed`, fetcher);
 
   return {
-    feed: data,
+    posts: data,
     isError: error,
     isLoading: !error && !data,
     setFeed: mutate,
