@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 import Joi from 'joi';
+import './comment';
 
 const postSchema = new Schema(
   {
@@ -31,8 +32,8 @@ postSchema.static.validatePost = function (post) {
     })
       .required()
       .messages({
-        'object.empty': 'Post is required',
-        'any.required': 'Post is required',
+        'object.empty': 'Post content is required',
+        'any.required': 'Post content is required',
       }),
     author: Joi.string().trim().required().messages({
       'string.empty': 'Author is required',
