@@ -27,10 +27,6 @@ export default async function handler(req, res) {
 
       const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
-      if (!text && !image) {
-        return res.status(400).json({ error: 'Please provide post content' });
-      }
-
       try {
         if (
           err ||
@@ -65,31 +61,46 @@ export default async function handler(req, res) {
             overwrite: true,
           });
 
-          const post = await Post.create({
-            content: {
-              ...(text && { text }),
-              image: result.secure_url,
-            },
-            author: user.name,
-          });
-
-          user.posts = [...user.posts, post._id];
-
           fs.unlink(image.filepath, (err) => {
             if (err) {
               throw err;
             }
           });
-        } else {
-          const post = await Post.create({
-            content: {
-              text,
-            },
-            author: user.name,
-          });
 
-          user.posts = [...user.posts, post._id];
+          const newPost = {
+            content: {
+              ...(text && { text }),
+              image: result.secure_url,
+            },
+            author: user_id,
+          };
+
+          const { error } = Post.validatePost(newPost);
+          if (error) {
+            return res.status(400).json({ error: error.details[0].message });
+          }
+
+          const post = await Post.create(newPost);
+
+          user.posts = [post._id, ...user.posts];
+        } else {
+          const newPost = {
+            content: {
+              ...(text && { text }),
+            },
+            author: user_id,
+          };
+
+          const { error } = Post.validatePost(newPost);
+          if (error) {
+            return res.status(400).json({ error: error.details[0].message });
+          }
+
+          const post = await Post.create(newPost);
+
+          user.posts = [post._id, ...user.posts];
         }
+
         await user.save({ validateBeforeSave: false });
         res.status(200).json({ message: 'Post created successfully' });
       } catch (error) {

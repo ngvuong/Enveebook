@@ -6,6 +6,7 @@ import './comment';
 const postSchema = new Schema(
   {
     content: {
+      type: Object,
       text: String,
       image: String,
     },
@@ -20,24 +21,28 @@ const postSchema = new Schema(
   { timestamps: true }
 );
 
-postSchema.static.validatePost = function (post) {
+postSchema.statics.validatePost = function (post) {
   const schema = Joi.object({
     content: Joi.object({
-      text: Joi.string().trim().max(400).messages({
-        'string.max': 'Post must be less than 400 characters long',
+      text: Joi.string().trim().max(1000).messages({
+        'string.max': 'Post must be 1000 characters or less',
       }),
       image: Joi.string().trim().uri().messages({
         'string.uri': 'Image url is not valid',
       }),
     })
+      .or('text', 'image')
       .required()
       .messages({
-        'object.empty': 'Post content is required',
-        'any.required': 'Post content is required',
+        'object.missing': 'Please provide post content',
       }),
-    author: Joi.string().trim().required().messages({
-      'string.empty': 'Author is required',
-    }),
+    author: Joi.string()
+      .trim()
+      .regex(/^[0-9a-fA-F]{24}$/)
+      .required()
+      .messages({
+        'string.empty': 'Author is required',
+      }),
     comments: Joi.array().optional().messages({
       'array.empty': 'Comments is required',
     }),
@@ -46,7 +51,7 @@ postSchema.static.validatePost = function (post) {
     }),
   });
 
-  return schema.validate(post, { abortEarly: false });
+  return schema.validate(post);
 };
 
 export default mongoose.models.Post || mongoose.model('Post', postSchema);
