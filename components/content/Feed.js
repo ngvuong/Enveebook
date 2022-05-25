@@ -18,7 +18,7 @@ function Feed({ user }) {
   return (
     <section className={styles.feed}>
       {posts.map((post) => (
-        <Post key={post._id} post={post} />
+        <Post key={post._id} post={post} setFeed={setFeed} />
       ))}
     </section>
   );

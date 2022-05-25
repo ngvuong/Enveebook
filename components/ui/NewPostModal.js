@@ -7,10 +7,12 @@ import FileInput from './FileInput';
 import AutosizeTextarea from './AutosizeTextarea';
 
 import styles from '../../styles/NewPostModal.module.scss';
+import useFeed from '../../hooks/useFeed';
 
 const NewPostModal = forwardRef(({ user, onClose }, ref) => {
   const [formData, setFormData] = useState({ text: '', image: '' });
   const fileRef = useRef(null);
+  const { setFeed } = useFeed(user.id);
 
   const { text, image } = formData;
 
@@ -59,6 +61,7 @@ const NewPostModal = forwardRef(({ user, onClose }, ref) => {
       });
     }
 
+    setFeed(data.posts);
     toast.success(data.message, {
       toastId: 'post-success',
     });
