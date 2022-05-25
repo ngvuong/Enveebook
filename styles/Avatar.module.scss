@@ -13,3 +13,8 @@
 .image {
   border-radius: 50%;
 }
+
+.avatar:hover,
+.image:hover {
+  filter: brightness(1.1);
+}

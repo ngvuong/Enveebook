@@ -29,6 +29,7 @@ function Login({ onSignup }) {
   const onChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setError('');
   };
 
   const onFacebookSignIn = () => {

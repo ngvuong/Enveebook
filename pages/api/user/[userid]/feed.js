@@ -8,13 +8,14 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { userid } = req.query;
+    const { userId } = req.query;
 
     await dbConnect();
-    const user = await User.findById(userid);
+    const user = await User.findById(userId);
     const authorList = [user._id, ...user.friends];
     const posts = await Post.find({ author: { $in: authorList } })
       .populate('author', 'name image')
+      .populate('comments')
       .sort({
         createdAt: -1,
       });

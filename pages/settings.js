@@ -202,7 +202,7 @@ function Settings({ user }) {
 
   return (
     <div className={styles.container}>
-      <Avatar height='75' width='75' />
+      <Avatar height='75' width='75' user={user} />
       <p>{currentUser?.bio || user.bio}</p>
       <div>
         <button

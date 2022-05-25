@@ -11,6 +11,10 @@ function Feed({ user }) {
     return <Spinner />;
   }
 
+  if (isError) {
+    return <p>Cannot load posts</p>;
+  }
+
   return (
     <section className={styles.feed}>
       {posts.map((post) => (

@@ -1,9 +1,9 @@
 import useSWR from 'swr';
 
-const fetcher = (url) => fetch(url).then((r) => r.json());
+const fetcher = (...args) => fetch(...args).then((r) => r.json());
 
-function useFeed(userid) {
-  const { data, error, mutate } = useSWR(`/api/user/${userid}/feed`, fetcher);
+function useFeed(userId) {
+  const { data, error, mutate } = useSWR(`/api/user/${userId}/feed`, fetcher);
 
   return {
     posts: data,
