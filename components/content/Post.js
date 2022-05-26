@@ -7,10 +7,12 @@ import CommentSection from './CommentSection';
 
 import { FaRegCommentAlt, FaRegThumbsUp } from 'react-icons/fa';
 import styles from '../../styles/Post.module.scss';
+import useComment from '../../hooks/useComment';
 
-function Post({ post, setFeed }) {
+function Post({ post }) {
   const [showCommentSection, setShowCommentSection] = useState(true);
   const [focus, setFocus] = useState(null);
+  const { comments, setComment } = useComment(post._id);
 
   return (
     <article className={styles.post}>
@@ -42,14 +44,9 @@ function Post({ post, setFeed }) {
       <div className={styles.reaction}>
         <div className={styles.reactionHead}>
           <span>{post.likes.length}</span>
-          <button
-            onClick={() => {
-              setFocus(true);
-              setShowCommentSection(!showCommentSection);
-            }}
-          >
-            {post.comments.length}{' '}
-            {post.comments.length === 1 ? 'Comment' : 'Comments'}
+          <button onClick={() => setShowCommentSection(!showCommentSection)}>
+            {comments && comments.length}{' '}
+            {comments && comments.length === 1 ? 'Comment' : 'Comments'}
           </button>
         </div>
         <div className={styles.reactionBtns}>
@@ -66,7 +63,15 @@ function Post({ post, setFeed }) {
           </button>
         </div>
       </div>
-      {showCommentSection && <CommentSection post={post} focus={focus} />}
+      {comments && (
+        <CommentSection
+          show={showCommentSection}
+          postId={post._id}
+          comments={comments}
+          setComment={setComment}
+          focus={focus}
+        />
+      )}
     </article>
   );
 }

@@ -16,8 +16,8 @@ export default async function handler(req, res) {
           message: 'Passwords do not match',
         });
       }
-
-      const newUser = { name, email, password };
+      const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
+      const newUser = { name: capitalizedName, email, password };
       const { error } = User.validateUser(newUser);
       if (error) {
         errors.push(
@@ -28,7 +28,7 @@ export default async function handler(req, res) {
         );
       }
 
-      const existingName = await User.findOne({ name });
+      const existingName = await User.findOne({ name: capitalizedName });
       const existingEmail = await User.findOne({ email });
 
       if (existingName) {

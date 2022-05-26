@@ -1,4 +1,11 @@
 .container {
-  padding: 2rem 0;
+  max-height: 0;
   border-top: 1px solid var(--color-dark-2);
+  transition: all 0.25s ease-in-out;
+  overflow: hidden;
+}
+
+.show {
+  max-height: fit-content;
+  padding: 2rem 0;
 }

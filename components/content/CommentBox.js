@@ -17,7 +17,7 @@ function CommentBox({ placeholder, postId, focus, setComment }) {
     }
   }, [focus]);
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     const content = inputRef.current.value.trim();
 
@@ -25,7 +25,7 @@ function CommentBox({ placeholder, postId, focus, setComment }) {
       return;
     }
 
-    const data = fetch(`/api/posts/${postId}/comments`, {
+    const data = await fetch(`/api/posts/${postId}/comments`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
