@@ -10,7 +10,6 @@ function CommentBox({ placeholder, postId, focus }) {
   const [user] = useUser();
 
   useEffect(() => {
-    console.log('focus', focus);
     if (focus === null) {
       return;
     } else {
@@ -47,7 +46,7 @@ function CommentBox({ placeholder, postId, focus }) {
     <div className={styles.container}>
       {user && <Avatar height='32' width='32' user={user} />}
       <form action='' method='POST' onSubmit={onSubmit}>
-        <input type='text' placeholder={placeholder} ref={inputRef} autoFocus />
+        <input type='text' placeholder={placeholder} ref={inputRef} />
       </form>
     </div>
   );

@@ -10,6 +10,7 @@ import styles from '../../styles/Post.module.scss';
 
 function Post({ post, setFeed }) {
   const [showCommentSection, setShowCommentSection] = useState(true);
+  const [focus, setFocus] = useState(null);
 
   return (
     <article className={styles.post}>
@@ -41,7 +42,12 @@ function Post({ post, setFeed }) {
       <div className={styles.reaction}>
         <div className={styles.reactionHead}>
           <span>{post.likes.length}</span>
-          <button onClick={() => setShowCommentSection(!showCommentSection)}>
+          <button
+            onClick={() => {
+              setFocus(true);
+              setShowCommentSection(!showCommentSection);
+            }}
+          >
             {post.comments.length}{' '}
             {post.comments.length === 1 ? 'Comment' : 'Comments'}
           </button>
@@ -50,12 +56,17 @@ function Post({ post, setFeed }) {
           <button>
             <FaRegThumbsUp /> Like
           </button>
-          <button>
+          <button
+            onClick={() => {
+              setShowCommentSection(true);
+              setFocus(!focus);
+            }}
+          >
             <FaRegCommentAlt /> Comment
           </button>
         </div>
       </div>
-      {showCommentSection && <CommentSection comments={post.comments} />}
+      {showCommentSection && <CommentSection post={post} focus={focus} />}
     </article>
   );
 }
