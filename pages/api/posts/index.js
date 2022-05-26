@@ -102,6 +102,7 @@ export default async function handler(req, res) {
         }
 
         await user.save({ validateBeforeSave: false });
+
         res.status(200).json({ message: 'Post created successfully' });
       } catch (error) {
         res.status(400).json({ error: error.message });

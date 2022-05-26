@@ -45,18 +45,26 @@ const commentSchema = new Schema(
   { timestamps: true }
 );
 
-commentSchema.static.validateComment = function (comment) {
+commentSchema.statics.validateComment = function (comment) {
   const schema = Joi.object({
     content: Joi.string().trim().max(1000).required().messages({
       'string.empty': 'Content is required',
       'string.max': 'Content must be less than 1000 characters long',
     }),
-    author: Joi.string().trim().required().messages({
-      'string.empty': 'Author is required',
-    }),
-    post: Joi.string().trim().required().messages({
-      'string.empty': 'Post is required',
-    }),
+    author: Joi.string()
+      .trim()
+      .regex(/^[0-9a-fA-F]{24}$/)
+      .required()
+      .messages({
+        'string.empty': 'Author is required',
+      }),
+    post: Joi.string()
+      .trim()
+      .regex(/^[0-9a-fA-F]{24}$/)
+      .required()
+      .messages({
+        'string.empty': 'Post is required',
+      }),
     replies: Joi.array().optional().messages({
       'array.empty': 'Replies is required',
     }),

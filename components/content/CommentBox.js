@@ -5,7 +5,7 @@ import { useUser } from '../../contexts/userContext';
 import styles from '../../styles/CommentBox.module.scss';
 import { toast } from 'react-toastify';
 
-function CommentBox({ placeholder, postId, focus }) {
+function CommentBox({ placeholder, postId, focus, setComment }) {
   const inputRef = useRef(null);
   const [user] = useUser();
 
@@ -39,6 +39,7 @@ function CommentBox({ placeholder, postId, focus }) {
       });
     }
 
+    setComment();
     inputRef.current.value = '';
   };
 
