@@ -43,12 +43,8 @@ postSchema.statics.validatePost = function (post) {
       .messages({
         'string.empty': 'Author is required',
       }),
-    comments: Joi.array().optional().messages({
-      'array.empty': 'Comments is required',
-    }),
-    likes: Joi.array().optional().messages({
-      'array.empty': 'Likes is required',
-    }),
+    comments: Joi.array().optional(),
+    likes: Joi.array().optional(),
   });
 
   return schema.validate(post);
