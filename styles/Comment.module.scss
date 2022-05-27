@@ -5,7 +5,6 @@
   margin-bottom: 1rem;
 
   .comment {
-    width: fit-content;
     background-color: var(--color-dark-2);
     padding: 0.3rem 1rem;
     border-radius: 1rem;
@@ -25,5 +24,9 @@
     color: var(--color-grey-3);
     font-size: 1.2rem;
     margin-left: 1rem;
+
+    button:hover {
+      text-decoration: underline;
+    }
   }
 }

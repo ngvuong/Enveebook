@@ -1,13 +1,12 @@
-import { parseISO, formatDistanceToNowStrict } from 'date-fns';
+import { useState } from 'react';
 import Avatar from '../ui/Avatar';
+import CommentBox from './CommentBox';
+import { formatDate } from '../../lib/dateFormat';
 
 import styles from '../../styles/Comment.module.scss';
 
 function Comment({ comment }) {
-  const timeArr = formatDistanceToNowStrict(parseISO(comment.createdAt)).split(
-    ' '
-  );
-  const time = timeArr[0] + timeArr[1].substring(0, 1);
+  const [showReplyBox, setShowReplyBox] = useState(false);
 
   return (
     <div className={styles.container}>
@@ -19,9 +18,10 @@ function Comment({ comment }) {
         </div>
         <div className={styles.reaction}>
           <button>Like</button>
-          <button>Reply</button>
-          <span>{time}</span>
+          <button onClick={() => setShowReplyBox(true)}>Reply</button>
+          <span>{formatDate(comment.createdAt, 'short')}</span>
         </div>
+        {showReplyBox && <CommentBox />}
       </div>
     </div>
   );
