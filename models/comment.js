@@ -2,32 +2,37 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 import Joi from 'joi';
 
-const replySchema = new Schema(
-  {
-    content: {
-      type: String,
-      required: true,
-    },
-    author: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
-    },
-    comment: {
-      type: Schema.Types.ObjectId,
-      ref: 'Comment',
-      required: true,
-    },
-    likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  },
-  { timestamps: true }
-);
+// const replySchema = new Schema(
+//   {
+//     content: {
+//       type: String,
+//       required: true,
+//     },
+//     author: {
+//       type: Schema.Types.ObjectId,
+//       ref: 'User',
+//       required: true,
+//     },
+//     comment: {
+//       type: Schema.Types.ObjectId,
+//       ref: 'Comment',
+//       required: true,
+//     },
+//     likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+//   },
+//   { timestamps: true }
+// );
 
 const commentSchema = new Schema(
   {
     content: {
       type: String,
       required: true,
+    },
+    type: {
+      type: String,
+      required: true,
+      enum: ['comment', 'reply'],
     },
     author: {
       type: Schema.Types.ObjectId,
@@ -39,7 +44,10 @@ const commentSchema = new Schema(
       ref: 'Post',
       required: true,
     },
-    replies: [replySchema],
+    replies: {
+      type: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
+      default: undefined,
+    },
     likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   },
   { timestamps: true }
@@ -50,6 +58,10 @@ commentSchema.statics.validateComment = function (comment) {
     content: Joi.string().trim().max(1000).required().messages({
       'string.empty': 'Content is required',
       'string.max': 'Content must be less than 1000 characters long',
+    }),
+    type: Joi.string().trim().required().valid('comment', 'reply').messages({
+      'string.empty': 'Type is required',
+      'string.only': 'Type must be either comment or reply',
     }),
     author: Joi.string()
       .trim()
@@ -65,12 +77,8 @@ commentSchema.statics.validateComment = function (comment) {
       .messages({
         'string.empty': 'Post is required',
       }),
-    replies: Joi.array().optional().messages({
-      'array.empty': 'Replies is required',
-    }),
-    likes: Joi.array().optional().messages({
-      'array.empty': 'Likes is required',
-    }),
+    replies: Joi.array().optional(),
+    likes: Joi.array().optional(),
   });
 
   return schema.validate(comment, { abortEarly: false });

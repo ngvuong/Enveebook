@@ -66,15 +66,9 @@ userSchema.statics.validateUser = function (user) {
     })
       .optional()
       .messages({ 'object.empty': 'Image is required' }),
-    friends: Joi.array()
-      .optional()
-      .messages({ 'array.empty': 'Friends is required' }),
-    friendRequests: Joi.array()
-      .optional()
-      .messages({ 'array.empty': 'Friend requests is required' }),
-    posts: Joi.array()
-      .optional()
-      .messages({ 'array.empty': 'Posts is required' }),
+    friends: Joi.array().optional(),
+    friendRequests: Joi.array().optional(),
+    posts: Joi.array().optional(),
   });
 
   return schema.validate(user, { abortEarly: false });
