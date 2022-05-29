@@ -8,8 +8,12 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
       await dbConnect();
-      const comments = await Comment.find({ post: postid })
+      const comments = await Comment.find({ post: postid, type: 'comment' })
         .populate('author', 'name image')
+        .populate({
+          path: 'replies',
+          populate: { path: 'author', select: 'name image' },
+        })
         .sort({
           createdAt: -1,
         });
@@ -19,15 +23,24 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: err.message });
     }
   } else if (req.method === 'POST') {
-    try {
-      const { content, user_id } = req.body;
+    const { content, user_id, comment_id } = req.body;
 
+    try {
       await dbConnect();
       const comment = await Comment.create({
         content,
         post: postid,
         author: user_id,
+        type: comment_id ? 'reply' : 'comment',
       });
+
+      if (comment_id) {
+        await Comment.findByIdAndUpdate(comment_id, {
+          $push: {
+            replies: { $each: [comment._id], $position: 0 },
+          },
+        });
+      }
 
       await Post.findByIdAndUpdate(postid, {
         $push: {
