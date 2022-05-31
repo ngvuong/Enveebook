@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
       await dbConnect();
-      const comments = await Comment.find({ post: postid, type: 'comment' })
+      const comments = await Comment.find({ post: postid })
         .populate('author', 'name image')
         .populate({
           path: 'replies',
