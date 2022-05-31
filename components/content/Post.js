@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { parseISO, format } from 'date-fns';
 import Avatar from '../ui/Avatar';
 import CommentSection from './CommentSection';
+import useComment from '../../hooks/useComment';
+import { formatDate } from '../../lib/dateFormat';
 
 import { FaRegCommentAlt, FaRegThumbsUp } from 'react-icons/fa';
 import styles from '../../styles/Post.module.scss';
-import useComment from '../../hooks/useComment';
 
 function Post({ post }) {
   const [showCommentSection, setShowCommentSection] = useState(true);
@@ -25,7 +25,7 @@ function Post({ post }) {
 
         <div>
           <Link href={`/profile/${post.author._id}`}>{post.author.name}</Link>
-          <p>{format(parseISO(post.createdAt), "MMM dd, yyyy 'at' h:mm a")}</p>
+          <p>{formatDate(post.createdAt)}</p>
         </div>
       </section>
       <p className={styles.text}>{post.content.text}</p>
@@ -65,11 +65,11 @@ function Post({ post }) {
       </div>
       {comments && (
         <CommentSection
-          show={showCommentSection}
-          postId={post._id}
           comments={comments}
           setComment={setComment}
+          postId={post._id}
           focus={focus}
+          show={showCommentSection}
         />
       )}
     </article>
