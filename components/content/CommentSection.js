@@ -1,39 +1,53 @@
 import { useEffect, useState } from 'react';
 import Comment from './Comment';
 import CommentBox from './CommentBox';
-import useComment from '../../hooks/useComment';
 
 import styles from '../../styles/CommentSection.module.scss';
 
-function CommentSection({ comments, postId, setComment, focus, show }) {
-  const [shownComments, setShownComments] = useState(
-    comments[0] ? [comments[0]] : []
+function CommentSection({ comments, postId, focus, show }) {
+  const filteredComments = comments.filter(
+    (comment) => comment.type === 'comment'
   );
-  // const { comments, isLoading, isError, setComment } = useComment(post._id);
-  console.log(shownComments);
-  // useEffect(() => {
-  //   if (comments) {
-  //     setShownComments([comments[0], ...shownComments]);
-  //   }
-  // }, [comments]);
+  const [shownComments, setShownComments] = useState(
+    filteredComments[0] ? [filteredComments[0]] : []
+  );
 
-  // if (isError) {
-  //   return <p>Cannot load comments</p>;
-  // }
+  useEffect(() => {
+    if (comments[0] && comments[0]._id !== shownComments[0]?._id) {
+      setShownComments((prevComments) => {
+        if (comments[0].type === 'comment') {
+          return [comments[0], ...prevComments];
+        } else {
+          const prevCommentsIds = prevComments.map((comment) => comment._id);
+          const updatedComments = filteredComments.filter((comment) =>
+            prevCommentsIds.includes(comment._id)
+          );
+
+          return updatedComments;
+        }
+      });
+    }
+  }, [comments]);
 
   const commentList = shownComments.map((comment) => (
-    <Comment key={comment._id} comment={comment} />
+    <Comment key={comment._id} comment={comment} size='32' />
   ));
 
   return (
     <section className={`${styles.container} ${show && styles.show}`}>
+      {filteredComments.length > 1 &&
+        filteredComments.length === shownComments.length && (
+          <button onClick={() => setShownComments([filteredComments[0]])}>
+            View most recent
+          </button>
+        )}
       {commentList}
-      <CommentBox
-        placeholder='Write a comment...'
-        postId={postId}
-        focus={focus}
-        setComment={setComment}
-      />
+      {filteredComments.length !== shownComments.length && (
+        <button onClick={() => setShownComments(filteredComments)}>
+          View all comments
+        </button>
+      )}
+      <CommentBox postId={postId} focus={focus} size='32' />
     </section>
   );
 }
