@@ -5,12 +5,27 @@ import { formatDate } from '../../lib/dateFormat';
 
 import styles from '../../styles/Comment.module.scss';
 
-function Comment({ comment }) {
+function Comment({ comment, onCommentReply, size }) {
   const [showReplyBox, setShowReplyBox] = useState(false);
+  const [focus, setFocus] = useState(null);
+
+  const onReply = () => {
+    setFocus(!focus);
+    setShowReplyBox(true);
+  };
+
+  const replies = comment?.replies?.map((reply) => (
+    <Comment
+      key={reply._id}
+      comment={reply}
+      onCommentReply={onReply}
+      size='24'
+    />
+  ));
 
   return (
     <div className={styles.container}>
-      <Avatar height='32' width='32' user={comment.author} />
+      <Avatar height={size} width={size} user={comment.author} />
       <div>
         <div className={styles.comment}>
           <span>{comment.author.name}</span>
@@ -18,10 +33,23 @@ function Comment({ comment }) {
         </div>
         <div className={styles.reaction}>
           <button>Like</button>
-          <button onClick={() => setShowReplyBox(true)}>Reply</button>
+          {comment.type === 'comment' ? (
+            <button onClick={onReply}>Reply</button>
+          ) : (
+            <button onClick={onCommentReply}>Reply</button>
+          )}
+
           <span>{formatDate(comment.createdAt, 'short')}</span>
         </div>
-        {showReplyBox && <CommentBox />}
+        {replies}
+        {showReplyBox && comment.type === 'comment' && (
+          <CommentBox
+            postId={comment.post}
+            commentId={comment._id}
+            focus={focus}
+            size='24'
+          />
+        )}
       </div>
     </div>
   );

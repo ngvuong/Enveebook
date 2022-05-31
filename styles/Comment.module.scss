@@ -2,9 +2,14 @@
   display: flex;
   align-items: flex-start;
   gap: 1rem;
-  margin-bottom: 1rem;
+  margin: 1rem 0;
+
+  & > div {
+    flex: 1;
+  }
 
   .comment {
+    width: fit-content;
     background-color: var(--color-dark-2);
     padding: 0.3rem 1rem;
     border-radius: 1rem;
