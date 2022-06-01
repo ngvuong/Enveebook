@@ -1,6 +1,6 @@
-import Post from '../../../../models/post';
-import Comment from '../../../../models/comment';
-import dbConnect from '../../../../lib/db';
+import Post from '../../../../../models/post';
+import Comment from '../../../../../models/comment';
+import dbConnect from '../../../../../lib/db';
 
 export default async function handler(req, res) {
   const { postid } = req.query;
