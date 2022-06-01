@@ -30,11 +30,11 @@ function CommentSection({ comments, postId, focus, show }) {
   }, [comments]);
 
   const commentList = shownComments.map((comment) => (
-    <Comment key={comment._id} comment={comment} size='32' />
+    <Comment key={comment._id} comment={comment} size='32' show={show} />
   ));
 
   return (
-    <section className={`${styles.container} ${show && styles.show}`}>
+    <section className={`${styles.container} ${show ? styles.show : ''}`}>
       {filteredComments.length > 1 &&
         filteredComments.length === shownComments.length && (
           <button onClick={() => setShownComments([filteredComments[0]])}>

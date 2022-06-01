@@ -2,16 +2,30 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  margin-top: 1rem;
 
   form {
     flex: 1;
 
-    input {
-      width: 100%;
-      font-size: 1.5rem;
-      background-color: var(--color-dark-2);
+    div {
+      display: flex;
+      align-items: center;
+      flex-flow: row-reverse;
+      background: var(--color-dark-2);
       padding: 0.5rem 1rem;
       border-radius: 2rem;
+
+      span {
+        background-color: #33559980;
+        margin-right: -0.5rem;
+      }
+    }
+
+    input {
+      flex: 1;
+      font-size: 1.5rem;
+      background-color: var(--color-dark-2);
+      padding: 0;
       outline: none;
     }
   }
