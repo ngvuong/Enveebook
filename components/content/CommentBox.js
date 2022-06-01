@@ -14,7 +14,7 @@ function CommentBox({
   recipient,
   setShowReplyBox,
 }) {
-  const [replyRecipient, setReplyRecipient] = useState(recipient);
+  const [replyRecipient, setReplyRecipient] = useState('');
   const [inputText, setInputText] = useState(recipient ? '  ' : '');
   const inputRef = useRef(null);
   const [user] = useUser();
@@ -26,7 +26,7 @@ function CommentBox({
     } else {
       inputRef.current.focus();
       if (!inputText.trim() && recipient) {
-        setReplyRecipient(recipient);
+        setReplyRecipient('@' + recipient);
         setInputText('  ');
       }
     }

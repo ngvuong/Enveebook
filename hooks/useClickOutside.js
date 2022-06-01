@@ -16,6 +16,10 @@ export default function useClickOutside(initState) {
       return;
     }
 
+    if (e.type === 'keydown' && e.keyCode === 27) {
+      return setShow(false);
+    }
+
     if (e.type === 'mouseup') {
       if (
         Math.abs(startX - e.pageX) < delta &&
@@ -34,9 +38,12 @@ export default function useClickOutside(initState) {
   useEffect(() => {
     document.addEventListener('mousedown', onClickOutside, true);
     document.addEventListener('mouseup', onClickOutside, true);
+    document.addEventListener('keydown', onClickOutside, true);
+
     return () => {
       document.removeEventListener('mousedown', onClickOutside, true);
       document.removeEventListener('mouseup', onClickOutside, true);
+      document.removeEventListener('keydown', onClickOutside, true);
     };
   });
 

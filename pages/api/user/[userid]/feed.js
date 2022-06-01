@@ -17,11 +17,26 @@ export default async function handler(req, res) {
       .populate('author', 'name image')
       .populate({
         path: 'comments',
-        populate: { path: 'author', select: 'name image' },
+        populate: [
+          { path: 'author', select: 'name image' },
+          {
+            path: 'likes',
+            select: 'name image',
+          },
+          {
+            path: 'replies',
+            populate: [
+              { path: 'author', select: 'name image' },
+              { path: 'likes', select: 'name image' },
+            ],
+          },
+        ],
       })
+      .populate('likes', 'name')
       .sort({
         createdAt: -1,
       });
+
     return res.status(200).json(posts);
   } catch (err) {
     return res.status(500).json({ error: err.message });
