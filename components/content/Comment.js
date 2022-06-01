@@ -1,25 +1,30 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Avatar from '../ui/Avatar';
 import CommentBox from './CommentBox';
 import { formatDate } from '../../lib/dateFormat';
 
 import styles from '../../styles/Comment.module.scss';
+import Link from 'next/link';
 
-function Comment({ comment, onCommentReply, size, recipient }) {
+function Comment({ comment, onCommentReply, size, recipient, show }) {
   const [showReplyBox, setShowReplyBox] = useState(false);
   const [replyRecipient, setReplyRecipient] = useState(
     recipient || comment.author.name
   );
   const [focus, setFocus] = useState(null);
 
+  useEffect(() => {
+    if (!show) {
+      setShowReplyBox(false);
+    }
+  }, [show]);
+
   const onReply = (recipient) => {
     setFocus(!focus);
-    console.log(replyRecipient, recipient);
     setReplyRecipient(() => {
       setShowReplyBox(true);
       return recipient;
     });
-    // setShowReplyBox(true);
   };
 
   const replies = comment?.replies?.map((reply) => (
@@ -31,14 +36,21 @@ function Comment({ comment, onCommentReply, size, recipient }) {
       recipient={reply.author.name}
     />
   ));
-  console.log(comment, recipient);
 
   return (
     <div className={styles.container}>
-      <Avatar height={size} width={size} user={comment.author} />
+      <Link href={`/profile/${comment.author._id}`}>
+        <a>
+          <Avatar height={size} width={size} user={comment.author} />
+        </a>
+      </Link>
       <div>
         <div className={styles.comment}>
-          <span>{comment.author.name}</span>
+          <Link href={`/profile/${comment.author._id}`}>
+            <a>
+              <span>{comment.author.name}</span>
+            </a>
+          </Link>
           <p>{comment.content}</p>
         </div>
         <div className={styles.reaction}>
@@ -59,6 +71,7 @@ function Comment({ comment, onCommentReply, size, recipient }) {
             focus={focus}
             size='24'
             recipient={replyRecipient}
+            setShowReplyBox={setShowReplyBox}
           />
         )}
       </div>
