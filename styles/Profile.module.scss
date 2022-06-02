@@ -1,0 +1,50 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 90%;
+
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background-color: var(--color-dark);
+    padding: 2rem;
+    border-radius: 1rem;
+
+    div {
+      max-width: 30%;
+    }
+
+    h1 {
+      font-size: 3.2rem;
+      color: var(--color-primary);
+    }
+  }
+
+  .main {
+    display: flex;
+    justify-content: space-between;
+
+    .friends {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 25%;
+      height: 40vh;
+      background-color: var(--color-black);
+      padding: 1rem;
+      border-radius: 1rem;
+
+      div {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        a:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}

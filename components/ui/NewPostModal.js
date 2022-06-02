@@ -12,7 +12,7 @@ import useFeed from '../../hooks/useFeed';
 const NewPostModal = forwardRef(({ user, onClose }, ref) => {
   const [formData, setFormData] = useState({ text: '', image: '' });
   const fileRef = useRef(null);
-  const { setFeed } = useFeed(user.id);
+  const { setFeed } = useFeed(user.id || user._id);
 
   const { text, image } = formData;
 
