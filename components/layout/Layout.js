@@ -32,10 +32,10 @@ function Layout({ children }) {
           content='web development, nextjs, facebook clone, envee'
         />
       </Head>
-      {user && <Navbar user={user} />}
       <div className={styles.container}>
         <main className={styles.main}>{children}</main>
       </div>
+      {user && <Navbar user={user} />}
     </>
   );
 }

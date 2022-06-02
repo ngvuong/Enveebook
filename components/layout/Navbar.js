@@ -23,11 +23,7 @@ function Navbar({ user }) {
 
   return (
     <section className={styles.navbar}>
-      <Link href='/profile'>
-        <a className={styles.profile}>
-          <Avatar height='50' width='50' user={user} />
-        </a>
-      </Link>
+      <Avatar height='50' width='50' user={user} />
       <Link href='/home'>
         <a className={styles.home}>
           <FaHome />

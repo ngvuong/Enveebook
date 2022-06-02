@@ -10,11 +10,7 @@ function NewPostBox({ user }) {
 
   return (
     <div className={styles.container}>
-      <Link href='/profile'>
-        <a>
-          <Avatar height='50' width='50' user={user} />
-        </a>
-      </Link>
+      <Avatar height='50' width='50' user={user} />
       <input
         type='text'
         ref={triggerRef}

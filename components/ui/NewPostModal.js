@@ -75,11 +75,7 @@ const NewPostModal = forwardRef(({ user, onClose }, ref) => {
         <h2>Create post</h2>
         <hr />
         <div className={styles.profileWrapper}>
-          <Link href='/profile'>
-            <a>
-              <Avatar height='50' width='50' user={user} />
-            </a>
-          </Link>
+          <Avatar height='50' width='50' user={user} />
           <span>{user.name}</span>
         </div>
         <form action='' method='POST' onSubmit={onSubmit}>
