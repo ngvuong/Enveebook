@@ -9,22 +9,47 @@
   }
 
   .comment {
+    position: relative;
     width: fit-content;
     background-color: var(--color-dark-2);
-    padding: 0.3rem 1rem;
-    border-radius: 1rem;
+    padding: 0.5rem 1.8rem;
+    border-radius: 2rem;
 
-    span {
+    a {
       font-size: 1.3rem;
       font-weight: 600;
-    }
 
-    span:hover {
-      text-decoration: underline;
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
     p {
       font-size: 1.5rem;
+    }
+
+    button {
+      position: absolute;
+      bottom: -0.9rem;
+      left: calc(100% - 1.8rem);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--color-grey-3);
+      font-size: 1.3rem;
+      line-height: normal;
+
+      &:hover {
+        text-decoration: underline;
+      }
+
+      svg {
+        font-size: 1.8rem;
+        color: var(--color-white);
+        background-color: var(--color-blue-2);
+        padding: 0.5rem 0;
+        border-radius: 50%;
+      }
     }
   }
 
@@ -33,10 +58,15 @@
     gap: 1rem;
     color: var(--color-grey-3);
     font-size: 1.2rem;
+    margin-top: 0.5rem;
     margin-left: 1rem;
 
     button:hover {
       text-decoration: underline;
+    }
+
+    .liked {
+      color: var(--color-blue-2);
     }
   }
 }

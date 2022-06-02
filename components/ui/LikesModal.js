@@ -14,11 +14,7 @@ const LikesModal = forwardRef(({ users, onClose }, ref) => {
         <hr />
         {users.map((user) => (
           <div key={user._id} className={styles.profile}>
-            <Link href={`/profile/${user._id}`}>
-              <a>
-                <Avatar key={user.id} width='40' height='40' user={user} />
-              </a>
-            </Link>
+            <Avatar key={user.id} width='40' height='40' user={user} />
             <Link href={`/profile/${user._id}`}>{user.name}</Link>
           </div>
         ))}
