@@ -4,7 +4,7 @@ import Link from 'next/link';
 import LikesModal from '../ui/LikesModal';
 import Avatar from '../ui/Avatar';
 import CommentSection from './CommentSection';
-import useComment from '../../hooks/useComment';
+import useComments from '../../hooks/useComments';
 import { useUser } from '../../contexts/userContext';
 import { formatDate } from '../../lib/dateFormat';
 import useClickOutside from '../../hooks/useClickOutside';
@@ -17,7 +17,7 @@ function Post({ post }) {
   const [focus, setFocus] = useState(null);
   const [postComments, setPostComments] = useState(post.comments);
   const [postLikes, setPostLikes] = useState(post.likes);
-  const { comments, setComment } = useComment(post._id);
+  const { comments } = useComments(post._id);
   const [user] = useUser();
   const { triggerRef, nodeRef, show, setShow } = useClickOutside(false);
 
@@ -107,7 +107,6 @@ function Post({ post }) {
       </div>
       <CommentSection
         comments={postComments}
-        setComment={setComment}
         postId={post._id}
         focus={focus}
         show={showCommentSection}

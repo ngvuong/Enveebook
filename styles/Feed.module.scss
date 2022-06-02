@@ -4,10 +4,5 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  width: 50vw;
-  margin: 5rem auto;
-
-  @media (max-width: 768px) {
-    width: 70vw;
-  }
+  margin: 2rem 0;
 }

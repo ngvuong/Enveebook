@@ -32,7 +32,7 @@ export default async function handler(req, res) {
           },
         ],
       })
-      .populate('likes', 'name')
+      .populate('likes', 'name image')
       .sort({
         createdAt: -1,
       });

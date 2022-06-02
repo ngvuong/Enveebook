@@ -5,7 +5,7 @@ import useFeed from '../../hooks/useFeed';
 import styles from '../../styles/Feed.module.scss';
 
 function Feed({ user }) {
-  const { posts, isError, isLoading, setFeed } = useFeed(user.id);
+  const { posts, isError, isLoading } = useFeed(user.id);
 
   if (isLoading) {
     return <Spinner />;
@@ -18,7 +18,7 @@ function Feed({ user }) {
   return (
     <section className={styles.feed}>
       {posts.map((post) => (
-        <Post key={post._id} post={post} setFeed={setFeed} />
+        <Post key={post._id} post={post} />
       ))}
     </section>
   );

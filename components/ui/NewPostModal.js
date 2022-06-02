@@ -1,18 +1,19 @@
 import { useState, forwardRef, useRef } from 'react';
-import Link from 'next/link';
 import { toast } from 'react-toastify';
 import Overlay from '../layout/Overlay';
 import Avatar from './Avatar';
 import FileInput from './FileInput';
 import AutosizeTextarea from './AutosizeTextarea';
+import useFeed from '../../hooks/useFeed';
+import usePosts from '../../hooks/usePosts';
 
 import styles from '../../styles/NewPostModal.module.scss';
-import useFeed from '../../hooks/useFeed';
 
 const NewPostModal = forwardRef(({ user, onClose }, ref) => {
   const [formData, setFormData] = useState({ text: '', image: '' });
   const fileRef = useRef(null);
   const { setFeed } = useFeed(user.id || user._id);
+  const { setPosts } = usePosts(user.id || user._id);
 
   const { text, image } = formData;
 
@@ -48,7 +49,7 @@ const NewPostModal = forwardRef(({ user, onClose }, ref) => {
 
     formData.append('image', file);
     formData.append('text', text);
-    formData.append('user_id', user.id);
+    formData.append('user_id', user.id || user._id);
 
     const data = await fetch('/api/posts', {
       method: 'POST',
@@ -62,6 +63,8 @@ const NewPostModal = forwardRef(({ user, onClose }, ref) => {
     }
 
     setFeed();
+    setPosts();
+
     toast.success(data.message, {
       toastId: 'post-success',
     });

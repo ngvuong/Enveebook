@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import Avatar from '../ui/Avatar';
 import { useUser } from '../../contexts/userContext';
-import useComment from '../../hooks/useComment';
+import useComments from '../../hooks/useComments';
 
 import styles from '../../styles/CommentBox.module.scss';
 
@@ -18,7 +18,7 @@ function CommentBox({
   const [inputText, setInputText] = useState(recipient ? '  ' : '');
   const inputRef = useRef(null);
   const [user] = useUser();
-  const { setComment } = useComment(postId);
+  const { setComments } = useComments(postId);
 
   useEffect(() => {
     if (focus === null) {
@@ -68,7 +68,7 @@ function CommentBox({
       });
     }
 
-    setComment();
+    setComments();
     setInputText('');
     setReplyRecipient('');
 

@@ -2,27 +2,6 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 import Joi from 'joi';
 
-// const replySchema = new Schema(
-//   {
-//     content: {
-//       type: String,
-//       required: true,
-//     },
-//     author: {
-//       type: Schema.Types.ObjectId,
-//       ref: 'User',
-//       required: true,
-//     },
-//     comment: {
-//       type: Schema.Types.ObjectId,
-//       ref: 'Comment',
-//       required: true,
-//     },
-//     likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-//   },
-//   { timestamps: true }
-// );
-
 const commentSchema = new Schema(
   {
     content: {
@@ -57,7 +36,7 @@ commentSchema.statics.validateComment = function (comment) {
   const schema = Joi.object({
     content: Joi.string().trim().max(1000).required().messages({
       'string.empty': 'Content is required',
-      'string.max': 'Content must be less than 1000 characters long',
+      'string.max': 'Comment must be 1000 characters or less',
     }),
     type: Joi.string().trim().required().valid('comment', 'reply').messages({
       'string.empty': 'Type is required',
