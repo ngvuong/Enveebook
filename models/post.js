@@ -25,6 +25,7 @@ postSchema.statics.validatePost = function (post) {
   const schema = Joi.object({
     content: Joi.object({
       text: Joi.string().trim().max(1000).messages({
+        'string.empty': 'Please provide post content',
         'string.max': 'Post must be 1000 characters or less',
       }),
       image: Joi.string().trim().uri().messages({
