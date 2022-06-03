@@ -1,4 +1,6 @@
 import Post from '../../../../models/post';
+import User from '../../../../models/user';
+import Comment from '../../../../models/comment';
 import dbConnect from '../../../../lib/db';
 
 export default async function handler(req, res) {
@@ -8,7 +10,10 @@ export default async function handler(req, res) {
     try {
       await dbConnect();
 
-      const post = await Post.findById(postid, 'likes');
+      const post = await Post.findById(postid, 'likes').populate(
+        'likes',
+        'name image'
+      );
 
       res.status(200).json(post.likes);
     } catch (error) {
@@ -16,11 +21,12 @@ export default async function handler(req, res) {
         error: error.message,
       });
     }
-  } else if (req.method === 'POST') {
-    const { user_id, user_name } = req.body;
+  } else if (req.method === 'PUT') {
+    const { user_id, user_name, user_image } = req.body;
 
     try {
       await dbConnect();
+
       const post = await Post.findById(postid).populate('likes');
 
       const alreadyLiked = post.likes.find(
@@ -32,12 +38,30 @@ export default async function handler(req, res) {
           (like) => like._id.toString() !== user_id
         );
       } else {
-        post.likes.push({ _id: user_id, name: user_name });
+        post.likes.unshift({
+          _id: user_id,
+          name: user_name,
+          image: user_image,
+        });
       }
 
       await post.save();
 
       res.status(200).json({ likes: post.likes });
+    } catch (error) {
+      res.status(500).json({
+        error: error.message,
+      });
+    }
+  } else if (req.method === 'DELETE') {
+    try {
+      await dbConnect();
+
+      const post = await Post.findByIdAndDelete(postid);
+      await User.findByIdAndUpdate(post.author, { $pull: { posts: postid } });
+      await Comment.deleteMany({ post: postid });
+
+      res.status(200).json({ message: 'Post deleted' });
     } catch (error) {
       res.status(500).json({
         error: error.message,
