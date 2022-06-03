@@ -3,11 +3,12 @@ import Link from 'next/link';
 import Avatar from '../ui/Avatar';
 import CommentBox from './CommentBox';
 import LikesModal from '../ui/LikesModal';
-import { formatDate } from '../../lib/dateFormat';
+import useComments from '../../hooks/useComments';
 import { useUser } from '../../contexts/userContext';
 import useClickOutside from '../../hooks/useClickOutside';
+import { formatDate } from '../../lib/dateFormat';
 
-import { FaThumbsUp } from 'react-icons/fa';
+import { FaThumbsUp, FaTrash } from 'react-icons/fa';
 import styles from '../../styles/Comment.module.scss';
 
 function Comment({ comment, onCommentReply, size, recipient, show }) {
@@ -17,6 +18,7 @@ function Comment({ comment, onCommentReply, size, recipient, show }) {
   );
   const [focus, setFocus] = useState(null);
   const [commentLikes, setCommentLikes] = useState(comment.likes);
+  const { setComments } = useComments(comment.post);
   const [user] = useUser();
   const {
     triggerRef,
@@ -41,9 +43,9 @@ function Comment({ comment, onCommentReply, size, recipient, show }) {
 
   const onLike = async () => {
     const data = await fetch(
-      `/api/posts/${comment.post}/comments/${comment._id}/like`,
+      `/api/posts/${comment.post}/comments/${comment._id}/`,
       {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -55,7 +57,22 @@ function Comment({ comment, onCommentReply, size, recipient, show }) {
       }
     ).then((res) => res.json());
 
-    setCommentLikes(data.likes);
+    if (data.likes) {
+      setCommentLikes(data.likes);
+    }
+  };
+
+  const onDelete = async () => {
+    const data = await fetch(
+      `/api/posts/${comment.post}/comments/${comment._id}/`,
+      {
+        method: 'DELETE',
+      }
+    ).then((res) => res.json());
+
+    if (data.message) {
+      setComments();
+    }
   };
 
   const replies = comment?.replies?.map((reply) => (
@@ -121,6 +138,11 @@ function Comment({ comment, onCommentReply, size, recipient, show }) {
           />
         )}
       </div>
+      {user?.id === comment.author._id && (
+        <button className={styles.btn_danger} onClick={onDelete}>
+          <FaTrash />
+        </button>
+      )}
     </div>
   );
 }
