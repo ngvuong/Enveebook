@@ -27,12 +27,21 @@ export default async function handler(req, res) {
 
     try {
       await dbConnect();
-      const comment = await Comment.create({
+
+      const newComment = {
         content,
         post: postid,
         author: user_id,
         type: comment_id ? 'reply' : 'comment',
-      });
+      };
+
+      const { error } = Comment.validateComment(newComment);
+
+      if (error) {
+        return res.status(400).json({ error: error.details[0].message });
+      }
+
+      const comment = await Comment.create(newComment);
 
       if (comment_id) {
         await Comment.findByIdAndUpdate(comment_id, {
