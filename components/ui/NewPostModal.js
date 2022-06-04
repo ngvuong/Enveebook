@@ -41,14 +41,14 @@ const NewPostModal = forwardRef(({ user, onClose }, ref) => {
     const file = fileRef.current.files[0];
     const formData = new FormData();
 
-    if (!text && !file) {
+    if (!text.trim() && !file) {
       return toast.error('Please provide post content', {
         toastId: 'post-error',
       });
     }
 
     formData.append('image', file);
-    formData.append('text', text);
+    formData.append('text', text.trim());
     formData.append('user_id', user.id || user._id);
 
     const data = await fetch('/api/posts', {
@@ -62,12 +62,14 @@ const NewPostModal = forwardRef(({ user, onClose }, ref) => {
       });
     }
 
-    setFeed();
-    setPosts();
+    if (data.message) {
+      setFeed();
+      setPosts();
 
-    toast.success(data.message, {
-      toastId: 'post-success',
-    });
+      toast.success(data.message, {
+        toastId: 'post-success',
+      });
+    }
 
     onClose();
   };
@@ -109,7 +111,7 @@ const NewPostModal = forwardRef(({ user, onClose }, ref) => {
             onInputChange={onInputChange}
             ref={fileRef}
           />
-          <button type='submit' disabled={!text && !image}>
+          <button type='submit' disabled={!text.trim() && !image}>
             Post
           </button>
         </form>
