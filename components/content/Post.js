@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
 import LikesModal from '../ui/LikesModal';
 import Avatar from '../ui/Avatar';
 import CommentSection from './CommentSection';
 import useComments from '../../hooks/useComments';
 import { useUser } from '../../contexts/userContext';
-import { formatDate } from '../../lib/dateFormat';
+import useFeed from '../../hooks/useFeed';
+import usePosts from '../../hooks/usePosts';
 import useClickOutside from '../../hooks/useClickOutside';
+import { formatDate } from '../../lib/dateFormat';
 
-import { FaRegCommentAlt, FaThumbsUp } from 'react-icons/fa';
+import { FaRegCommentAlt, FaThumbsUp, FaTrash } from 'react-icons/fa';
 import styles from '../../styles/Post.module.scss';
 
 function Post({ post }) {
@@ -19,6 +22,8 @@ function Post({ post }) {
   const [postLikes, setPostLikes] = useState(post.likes);
   const { comments } = useComments(post._id);
   const [user] = useUser();
+  const { setFeed } = useFeed(user?.id);
+  const { setPosts } = usePosts(user?.id);
   const { triggerRef, nodeRef, show, setShow } = useClickOutside(false);
 
   useEffect(() => {
@@ -28,8 +33,8 @@ function Post({ post }) {
   }, [comments]);
 
   const onLike = async () => {
-    const data = await fetch(`/api/posts/${post._id}/like`, {
-      method: 'POST',
+    const data = await fetch(`/api/posts/${post._id}`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -40,7 +45,24 @@ function Post({ post }) {
       }),
     }).then((res) => res.json());
 
-    setPostLikes(data.likes);
+    if (data.likes) {
+      setPostLikes(data.likes);
+    }
+  };
+
+  const onDelete = async () => {
+    const data = await fetch(`/api/posts/${post._id}`, {
+      method: 'DELETE',
+    }).then((res) => res.json());
+
+    if (data.message) {
+      setFeed();
+      setPosts();
+
+      toast.success(data.message, {
+        toastId: 'post_delete',
+      });
+    }
   };
 
   return (
@@ -111,6 +133,11 @@ function Post({ post }) {
         focus={focus}
         show={showCommentSection}
       />
+      {user?.id === post.author._id && (
+        <button className={styles.btn_danger} onClick={onDelete}>
+          <FaTrash />
+        </button>
+      )}
     </article>
   );
 }
