@@ -69,4 +69,17 @@
       color: var(--color-blue-2);
     }
   }
+
+  .btn_danger {
+    display: flex;
+    align-items: center;
+    color: var(--color-red-2);
+    font-size: 1.2rem;
+    line-height: normal;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      box-shadow: 0 0 1rem var(--color-red-2);
+    }
+  }
 }
