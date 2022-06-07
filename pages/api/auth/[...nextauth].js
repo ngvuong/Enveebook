@@ -70,6 +70,9 @@ export default NextAuth({
       session.user.id = token.user._id || token.user.id;
       session.user.image = token.user.image;
       session.user.bio = token.user.bio;
+      session.user.friends = token.user.friends || [];
+      session.user.friendRequests = token.user.friendRequests || [];
+
       if (
         session.user.image.url === undefined &&
         typeof session.user.image === 'string'
