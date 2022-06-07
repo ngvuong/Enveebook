@@ -42,6 +42,15 @@
         text-decoration: underline;
       }
     }
+
+    &::-webkit-scrollbar {
+      background-color: var(--color-dark-2);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--color-black);
+      border-radius: 1rem;
+    }
   }
 
   .btn_close {

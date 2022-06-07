@@ -21,6 +21,15 @@
 html {
   font-size: 62.5%;
   scroll-behavior: smooth;
+
+  &::-webkit-scrollbar {
+    background-color: var(--color-background);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--color-black);
+    border-radius: 1rem;
+  }
 }
 
 body {
