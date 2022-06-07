@@ -23,7 +23,16 @@ function Avatar({ height, width, user }) {
               onError={() => setIsError(true)}
             />
           ) : (
-            <span className={styles.avatar}>{user.name[0]}</span>
+            <span
+              className={styles.avatar}
+              style={{
+                width: `${width}px`,
+                height: `${height}px`,
+                fontSize: `${width / 2}px`,
+              }}
+            >
+              {user.name[0]}
+            </span>
           ))}
       </a>
     </Link>
