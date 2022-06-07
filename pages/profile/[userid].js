@@ -14,6 +14,7 @@ import { FaUserCheck, FaUserPlus } from 'react-icons/fa';
 import styles from '../../styles/Profile.module.scss';
 
 function Profile({ user, currentUser }) {
+  const [friends, setFriends] = useState(user.friends);
   const [friendStatus, setFriendStatus] = useState(
     user.friends.find((friend) => friend._id === currentUser.id)
       ? 'friend'
@@ -41,12 +42,19 @@ function Profile({ user, currentUser }) {
       }),
     }).then((res) => res.json());
 
-    if (data.message) {
+    if (data.message && type === 'request') {
       toast.success(data.message, {
         toastId: 'friend_request',
       });
 
       setFriendStatus('requested');
+    } else if (data.message && type === 'accept') {
+      toast.success(data.message, {
+        toastId: 'friend_accept',
+      });
+
+      setFriendStatus('friend');
+      setFriends([{ ...currentUser, _id: currentUser.id }, ...friends]);
     }
   };
 
@@ -92,7 +100,7 @@ function Profile({ user, currentUser }) {
           <h3>Friends</h3>
           <hr />
           <div className={styles.friends}>
-            {user.friends.map((friend) => (
+            {friends.map((friend) => (
               <div key={friend._id} className={styles.profile}>
                 <Avatar width='40' height='40' user={friend} />
                 <Link href={`/profile/${friend._id}`}>{friend.name}</Link>
@@ -101,9 +109,7 @@ function Profile({ user, currentUser }) {
           </div>
         </section>
         <section className={styles.postsSection}>
-          {currentUser && currentUser.id === user._id && (
-            <NewPostBox user={user} />
-          )}
+          {currentUser.id === user._id && <NewPostBox user={user} />}
           <div className={styles.posts}>
             {posts.map((post) => (
               <Post key={post._id} post={post} />
@@ -117,6 +123,15 @@ function Profile({ user, currentUser }) {
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
 
   const { userid } = context.query;
   await dbConnect();
