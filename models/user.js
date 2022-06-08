@@ -2,34 +2,37 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 import Joi from 'joi';
 
-const userSchema = new Schema({
-  name: {
-    type: String,
-    unique: true,
-    required: [true, 'Username is required'],
+const userSchema = new Schema(
+  {
+    name: {
+      type: String,
+      unique: true,
+      required: [true, 'Username is required'],
+    },
+    email: {
+      type: String,
+      unique: true,
+      required: [true, 'Email is required'],
+    },
+    password: {
+      type: String,
+      minLength: [6, 'Password must be at least 6 characters long'],
+      required: [true, 'Password is required'],
+    },
+    bio: {
+      type: String,
+      maxLength: [140, 'Bio must be less than 140 characters long'],
+    },
+    image: {
+      url: String,
+      public_id: String,
+    },
+    friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    friendRequests: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
   },
-  email: {
-    type: String,
-    unique: true,
-    required: [true, 'Email is required'],
-  },
-  password: {
-    type: String,
-    minLength: [6, 'Password must be at least 6 characters long'],
-    required: [true, 'Password is required'],
-  },
-  bio: {
-    type: String,
-    maxLength: [140, 'Bio must be less than 140 characters long'],
-  },
-  image: {
-    url: String,
-    public_id: String,
-  },
-  friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  friendRequests: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
-});
+  { minimize: false }
+);
 
 userSchema.statics.validateUser = function (user) {
   const schema = Joi.object({

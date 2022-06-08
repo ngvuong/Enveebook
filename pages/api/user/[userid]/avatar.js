@@ -1,8 +1,8 @@
 import cloudinary from 'cloudinary';
 import { IncomingForm } from 'formidable';
 import fs from 'fs';
-import User from '../../../models/user';
-import dbConnect from '../../../lib/db';
+import User from '../../../../models/user';
+import dbConnect from '../../../../lib/db';
 
 export const config = {
   api: {
@@ -20,9 +20,9 @@ export default async function handler(req, res) {
   });
 
   return new Promise((resolve) => {
-    form.parse(req, async (err, fields, files) => {
+    form.parse(req, async (err, _fields, files) => {
       const { image } = files;
-      const { user_id } = fields;
+      const { userid } = req.query;
       const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
       if (
@@ -41,7 +41,7 @@ export default async function handler(req, res) {
 
       try {
         await dbConnect();
-        const user = await User.findById(user_id);
+        const user = await User.findById(userid);
 
         if (user.image.url && user.image.public_id) {
           cloudinary.v2.uploader.destroy(user.image.public_id, (err) => {
@@ -55,8 +55,8 @@ export default async function handler(req, res) {
           const result = await cloudinary.v2.uploader.upload(image.filepath, {
             transformation: [
               {
-                width: 150,
-                height: 150,
+                width: 200,
+                height: 200,
                 gravity: 'face',
                 crop: 'thumb',
               },
@@ -79,15 +79,7 @@ export default async function handler(req, res) {
           await user.save({ validateBeforeSave: false });
         }
 
-        const updatedUser = {
-          id: user._id,
-          image: user.image,
-          name: user.name,
-          email: user.email,
-          bio: user.bio,
-        };
-
-        res.status(200).json(updatedUser);
+        res.status(200).json(user.image);
         return resolve();
       } catch (error) {
         res.status(400).json({ error: error.message });

@@ -1,13 +1,14 @@
 import bcrypt from 'bcryptjs';
-import User from '../../../models/user';
-import dbConnect from '../../../lib/db';
+import User from '../../../../models/user';
+import dbConnect from '../../../../lib/db';
 
 export default async function handler(req, res) {
   if (req.method !== 'PUT') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { currentPassword, newPassword, confirmPassword, user_id } = req.body;
+  const { currentPassword, newPassword, confirmPassword } = req.body;
+  const { userid } = req.query;
 
   if (!currentPassword || !newPassword || !confirmPassword) {
     return res.status(400).json({ error: 'Please fill out all fields' });
@@ -27,7 +28,7 @@ export default async function handler(req, res) {
 
   try {
     await dbConnect();
-    const user = await User.findById(user_id);
+    const user = await User.findById(userid);
 
     if (!user.password) {
       return res.status(400).json({
