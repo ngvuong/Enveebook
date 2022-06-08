@@ -1,9 +1,9 @@
 import useSWR from 'swr';
 
-function useLike(postid, commentid) {
-  const URL = commentid
-    ? `/api/posts/${postid}/comments/${commentid}/like`
-    : `/api/posts/${postid}/like`;
+function useLike(postId, commentId) {
+  const URL = commentId
+    ? `/api/posts/${postId}/comments/${commentId}/like`
+    : `/api/posts/${postId}/like`;
 
   const { data, error, mutate } = useSWR(URL);
 

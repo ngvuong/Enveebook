@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 
-function useComments(postid) {
-  const { data, error, mutate } = useSWR(`/api/posts/${postid}/comments`);
+function useComments(postId) {
+  const { data, error, mutate } = useSWR(`/api/posts/${postId}/comments`);
 
   return {
     comments: data,

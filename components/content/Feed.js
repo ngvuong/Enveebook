@@ -5,7 +5,7 @@ import useFeed from '../../hooks/useFeed';
 import styles from '../../styles/Feed.module.scss';
 
 function Feed({ user }) {
-  const { posts, isError, isLoading } = useFeed(user.id);
+  const { posts, isError, isLoading } = useFeed(user._id);
 
   if (isLoading) {
     return <Spinner />;

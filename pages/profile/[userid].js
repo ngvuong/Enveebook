@@ -16,9 +16,9 @@ import styles from '../../styles/Profile.module.scss';
 function Profile({ user, currentUser }) {
   const [friends, setFriends] = useState(user.friends);
   const [friendStatus, setFriendStatus] = useState(
-    user.friends.find((friend) => friend._id === currentUser.id)
+    user.friends.find((friend) => friend._id === currentUser._id)
       ? 'friend'
-      : user.friendRequests.find((request) => request._id === currentUser.id)
+      : user.friendRequests.find((request) => request._id === currentUser._id)
       ? 'requested'
       : currentUser.friendRequests.includes(user._id)
       ? 'pending'
@@ -37,7 +37,7 @@ function Profile({ user, currentUser }) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        current_user_id: currentUser.id,
+        current_user_id: currentUser._id,
         type,
       }),
     }).then((res) => res.json());
@@ -54,7 +54,7 @@ function Profile({ user, currentUser }) {
       });
 
       setFriendStatus('friend');
-      setFriends([{ ...currentUser, _id: currentUser.id }, ...friends]);
+      setFriends([{ ...currentUser }, ...friends]);
     }
   };
 
@@ -75,7 +75,7 @@ function Profile({ user, currentUser }) {
         <FaUserPlus /> Accept
       </button>
     ) : (
-      currentUser.id !== user._id && (
+      currentUser._id !== user._id && (
         <button
           className={styles.status}
           onClick={() => onRequestFriend('request')}
@@ -88,7 +88,7 @@ function Profile({ user, currentUser }) {
   return (
     <div className={styles.container}>
       <section className={styles.head}>
-        <Avatar height='100' width='100' user={user} />
+        <Avatar height='150' width='150' user={user} />
         <div>
           <h1>{user.name}</h1>
           <p>{user.bio}</p>
@@ -109,7 +109,7 @@ function Profile({ user, currentUser }) {
           </div>
         </section>
         <section className={styles.postsSection}>
-          {currentUser.id === user._id && <NewPostBox user={user} />}
+          {currentUser._id === user._id && <NewPostBox user={user} />}
           <div className={styles.posts}>
             {posts.map((post) => (
               <Post key={post._id} post={post} />

@@ -50,7 +50,7 @@ function Comment({ comment, onCommentReply, size, recipient, show }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          user_id: user.id,
+          user_id: user._id,
           user_name: user.name,
           user_image: user.image,
         }),
@@ -111,7 +111,7 @@ function Comment({ comment, onCommentReply, size, recipient, show }) {
           <button
             onClick={onLike}
             className={
-              commentLikes.find((like) => like._id === user?.id)
+              commentLikes.find((like) => like._id === user?._id)
                 ? styles.liked
                 : undefined
             }
@@ -138,7 +138,7 @@ function Comment({ comment, onCommentReply, size, recipient, show }) {
           />
         )}
       </div>
-      {user?.id === comment.author._id && (
+      {user?._id === comment.author._id && (
         <button className={styles.btn_danger} onClick={onDelete}>
           <FaTrash />
         </button>

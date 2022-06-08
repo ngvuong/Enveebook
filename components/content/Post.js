@@ -22,8 +22,8 @@ function Post({ post }) {
   const [postLikes, setPostLikes] = useState(post.likes);
   const { comments } = useComments(post._id);
   const [user] = useUser();
-  const { setFeed } = useFeed(user?.id);
-  const { setPosts } = usePosts(user?.id);
+  const { setFeed } = useFeed(user?._id);
+  const { setPosts } = usePosts(user?._id);
   const { triggerRef, nodeRef, show, setShow } = useClickOutside(false);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ function Post({ post }) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        user_id: user.id,
+        user_id: user._id,
         user_name: user.name,
         user_image: user.image,
       }),
@@ -110,7 +110,7 @@ function Post({ post }) {
           <button
             onClick={onLike}
             className={
-              postLikes.find((like) => like._id === user?.id)
+              postLikes.find((like) => like._id === user?._id)
                 ? styles.liked
                 : undefined
             }
@@ -133,7 +133,7 @@ function Post({ post }) {
         focus={focus}
         show={showCommentSection}
       />
-      {user?.id === post.author._id && (
+      {user?._id === post.author._id && (
         <button className={styles.btn_danger} onClick={onDelete}>
           <FaTrash />
         </button>

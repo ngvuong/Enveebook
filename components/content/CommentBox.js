@@ -57,7 +57,7 @@ function CommentBox({
       },
       body: JSON.stringify({
         content,
-        user_id: user.id,
+        user_id: user._id,
         comment_id: commentId,
       }),
     }).then((res) => res.json());

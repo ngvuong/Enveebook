@@ -1,4 +1,5 @@
 import { useState, forwardRef, useRef } from 'react';
+import Image from 'next/image';
 import { toast } from 'react-toastify';
 import Overlay from '../layout/Overlay';
 import Avatar from './Avatar';
@@ -12,8 +13,8 @@ import styles from '../../styles/NewPostModal.module.scss';
 const NewPostModal = forwardRef(({ user, onClose }, ref) => {
   const [formData, setFormData] = useState({ text: '', image: '' });
   const fileRef = useRef(null);
-  const { setFeed } = useFeed(user.id || user._id);
-  const { setPosts } = usePosts(user.id || user._id);
+  const { setFeed } = useFeed(user._id);
+  const { setPosts } = usePosts(user._id);
 
   const { text, image } = formData;
 
@@ -49,7 +50,7 @@ const NewPostModal = forwardRef(({ user, onClose }, ref) => {
 
     formData.append('image', file);
     formData.append('text', text.trim());
-    formData.append('user_id', user.id || user._id);
+    formData.append('user_id', user._id);
 
     const data = await fetch('/api/posts', {
       method: 'POST',
@@ -94,8 +95,8 @@ const NewPostModal = forwardRef(({ user, onClose }, ref) => {
             autoFocus
           />
           {image && (
-            <div>
-              <img src={image} alt='Preview' />
+            <div className={styles.imageContainer}>
+              <Image src={image} layout='fill' quality={100} alt='Preview' />
               <button
                 type='button'
                 className={styles.btn_remove}
