@@ -44,15 +44,6 @@
       box-shadow: 0 0 0.5rem;
       border-radius: 0.5rem;
       resize: none;
-
-      &::-webkit-scrollbar {
-        background-color: var(--color-dark);
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background-color: var(--color-black);
-        border-radius: 1rem;
-      }
     }
 
     input:not(input[type='file']) {

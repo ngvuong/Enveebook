@@ -85,7 +85,7 @@ function Post({ post }) {
       {post.content.image && (
         <div className={styles.imageContainer}>
           <Image
-            src={post.content.image}
+            src={post.content.image.url}
             width='500'
             height='400'
             layout='responsive'

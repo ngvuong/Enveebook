@@ -3,6 +3,15 @@
   line-height: normal;
   word-break: break-all;
   resize: none;
+
+  &::-webkit-scrollbar {
+    background-color: var(--color-dark);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--color-black);
+    border-radius: 1rem;
+  }
 }
 
 .textarea:focus {

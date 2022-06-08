@@ -56,9 +56,8 @@ function Settings({ user }) {
     }
 
     formData.append('image', file);
-    formData.append('user_id', user.id);
 
-    const data = await fetch('/api/user/avatar', {
+    const data = await fetch(`/api/user/${user._id}/avatar`, {
       method: 'PUT',
       body: formData,
     }).then((res) => res.json());
@@ -68,7 +67,7 @@ function Settings({ user }) {
         toastId: 'avatar-error',
       });
     } else {
-      setUser(data);
+      setUser({ ...currentUser, image: data });
       toast.success('Avatar updated successfully', {
         toastId: 'avatar-success',
       });
@@ -79,18 +78,14 @@ function Settings({ user }) {
   };
 
   const onRemoveAvatar = async () => {
-    if (!user.image.url) {
+    if (!currentUser.image.url) {
       return toast.error('You do not have an avatar', {
         toastId: 'avatar-error',
       });
     }
 
-    const formData = new FormData();
-    formData.append('user_id', user.id);
-
-    const data = await fetch('/api/user/avatar', {
+    const data = await fetch(`/api/user/${user._id}/avatar`, {
       method: 'PUT',
-      body: formData,
     }).then((res) => res.json());
 
     if (data.error) {
@@ -98,7 +93,7 @@ function Settings({ user }) {
         toastId: 'avatar-error',
       });
     } else {
-      setUser(data);
+      setUser({ ...currentUser, image: data });
       toast.success('Avatar removed successfully', {
         toastId: 'avatar-success',
       });
@@ -113,21 +108,20 @@ function Settings({ user }) {
   const onBioSubmit = async (e) => {
     e.preventDefault();
 
-    if (textareaValue === user.bio) {
+    const bio = textareaValue.trim();
+
+    if (bio === user.bio) {
       return toast.error('Bio is already up to date', {
         toastId: 'bio-error',
       });
     }
 
-    const data = await fetch('/api/user/bio', {
+    const data = await fetch(`/api/user/${user._id}/bio`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        bio: textareaValue,
-        user_id: user.id,
-      }),
+      body: JSON.stringify({ bio }),
     }).then((res) => res.json());
 
     if (data.error) {
@@ -135,7 +129,7 @@ function Settings({ user }) {
         toastId: 'bio-error',
       });
     } else {
-      setUser(data);
+      setUser({ ...currentUser, bio: data });
       toast.success('Bio updated successfully', {
         toastId: 'bio-success',
       });
@@ -151,34 +145,37 @@ function Settings({ user }) {
   const onPasswordSubmit = async (e) => {
     e.preventDefault();
 
-    if (!currentPassword || !newPassword || !confirmPassword) {
+    if (
+      !currentPassword.trim() ||
+      !newPassword.trim() ||
+      !confirmPassword.trim()
+    ) {
       return toast.error('Please fill out all fields', {
         toastId: 'password-error',
       });
     }
 
-    if (newPassword !== confirmPassword) {
+    if (newPassword.trim() !== confirmPassword.trim()) {
       return toast.error('New passwords do not match', {
         toastId: 'password-error',
       });
     }
 
-    if (newPassword.length < 6) {
+    if (newPassword.trim().length < 6) {
       return toast.error('Password must be at least 6 characters', {
         toastId: 'password-error',
       });
     }
 
-    const data = await fetch('/api/user/password', {
+    const data = await fetch(`/api/user/${user._id}/password`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        currentPassword,
-        newPassword,
-        confirmPassword,
-        user_id: user.id,
+        currentPassword: currentPassword.trim(),
+        newPassword: newPassword.trim(),
+        confirmPassword: confirmPassword.trim(),
       }),
     }).then((res) => res.json());
 
@@ -197,12 +194,17 @@ function Settings({ user }) {
     toast.success(data.message, {
       toastId: 'password-success',
     });
+    setPasswordFormData({
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+    });
     setActiveForm('');
   };
 
   return (
     <div className={styles.container}>
-      <Avatar height='75' width='75' user={user} />
+      <Avatar height='150' width='150' user={currentUser || user} />
       <p>{currentUser?.bio || user.bio}</p>
       <div>
         <button
@@ -262,7 +264,11 @@ function Settings({ user }) {
         <button type='submit' disabled={!filename}>
           Update
         </button>
-        <button type='button' onClick={onRemoveAvatar}>
+        <button
+          type='button'
+          onClick={onRemoveAvatar}
+          disabled={currentUser && !currentUser.image.url}
+        >
           Remove avatar
         </button>
       </form>

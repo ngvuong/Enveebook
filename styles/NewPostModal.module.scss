@@ -25,10 +25,7 @@
     gap: 1rem;
 
     & > span {
-      width: fit-content;
-      height: fit-content;
-      font-size: 1.6rem;
-      text-transform: capitalize;
+      color: var(--color-primary);
     }
   }
 
@@ -41,23 +38,19 @@
     transform: none;
     box-shadow: none;
 
-    div {
+    .imageContainer {
       position: relative;
-      display: flex;
-      justify-content: center;
-
-      img {
-        width: 25%;
-        height: 25%;
-        border-radius: 0;
-      }
+      align-self: center;
+      height: 10rem;
+      width: 10rem;
 
       .btn_remove {
         position: absolute;
-        top: -1rem;
-        right: 0;
+        top: -0.5rem;
+        left: 100%;
         width: 2rem;
         height: 2rem;
+        line-height: normal;
         background-color: transparent;
         padding: 0;
       }
