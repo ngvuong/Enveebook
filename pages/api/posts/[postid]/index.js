@@ -1,3 +1,4 @@
+import { v2 as cloudinary } from 'cloudinary';
 import Post from '../../../../models/post';
 import User from '../../../../models/user';
 import Comment from '../../../../models/comment';
@@ -58,6 +59,15 @@ export default async function handler(req, res) {
       await dbConnect();
 
       const post = await Post.findByIdAndDelete(postid);
+
+      if (post.content.image) {
+        cloudinary.uploader.destroy(post.content.image.public_id, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+      }
+
       await User.findByIdAndUpdate(post.author, { $pull: { posts: postid } });
       await Comment.deleteMany({ post: postid });
 
