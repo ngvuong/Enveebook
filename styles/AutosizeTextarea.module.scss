@@ -3,8 +3,15 @@
   line-height: normal;
   word-break: break-all;
   resize: none;
+  overflow-y: hidden;
+
+  &:hover,
+  &:focus {
+    overflow-y: auto;
+  }
 
   &::-webkit-scrollbar {
+    width: 1rem;
     background-color: var(--color-dark);
   }
 

@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 import styles from '../../styles/Avatar.module.scss';
 
-function Avatar({ height, width, user }) {
+function Avatar({ height, width, flexSize, user }) {
   const [isError, setIsError] = useState(false);
 
   return (
@@ -25,8 +25,8 @@ function Avatar({ height, width, user }) {
           <span
             className={styles.avatar}
             style={{
-              width: `${width}px`,
-              height: `${height}px`,
+              width: flexSize ? flexSize : `${width}px`,
+              height: flexSize ? flexSize : `${height}px`,
               fontSize: `${width / 2}px`,
             }}
           >

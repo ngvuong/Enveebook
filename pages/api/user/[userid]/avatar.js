@@ -1,4 +1,4 @@
-import cloudinary from 'cloudinary';
+import { v2 as cloudinary } from 'cloudinary';
 import { IncomingForm } from 'formidable';
 import fs from 'fs';
 import User from '../../../../models/user';
@@ -44,7 +44,7 @@ export default async function handler(req, res) {
         const user = await User.findById(userid);
 
         if (user.image.url && user.image.public_id) {
-          cloudinary.v2.uploader.destroy(user.image.public_id, (err) => {
+          cloudinary.uploader.destroy(user.image.public_id, (err) => {
             if (err) {
               throw err;
             }
@@ -52,7 +52,7 @@ export default async function handler(req, res) {
         }
 
         if (image) {
-          const result = await cloudinary.v2.uploader.upload(image.filepath, {
+          const result = await cloudinary.uploader.upload(image.filepath, {
             transformation: [
               {
                 width: 200,

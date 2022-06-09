@@ -1,5 +1,10 @@
 .link {
   min-width: fit-content;
+
+  span {
+    vertical-align: bottom;
+    aspect-ratio: 1;
+  }
 }
 
 .avatar {
