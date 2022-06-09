@@ -25,6 +25,10 @@ export default async function handler(req, res) {
       const { image } = files;
       const { text, user_id } = fields;
 
+      if (!image && !text) {
+        return res.status(400).json({ error: 'Please provide post content' });
+      }
+
       const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
       try {
@@ -52,8 +56,10 @@ export default async function handler(req, res) {
           const result = await cloudinary.uploader.upload(image.filepath, {
             transformation: [
               {
-                width: 500,
-                height: 500,
+                width: 750,
+                height: 750,
+                gravity: 'face',
+                crop: 'fill',
               },
             ],
             resource_type: 'image',
@@ -70,7 +76,7 @@ export default async function handler(req, res) {
           const newPost = {
             content: {
               ...(text && { text }),
-              image: result.secure_url,
+              image: { url: result.secure_url, public_id: result.public_id },
             },
             author: user_id,
           };
