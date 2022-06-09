@@ -17,6 +17,19 @@ export default NextAuth({
     FacebookProvider({
       clientId: process.env.FACEBOOK_ID,
       clientSecret: process.env.FACEBOOK_SECRET,
+      userinfo: {
+        params: {
+          fields: 'email,name,picture.type(large)',
+        },
+      },
+      profile(profile) {
+        return {
+          id: profile.id,
+          name: profile.name,
+          email: profile.email,
+          image: { url: profile.picture.data.url, public_id: '' },
+        };
+      },
     }),
     CredentialsProvider({
       name: 'Credentials',
@@ -53,33 +66,23 @@ export default NextAuth({
       },
     }),
   ],
+  pages: {
+    signIn: '/',
+  },
   callbacks: {
-    jwt: async ({ token, user }) => {
-      if (user) {
-        token.user = user;
-      } else {
-        dbConnect();
-        const user = await User.findById(token.sub);
-        if (user) {
-          token.user = user;
-        }
+    jwt: async ({ token }) => {
+      await dbConnect();
+      const currentUser = await User.findById(token.sub, { password: 0 });
+
+      if (currentUser) {
+        token.user = currentUser;
       }
+
       return token;
     },
     session: async ({ session, token }) => {
-      session.user.id = token.user._id || token.user.id;
-      session.user.image = token.user.image;
-      session.user.bio = token.user.bio;
-      session.user.friends = token.user.friends || [];
-      session.user.friendRequests = token.user.friendRequests || [];
+      session.user = token.user;
 
-      if (
-        session.user.image.url === undefined &&
-        typeof session.user.image === 'string'
-      ) {
-        session.user.image = {};
-        session.user.image.url = token.user.image;
-      }
       return session;
     },
   },
