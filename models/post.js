@@ -6,9 +6,8 @@ import './comment';
 const postSchema = new Schema(
   {
     content: {
-      type: Object,
       text: String,
-      image: String,
+      image: { url: String, public_id: String },
     },
     author: {
       type: Schema.Types.ObjectId,
@@ -28,8 +27,16 @@ postSchema.statics.validatePost = function (post) {
         'string.empty': 'Please provide post content',
         'string.max': 'Post must be 1000 characters or less',
       }),
-      image: Joi.string().trim().uri().messages({
-        'string.uri': 'Image url is not valid',
+      image: Joi.object({
+        url: Joi.string().trim().required().uri().messages({
+          'string.uri': 'Image url is not valid',
+          'string.empty': 'Image url is required',
+          'any.required': 'Image url is required',
+        }),
+        public_id: Joi.string().trim().required().messages({
+          'string.empty': 'Image public id is required',
+          'any.required': 'Image public id is required',
+        }),
       }),
     })
       .or('text', 'image')
