@@ -21,18 +21,18 @@ export default async function handler(req, res) {
           { path: 'author', select: 'name image' },
           {
             path: 'likes',
-            select: 'name image',
+            select: 'name image friends',
           },
           {
             path: 'replies',
             populate: [
               { path: 'author', select: 'name image' },
-              { path: 'likes', select: 'name image' },
+              { path: 'likes', select: 'name image friends' },
             ],
           },
         ],
       })
-      .populate('likes', 'name image')
+      .populate('likes', 'name image friends')
       .sort({
         createdAt: -1,
       });
