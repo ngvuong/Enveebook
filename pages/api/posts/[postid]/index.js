@@ -23,32 +23,22 @@ export default async function handler(req, res) {
       });
     }
   } else if (req.method === 'PUT') {
-    const { user_id, user_name, user_image } = req.body;
+    const { user_id } = req.body;
 
     try {
       await dbConnect();
 
-      const post = await Post.findById(postid).populate('likes');
+      const post = await Post.findById(postid);
 
-      const alreadyLiked = post.likes.find(
-        (like) => like._id.toString() === user_id
-      );
-
-      if (alreadyLiked) {
-        post.likes = post.likes.filter(
-          (like) => like._id.toString() !== user_id
-        );
+      if (post.likes.find((like) => like.toString() === user_id)) {
+        post.likes = post.likes.filter((like) => like.toString() !== user_id);
       } else {
-        post.likes.unshift({
-          _id: user_id,
-          name: user_name,
-          image: user_image,
-        });
+        post.likes = [user_id, ...post.likes];
       }
 
       await post.save();
 
-      res.status(200).json({ likes: post.likes });
+      res.status(200).json({ message: 'Success' });
     } catch (error) {
       res.status(500).json({
         error: error.message,

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
-import LikesModal from '../ui/LikesModal';
+import UserListModal from '../ui/UserListModal';
 import Avatar from '../ui/Avatar';
 import CommentSection from './CommentSection';
 import useComments from '../../hooks/useComments';
@@ -40,13 +40,17 @@ function Post({ post }) {
       },
       body: JSON.stringify({
         user_id: user._id,
-        user_name: user.name,
-        user_image: user.image,
       }),
     }).then((res) => res.json());
 
-    if (data.likes) {
-      setPostLikes(data.likes);
+    if (data.message) {
+      setPostLikes((prevLikes) => {
+        if (prevLikes.some((like) => like._id === user._id)) {
+          return prevLikes.filter((like) => like._id !== user._id);
+        } else {
+          return [user, ...prevLikes];
+        }
+      });
     }
   };
 
@@ -68,10 +72,11 @@ function Post({ post }) {
   return (
     <article className={styles.post}>
       {show && postLikes.length > 0 && (
-        <LikesModal
+        <UserListModal
           users={postLikes}
-          ref={nodeRef}
+          currentUser={user}
           onClose={() => setShow(false)}
+          ref={nodeRef}
         />
       )}
       <section className={styles.head}>
