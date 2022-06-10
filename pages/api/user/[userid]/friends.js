@@ -31,7 +31,7 @@ export default async function handler(req, res) {
       await User.findByIdAndUpdate(
         userid,
         {
-          $push: { friends: current_user_id },
+          $push: { friends: { $each: [current_user_id], $position: 0 } },
         },
         { runValidators: false }
       );
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
       await User.findByIdAndUpdate(
         current_user_id,
         {
-          $push: { friends: userid },
+          $push: { friends: { $each: [userid], $position: 0 } },
           $pull: { friendRequests: userid },
         },
         { runValidators: false }
