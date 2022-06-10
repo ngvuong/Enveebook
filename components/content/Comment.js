@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Avatar from '../ui/Avatar';
 import CommentBox from './CommentBox';
-import LikesModal from '../ui/LikesModal';
+import UserListModal from '../ui/UserListModal';
 import useComments from '../../hooks/useComments';
 import { useUser } from '../../contexts/userContext';
 import useClickOutside from '../../hooks/useClickOutside';
@@ -51,14 +51,18 @@ function Comment({ comment, onCommentReply, size, recipient, show }) {
         },
         body: JSON.stringify({
           user_id: user._id,
-          user_name: user.name,
-          user_image: user.image,
         }),
       }
     ).then((res) => res.json());
 
-    if (data.likes) {
-      setCommentLikes(data.likes);
+    if (data.message) {
+      setCommentLikes((prevLikes) => {
+        if (prevLikes.some((like) => like._id === user._id)) {
+          return prevLikes.filter((like) => like._id !== user._id);
+        } else {
+          return [user, ...prevLikes];
+        }
+      });
     }
   };
 
@@ -88,8 +92,9 @@ function Comment({ comment, onCommentReply, size, recipient, show }) {
   return (
     <div className={styles.container}>
       {showModal && (
-        <LikesModal
+        <UserListModal
           users={commentLikes}
+          currentUser={user}
           onClose={() => setShow(false)}
           ref={nodeRef}
         />
@@ -111,7 +116,7 @@ function Comment({ comment, onCommentReply, size, recipient, show }) {
           <button
             onClick={onLike}
             className={
-              commentLikes.find((like) => like._id === user?._id)
+              commentLikes.some((like) => like._id === user?._id)
                 ? styles.liked
                 : undefined
             }
