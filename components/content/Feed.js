@@ -1,24 +1,24 @@
-import Spinner from '../layout/Spinner';
 import Post from './Post';
 import useFeed from '../../hooks/useFeed';
 
+import { FaHeartBroken } from 'react-icons/fa';
 import styles from '../../styles/Feed.module.scss';
 
-function Feed({ user }) {
-  const { posts, isError, isLoading } = useFeed(user._id);
-
-  if (isLoading) {
-    return <Spinner />;
-  }
+function Feed({ user, posts }) {
+  const { posts: feedPosts, isError, setFeed } = useFeed(user._id, posts);
 
   if (isError) {
-    return <p>Cannot load posts</p>;
+    return (
+      <p className={styles.error}>
+        <FaHeartBroken /> Cannot load posts
+      </p>
+    );
   }
 
   return (
     <section className={styles.feed}>
-      {posts.map((post) => (
-        <Post key={post._id} post={post} />
+      {feedPosts.map((post) => (
+        <Post key={post._id} post={post} setFeed={setFeed} />
       ))}
     </section>
   );
