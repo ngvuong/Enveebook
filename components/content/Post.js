@@ -7,30 +7,19 @@ import Avatar from '../ui/Avatar';
 import CommentSection from './CommentSection';
 import useComments from '../../hooks/useComments';
 import { useUser } from '../../contexts/userContext';
-import useFeed from '../../hooks/useFeed';
-import usePosts from '../../hooks/usePosts';
 import useClickOutside from '../../hooks/useClickOutside';
 import { formatDate } from '../../lib/dateFormat';
 
 import { FaRegCommentAlt, FaThumbsUp, FaTrash } from 'react-icons/fa';
 import styles from '../../styles/Post.module.scss';
 
-function Post({ post }) {
+function Post({ post, setFeed, setPosts }) {
   const [showCommentSection, setShowCommentSection] = useState(true);
   const [focus, setFocus] = useState(null);
-  const [postComments, setPostComments] = useState(post.comments);
   const [postLikes, setPostLikes] = useState(post.likes);
-  const { comments } = useComments(post._id);
+  const { comments } = useComments(post._id, post.comments);
   const [user] = useUser();
-  const { setFeed } = useFeed(user?._id);
-  const { setPosts } = usePosts(user?._id);
   const { triggerRef, nodeRef, show, setShow } = useClickOutside(false);
-
-  useEffect(() => {
-    if (comments) {
-      setPostComments(comments);
-    }
-  }, [comments]);
 
   const onLike = async () => {
     const data = await fetch(`/api/posts/${post._id}`, {
@@ -60,8 +49,13 @@ function Post({ post }) {
     }).then((res) => res.json());
 
     if (data.message) {
-      setFeed();
-      setPosts();
+      if (setFeed) {
+        setFeed();
+      }
+
+      if (setPosts) {
+        setPosts();
+      }
 
       toast.success(data.message, {
         toastId: 'post_delete',
@@ -104,10 +98,9 @@ function Post({ post }) {
           <button ref={triggerRef}>
             <FaThumbsUp /> {postLikes.length}
           </button>
-          {postComments.length > 0 && (
+          {comments.length > 0 && (
             <button onClick={() => setShowCommentSection(!showCommentSection)}>
-              {postComments.length}{' '}
-              {postComments.length === 1 ? 'Comment' : 'Comments'}
+              {comments.length} {comments.length === 1 ? 'Comment' : 'Comments'}
             </button>
           )}
         </div>
@@ -115,7 +108,7 @@ function Post({ post }) {
           <button
             onClick={onLike}
             className={
-              postLikes.find((like) => like._id === user?._id)
+              postLikes.some((like) => like._id === user?._id)
                 ? styles.liked
                 : undefined
             }
@@ -133,7 +126,7 @@ function Post({ post }) {
         </div>
       </div>
       <CommentSection
-        comments={postComments}
+        comments={comments}
         postId={post._id}
         focus={focus}
         show={showCommentSection}
