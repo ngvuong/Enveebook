@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
@@ -6,19 +6,18 @@ import UserListModal from '../ui/UserListModal';
 import Avatar from '../ui/Avatar';
 import CommentSection from './CommentSection';
 import useComments from '../../hooks/useComments';
-import { useUser } from '../../contexts/userContext';
+import usePostLike from '../../hooks/usePostLike';
 import useClickOutside from '../../hooks/useClickOutside';
 import { formatDate } from '../../lib/dateFormat';
 
 import { FaRegCommentAlt, FaThumbsUp, FaTrash } from 'react-icons/fa';
 import styles from '../../styles/Post.module.scss';
 
-function Post({ post, setFeed, setPosts }) {
+function Post({ post, user, setFeed, setPosts }) {
   const [showCommentSection, setShowCommentSection] = useState(true);
   const [focus, setFocus] = useState(null);
-  const [postLikes, setPostLikes] = useState(post.likes);
+  const { likes, setLike } = usePostLike(post._id, post.likes);
   const { comments } = useComments(post._id, post.comments);
-  const [user] = useUser();
   const { triggerRef, nodeRef, show, setShow } = useClickOutside(false);
 
   const onLike = async () => {
@@ -33,13 +32,7 @@ function Post({ post, setFeed, setPosts }) {
     }).then((res) => res.json());
 
     if (data.message) {
-      setPostLikes((prevLikes) => {
-        if (prevLikes.some((like) => like._id === user._id)) {
-          return prevLikes.filter((like) => like._id !== user._id);
-        } else {
-          return [user, ...prevLikes];
-        }
-      });
+      setLike();
     }
   };
 
@@ -65,9 +58,9 @@ function Post({ post, setFeed, setPosts }) {
 
   return (
     <article className={styles.post}>
-      {show && postLikes.length > 0 && (
+      {show && likes.length > 0 && (
         <UserListModal
-          users={postLikes}
+          users={likes}
           currentUser={user}
           onClose={() => setShow(false)}
           ref={nodeRef}
@@ -95,9 +88,15 @@ function Post({ post, setFeed, setPosts }) {
       )}
       <div className={styles.reaction}>
         <div className={styles.reactionHead}>
-          <button ref={triggerRef}>
-            <FaThumbsUp /> {postLikes.length}
-          </button>
+          {likes.length > 0 ? (
+            <button ref={triggerRef}>
+              <FaThumbsUp /> {likes.length}
+            </button>
+          ) : (
+            <span>
+              <FaThumbsUp /> {likes.length}
+            </span>
+          )}
           {comments.length > 0 && (
             <button onClick={() => setShowCommentSection(!showCommentSection)}>
               {comments.length} {comments.length === 1 ? 'Comment' : 'Comments'}
@@ -108,7 +107,7 @@ function Post({ post, setFeed, setPosts }) {
           <button
             onClick={onLike}
             className={
-              postLikes.some((like) => like._id === user?._id)
+              likes.some((like) => like._id === user._id)
                 ? styles.liked
                 : undefined
             }
@@ -131,7 +130,7 @@ function Post({ post, setFeed, setPosts }) {
         focus={focus}
         show={showCommentSection}
       />
-      {user?._id === post.author._id && (
+      {user._id === post.author._id && (
         <button className={styles.btn_danger} onClick={onDelete}>
           <FaTrash />
         </button>
