@@ -4,6 +4,7 @@ import Avatar from '../ui/Avatar';
 import CommentBox from './CommentBox';
 import UserListModal from '../ui/UserListModal';
 import useComments from '../../hooks/useComments';
+import useCommentLike from '../../hooks/UseCommentLike';
 import { useUser } from '../../contexts/userContext';
 import useClickOutside from '../../hooks/useClickOutside';
 import { formatDate } from '../../lib/dateFormat';
@@ -17,8 +18,12 @@ function Comment({ comment, onCommentReply, size, recipient, show }) {
     recipient || comment.author.name
   );
   const [focus, setFocus] = useState(null);
-  const [commentLikes, setCommentLikes] = useState(comment.likes);
   const { setComments } = useComments(comment.post);
+  const { likes, setLike } = useCommentLike(
+    comment.post,
+    comment._id,
+    comment.likes
+  );
   const [user] = useUser();
   const {
     triggerRef,
@@ -56,13 +61,7 @@ function Comment({ comment, onCommentReply, size, recipient, show }) {
     ).then((res) => res.json());
 
     if (data.message) {
-      setCommentLikes((prevLikes) => {
-        if (prevLikes.some((like) => like._id === user._id)) {
-          return prevLikes.filter((like) => like._id !== user._id);
-        } else {
-          return [user, ...prevLikes];
-        }
-      });
+      setLike();
     }
   };
 
@@ -93,7 +92,7 @@ function Comment({ comment, onCommentReply, size, recipient, show }) {
     <div className={styles.container}>
       {showModal && (
         <UserListModal
-          users={commentLikes}
+          users={likes}
           currentUser={user}
           onClose={() => setShow(false)}
           ref={nodeRef}
@@ -106,9 +105,9 @@ function Comment({ comment, onCommentReply, size, recipient, show }) {
             {comment.author.name}
           </Link>
           <p>{comment.content}</p>
-          {commentLikes.length > 0 && (
+          {likes.length > 0 && (
             <button ref={triggerRef}>
-              <FaThumbsUp /> {commentLikes.length > 1 && commentLikes.length}
+              <FaThumbsUp /> {likes.length > 1 && likes.length}
             </button>
           )}
         </div>
@@ -116,7 +115,7 @@ function Comment({ comment, onCommentReply, size, recipient, show }) {
           <button
             onClick={onLike}
             className={
-              commentLikes.some((like) => like._id === user?._id)
+              likes.some((like) => like._id === user?._id)
                 ? styles.liked
                 : undefined
             }
