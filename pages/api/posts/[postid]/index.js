@@ -30,7 +30,7 @@ export default async function handler(req, res) {
 
       const post = await Post.findById(postid);
 
-      if (post.likes.find((like) => like.toString() === user_id)) {
+      if (post.likes.some((like) => like.toString() === user_id)) {
         post.likes = post.likes.filter((like) => like.toString() !== user_id);
       } else {
         post.likes = [user_id, ...post.likes];
