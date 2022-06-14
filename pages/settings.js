@@ -9,7 +9,7 @@ import { useUser } from '../contexts/userContext';
 import { FaPen } from 'react-icons/fa';
 import styles from '../styles/Settings.module.scss';
 
-function Settings({ user }) {
+function Settings({ user, setActivePage }) {
   const [currentUser, setUser] = useUser();
   const [activeForm, setActiveForm] = useState('');
   const [filename, setFileName] = useState('');
@@ -37,6 +37,7 @@ function Settings({ user }) {
   };
 
   useEffect(() => {
+    setActivePage('settings');
     return () => {
       toast.dismiss();
     };
@@ -206,7 +207,7 @@ function Settings({ user }) {
     <div className={styles.container}>
       <Avatar height='150' width='150' user={currentUser || user} />
       <p>{currentUser?.bio || user.bio}</p>
-      <div>
+      <div className={styles.buttons}>
         <button
           onClick={() => {
             if (activeForm === 'avatar') {
@@ -216,6 +217,7 @@ function Settings({ user }) {
               avatarRef.current.focus();
             }
           }}
+          className={activeForm === 'avatar' ? styles.focus : undefined}
         >
           <FaPen /> Avatar
         </button>
@@ -230,6 +232,7 @@ function Settings({ user }) {
               bioRef.current.focus();
             }
           }}
+          className={activeForm === 'bio' ? styles.focus : undefined}
         >
           <FaPen /> Bio
         </button>
@@ -242,109 +245,108 @@ function Settings({ user }) {
               passwordRef.current.focus();
             }
           }}
+          className={activeForm === 'password' ? styles.focus : undefined}
         >
           <FaPen /> Password
         </button>
       </div>
 
-      <form
-        action=''
-        method='POST'
-        onSubmit={onAvatarSubmit}
-        className={activeForm === 'avatar' ? styles.active : undefined}
-      >
-        <p>{filename}</p>
-
-        <FileInput
-          name='avatar'
-          label='Upload picture'
-          onInputChange={onInputChange}
-          ref={avatarRef}
-        />
-        <button type='submit' disabled={!filename}>
-          Update
-        </button>
-        <button
-          type='button'
-          onClick={onRemoveAvatar}
-          disabled={currentUser && !currentUser.image.url}
+      <div className={styles.forms}>
+        <form
+          action=''
+          method='POST'
+          onSubmit={onAvatarSubmit}
+          className={activeForm === 'avatar' ? styles.active : undefined}
         >
-          Remove avatar
-        </button>
-      </form>
-      <form
-        action=''
-        method='POST'
-        onSubmit={onBioSubmit}
-        className={activeForm === 'bio' ? styles.active : undefined}
-      >
-        <label htmlFor='bio'>Bio</label>
-        <AutosizeTextarea
-          name='bio'
-          id='bio'
-          value={textareaValue}
-          onChange={onTextareaChange}
-          cols='30'
-          rows='4'
-          placeholder='About me'
-          ref={bioRef}
-        />
-        <button type='submit' disabled={user?.bio === textareaValue}>
-          Update
-        </button>
-      </form>
-      <form
-        action=''
-        method='POST'
-        onSubmit={onPasswordSubmit}
-        className={activeForm === 'password' ? styles.active : undefined}
-      >
-        <label htmlFor='currentPassword'>Current password</label>
-        <input
-          type='password'
-          name='currentPassword'
-          id='currentPassword'
-          value={currentPassword}
-          onChange={onFormDataChange}
-          placeholder='Current password'
-          minLength='6'
-          required
-          ref={passwordRef}
-        />
-        <label htmlFor='newPassword'>New password</label>
-        <input
-          type='password'
-          name='newPassword'
-          id='newPassword'
-          value={newPassword}
-          onChange={onFormDataChange}
-          placeholder='New password'
-          minLength='6'
-          required
-        />
-        <label htmlFor='confirmPassword'>Confirm password</label>
-        <input
-          type='password'
-          name='confirmPassword'
-          id='confirmPassword'
-          value={confirmPassword}
-          onChange={onFormDataChange}
-          placeholder='Confirm password'
-          minLength='6'
-          required
-        />
-        <button
-          type='submit'
-          disabled={
-            !currentPassword ||
-            !newPassword ||
-            !confirmPassword ||
-            newPassword !== confirmPassword
-          }
+          <p>{filename}</p>
+          <FileInput
+            name='avatar'
+            label='Upload picture'
+            onInputChange={onInputChange}
+            ref={avatarRef}
+          />
+          <button type='submit' disabled={!filename}>
+            Update
+          </button>
+          <button
+            type='button'
+            onClick={onRemoveAvatar}
+            disabled={currentUser && !currentUser.image.url}
+          >
+            Remove avatar
+          </button>
+        </form>
+        <form
+          action=''
+          method='POST'
+          onSubmit={onBioSubmit}
+          className={activeForm === 'bio' ? styles.active : undefined}
         >
-          Update
-        </button>
-      </form>
+          <AutosizeTextarea
+            name='bio'
+            id='bio'
+            value={textareaValue}
+            onChange={onTextareaChange}
+            cols='30'
+            rows='4'
+            placeholder='About me'
+            spellCheck='false'
+            ref={bioRef}
+          />
+          <button type='submit' disabled={user?.bio === textareaValue}>
+            Update
+          </button>
+        </form>
+        <form
+          action=''
+          method='POST'
+          onSubmit={onPasswordSubmit}
+          className={activeForm === 'password' ? styles.active : undefined}
+        >
+          <input
+            type='password'
+            name='currentPassword'
+            id='currentPassword'
+            value={currentPassword}
+            onChange={onFormDataChange}
+            placeholder='Current password'
+            minLength='6'
+            required
+            ref={passwordRef}
+          />
+          <input
+            type='password'
+            name='newPassword'
+            id='newPassword'
+            value={newPassword}
+            onChange={onFormDataChange}
+            placeholder='New password'
+            minLength='6'
+            required
+          />
+          <input
+            type='password'
+            name='confirmPassword'
+            id='confirmPassword'
+            value={confirmPassword}
+            onChange={onFormDataChange}
+            placeholder='Confirm password'
+            minLength='6'
+            required
+          />
+          <button
+            type='submit'
+            disabled={
+              !currentPassword ||
+              !newPassword ||
+              !confirmPassword ||
+              newPassword !== confirmPassword
+            }
+          >
+            Update
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
