@@ -11,7 +11,7 @@ export default async function handler(req, res) {
 
       const comment = await Comment.findById(commentid, 'likes').populate(
         'likes',
-        'name image'
+        'name image friends'
       );
 
       res.status(200).json(comment.likes);
