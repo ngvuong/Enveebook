@@ -1,34 +1,37 @@
-import { useState } from 'react';
-import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { getSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
-import Spinner from '../../components/layout/Spinner';
 import Avatar from '../../components/ui/Avatar';
+import FriendList from '../../components/ui/FriendList';
 import NewPostBox from '../../components/ui/NewPostBox';
-import usePosts from '../../hooks/usePosts';
 import Post from '../../components/content/Post';
+import usePosts from '../../hooks/usePosts';
 import User from '../../models/User';
 import dbConnect from '../../lib/db';
 
-import { FaUserCheck, FaUserPlus } from 'react-icons/fa';
+import { FaUserCheck, FaUserPlus, FaHeartBroken } from 'react-icons/fa';
 import styles from '../../styles/Profile.module.scss';
 
-function Profile({ user, currentUser }) {
+function Profile({ user, currentUser, setActivePage }) {
   const [friends, setFriends] = useState(user.friends);
   const [friendStatus, setFriendStatus] = useState(
-    user.friends.find((friend) => friend._id === currentUser._id)
+    user.friends.some((friend) => friend._id === currentUser._id)
       ? 'friend'
-      : user.friendRequests.find((request) => request._id === currentUser._id)
+      : user.friendRequests.some((request) => request._id === currentUser._id)
       ? 'requested'
       : currentUser.friendRequests.includes(user._id)
       ? 'pending'
       : 'none'
   );
-  const { posts, isLoading } = usePosts(user._id);
+  const { posts, isError } = usePosts(user._id, user.posts);
 
-  if (isLoading) {
-    return <Spinner />;
-  }
+  useEffect(() => {
+    setActivePage('profile');
+
+    return () => {
+      toast.dismiss();
+    };
+  }, []);
 
   const onRequestFriend = async (type) => {
     const data = await fetch(`/api/user/${user._id}/friends`, {
@@ -96,25 +99,20 @@ function Profile({ user, currentUser }) {
         {statusDisplay}
       </section>
       <div className={styles.main}>
-        <section className={styles.friendsSection}>
-          <h3>Friends</h3>
-          <hr />
-          <div className={styles.friends}>
-            {friends.map((friend) => (
-              <div key={friend._id} className={styles.profile}>
-                <Avatar width='40' height='40' user={friend} />
-                <Link href={`/profile/${friend._id}`}>{friend.name}</Link>
-              </div>
-            ))}
-          </div>
-        </section>
+        <FriendList friends={friends} />
         <section className={styles.postsSection}>
           {currentUser._id === user._id && <NewPostBox user={user} />}
-          <div className={styles.posts}>
-            {posts.map((post) => (
-              <Post key={post._id} post={post} />
-            ))}
-          </div>
+          {!isError ? (
+            <div className={styles.posts}>
+              {posts.map((post) => (
+                <Post key={post._id} post={post} user={currentUser} />
+              ))}
+            </div>
+          ) : (
+            <p className={styles.error}>
+              <FaHeartBroken /> Cannot load posts
+            </p>
+          )}
         </section>
       </div>
     </div>
@@ -122,6 +120,11 @@ function Profile({ user, currentUser }) {
 }
 
 export async function getServerSideProps(context) {
+  context.res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=10, stale-while-revalidate=600'
+  );
+
   const session = await getSession(context);
 
   if (!session) {
@@ -137,7 +140,27 @@ export async function getServerSideProps(context) {
   await dbConnect();
 
   const user = await User.findById(userid, { password: 0 })
-    .populate('posts')
+    .populate({
+      path: 'posts',
+      populate: [
+        { path: 'author', select: 'name image' },
+        {
+          path: 'comments',
+          populate: [
+            { path: 'author', select: 'name image' },
+            { path: 'likes', select: 'name image friends' },
+            {
+              path: 'replies',
+              populate: [
+                { path: 'author', select: 'name image' },
+                { path: 'likes', select: 'name image friends' },
+              ],
+            },
+          ],
+        },
+        { path: 'likes', select: 'name image friends' },
+      ],
+    })
     .populate('friends', 'name image')
     .populate('friendRequests', 'name image');
 

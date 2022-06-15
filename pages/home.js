@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { getSession } from 'next-auth/react';
 import Feed from '../components/content/Feed';
 import NewPostBox from '../components/ui/NewPostBox';
@@ -5,7 +6,6 @@ import Post from '../models/post';
 import dbConnect from '../lib/db';
 
 import styles from '../styles/Home.module.scss';
-import { useEffect } from 'react';
 
 function Home({ user, posts, setActivePage }) {
   useEffect(() => {
@@ -21,6 +21,11 @@ function Home({ user, posts, setActivePage }) {
 }
 
 export async function getServerSideProps(context) {
+  context.res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=10, stale-while-revalidate=600'
+  );
+
   const session = await getSession(context);
 
   if (!session) {

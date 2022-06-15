@@ -25,6 +25,13 @@ function Settings({ user, setActivePage }) {
 
   const { currentPassword, newPassword, confirmPassword } = passwordFormData;
 
+  useEffect(() => {
+    setActivePage('settings');
+    return () => {
+      toast.dismiss();
+    };
+  }, []);
+
   const onInputChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -35,13 +42,6 @@ function Settings({ user, setActivePage }) {
       setFileName('');
     }
   };
-
-  useEffect(() => {
-    setActivePage('settings');
-    return () => {
-      toast.dismiss();
-    };
-  }, []);
 
   const onAvatarSubmit = async (e) => {
     e.preventDefault();
