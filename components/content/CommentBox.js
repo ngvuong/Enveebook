@@ -79,7 +79,11 @@ function CommentBox({
 
   return (
     <div className={styles.container}>
-      {user && <Avatar height={size} width={size} user={user} />}
+      {user ? (
+        <Avatar height={size} width={size} user={user} />
+      ) : (
+        <span style={{ width: size + 'px', height: size + 'px' }}></span>
+      )}
       <form action='' method='POST' onSubmit={onSubmit}>
         <div>
           <input
