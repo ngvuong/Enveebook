@@ -7,7 +7,7 @@ import { useUser } from '../../contexts/userContext';
 
 import styles from '../../styles/Layout.module.scss';
 
-function Layout({ children }) {
+function Layout({ children, activePage }) {
   const [user, setUser] = useUser();
 
   useEffect(() => {
@@ -35,7 +35,7 @@ function Layout({ children }) {
       <div className={styles.container}>
         <main className={styles.main}>{children}</main>
       </div>
-      {user && <Navbar user={user} />}
+      {user && <Navbar user={user} activePage={activePage} />}
     </>
   );
 }
