@@ -5,6 +5,8 @@ import { toast } from 'react-toastify';
 import UserListModal from '../ui/UserListModal';
 import Avatar from '../ui/Avatar';
 import CommentSection from './CommentSection';
+import useFeed from '../../hooks/useFeed';
+import usePosts from '../../hooks/usePosts';
 import useComments from '../../hooks/useComments';
 import usePostLike from '../../hooks/usePostLike';
 import useClickOutside from '../../hooks/useClickOutside';
@@ -13,9 +15,11 @@ import { formatDate } from '../../lib/dateFormat';
 import { FaRegCommentAlt, FaThumbsUp, FaTrash } from 'react-icons/fa';
 import styles from '../../styles/Post.module.scss';
 
-function Post({ post, user, setFeed, setPosts }) {
+function Post({ post, user }) {
   const [showCommentSection, setShowCommentSection] = useState(true);
   const [focus, setFocus] = useState(null);
+  const { setFeed } = useFeed(user._id);
+  const { setPosts } = usePosts(user._id);
   const { likes, setLike } = usePostLike(post._id, post.likes);
   const { comments } = useComments(post._id, post.comments);
   const { triggerRef, nodeRef, show, setShow } = useClickOutside(false);
@@ -42,13 +46,8 @@ function Post({ post, user, setFeed, setPosts }) {
     }).then((res) => res.json());
 
     if (data.message) {
-      if (setFeed) {
-        setFeed();
-      }
-
-      if (setPosts) {
-        setPosts();
-      }
+      await setFeed();
+      await setPosts();
 
       toast.success(data.message, {
         toastId: 'post_delete',

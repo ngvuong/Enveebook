@@ -64,8 +64,8 @@ const NewPostModal = forwardRef(({ user, onClose }, ref) => {
     }
 
     if (data.message) {
-      setFeed();
-      setPosts();
+      await setFeed();
+      await setPosts();
 
       toast.success(data.message, {
         toastId: 'post-success',
