@@ -5,8 +5,13 @@ import Post from '../models/post';
 import dbConnect from '../lib/db';
 
 import styles from '../styles/Home.module.scss';
+import { useEffect } from 'react';
 
-function Home({ user, posts }) {
+function Home({ user, posts, setActivePage }) {
+  useEffect(() => {
+    setActivePage('home');
+  }, []);
+
   return (
     <div className={styles.home}>
       <NewPostBox user={user} />
