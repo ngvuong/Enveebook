@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getSession } from 'next-auth/react';
 import FriendList from '../components/ui/FriendList';
 import UserCard from '../components/ui/UserCard';
@@ -7,10 +7,14 @@ import dbConnect from '../lib/db';
 
 import styles from '../styles/Friends.module.scss';
 
-function Friends({ user, friendRecommendations }) {
+function Friends({ user, friendRecommendations, setActivePage }) {
   const [friends, setFriends] = useState(user.friends);
   const [requests, setRequests] = useState(user.friendRequests);
   const [recommendations, setRecommendations] = useState(friendRecommendations);
+
+  useEffect(() => {
+    setActivePage('friends');
+  }, []);
 
   return (
     <div className={styles.container}>
