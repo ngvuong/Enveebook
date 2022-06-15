@@ -6,16 +6,24 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
   width: 5rem;
+  line-height: 1;
   background-color: var(--color-dark);
   padding: 1rem;
   border-radius: 1rem;
 
   button,
   a {
-    line-height: 1;
-    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.3rem;
+    border-radius: 0.5rem;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
   }
 
   svg {
@@ -28,7 +36,8 @@
     top: 10%;
     left: 150%;
     color: var(--color-blue);
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+    font-weight: bold;
     background-color: var(--color-grey-1);
     padding: 0.5rem;
     border-radius: 0.5rem;
@@ -36,15 +45,25 @@
 
   .profile {
     position: relative;
+    width: 4rem;
+    height: 4rem;
+
+    &.active::before {
+      left: -0.5rem;
+      width: 8%;
+    }
 
     &:hover::after {
       content: 'Profile';
       @include label;
     }
 
-    img {
-      width: 3rem;
-      height: 3rem;
+    a {
+      padding: 0;
+
+      &:hover {
+        background-color: transparent;
+      }
     }
   }
 
@@ -78,7 +97,7 @@
   .settings {
     position: relative;
 
-    &:hover::after {
+    &:only-child:hover::after {
       content: 'Settings';
       @include label;
     }
@@ -91,26 +110,34 @@
 
     .settingsMenu {
       position: absolute;
-      top: -1rem;
-      left: 150%;
+      top: 0;
+      left: 130%;
       display: flex;
       flex-direction: column;
       gap: 1rem;
+      font-weight: bold;
       padding: 1rem;
+      border: 1px solid var(--color-dark-2);
       border-radius: 1rem;
+      box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.5);
 
       a,
       button {
-        display: flex;
-        align-items: center;
         gap: 1rem;
         padding: 1rem;
         border-radius: 0.5rem;
-
-        &:hover {
-          background-color: rgba(255, 255, 255, 0.1);
-        }
       }
     }
+  }
+
+  .active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -0.8rem;
+    width: 10%;
+    height: 100%;
+    background-color: var(--color-blue-2);
+    border-radius: 0 0.5rem 0.5rem 0;
   }
 }

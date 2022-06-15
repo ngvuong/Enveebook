@@ -13,7 +13,7 @@ import {
 } from 'react-icons/fa';
 import styles from '../../styles/Navbar.module.scss';
 
-function Navbar({ user }) {
+function Navbar({ user, activePage }) {
   const {
     triggerRef: settingsTriggerRef,
     nodeRef: settingsNodeRef,
@@ -23,24 +23,45 @@ function Navbar({ user }) {
 
   return (
     <section className={styles.navbar}>
-      <button className={styles.profile}>
+      <button
+        className={`${styles.profile} ${
+          activePage === 'profile' ? styles.active : ''
+        }`}
+      >
         <Avatar height='30' width='30' user={user} />
       </button>
       <Link href='/home'>
-        <a className={styles.home}>
+        <a
+          className={`${styles.home} ${
+            activePage === 'home' ? styles.active : ''
+          }`}
+        >
           <FaHome />
         </a>
       </Link>
       <Link href='/friends'>
-        <a className={styles.friends}>
+        <a
+          className={`${styles.friends} ${
+            activePage === 'friends' ? styles.active : ''
+          }`}
+        >
           <FaUserFriends />
         </a>
       </Link>
-      <button className={styles.search}>
+      <button
+        className={`${styles.search} ${
+          activePage === 'search' ? styles.active : ''
+        }`}
+      >
         <FaSearch />
       </button>
       <div>
-        <button className={styles.settings} ref={settingsTriggerRef}>
+        <button
+          className={`${styles.settings} ${
+            activePage === 'settings' ? styles.active : ''
+          }`}
+          ref={settingsTriggerRef}
+        >
           <FaCog />
         </button>
         {settingsShow && (
