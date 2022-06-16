@@ -11,10 +11,14 @@ export default async function handler(req, res) {
     try {
       await dbConnect();
 
-      const post = await Post.findById(postid, 'likes').populate(
-        'likes',
-        'name image'
-      );
+      const post = await Post.findById(postid, 'likes').populate({
+        path: 'likes',
+        select: 'name image friends',
+      });
+
+      if (!post) {
+        return res.status(404).json([]);
+      }
 
       res.status(200).json(post.likes);
     } catch (error) {
@@ -50,7 +54,7 @@ export default async function handler(req, res) {
 
       const post = await Post.findByIdAndDelete(postid);
 
-      if (post.content.image) {
+      if (post.content.image.url) {
         cloudinary.uploader.destroy(post.content.image.public_id, (err) => {
           if (err) {
             throw err;
