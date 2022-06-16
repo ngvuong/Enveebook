@@ -10,7 +10,7 @@ const UserListModal = forwardRef(
   ({ users, currentUser, onClose, type = 'likes' }, ref) => {
     const userList = users.map((user) => {
       const count = user.friends.reduce(
-        (acc, curr) => acc + currentUser.friends.includes(curr.toString()),
+        (acc, curr) => acc + currentUser.friends.includes(curr),
         0
       );
 
