@@ -46,6 +46,7 @@ function Search({ users }) {
     }
 
     if (e.keyCode === 38) {
+      e.preventDefault();
       setActive((prev) => {
         const newActive = prev === -1 ? results.length - 1 : prev - 1;
         setSearchTerm(
@@ -80,8 +81,8 @@ function Search({ users }) {
             id='searchInput'
             value={searchTerm}
             onInput={filterResults}
-            onFocus={() => (show ? null : setShow(true))}
-            onClick={() => (show ? null : setShow(true))}
+            onFocus={() => setShow(true)}
+            onClick={() => setShow(true)}
             onKeyDown={onKeyDown}
             placeholder='Search users'
             autoComplete='off'
