@@ -30,7 +30,7 @@ function CommentBox({
         setInputText('  ');
       }
     }
-  }, [focus, recipient]);
+  }, [focus, recipient, inputText]);
 
   const onInputChange = (e) => {
     const value = e.target.value;
