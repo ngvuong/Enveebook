@@ -20,7 +20,7 @@ function Layout({ children, activePage }) {
         }
       });
     }
-  }, [user]);
+  }, [user, setUser]);
 
   return (
     <>
