@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react';
 import { getSession } from 'next-auth/react';
+import Search from '../components/ui/Search';
 import FriendList from '../components/ui/FriendList';
 import UserCard from '../components/ui/UserCard';
 import User from '../models/User';
 import dbConnect from '../lib/db';
 
+import { FaCaretDown } from 'react-icons/fa';
 import styles from '../styles/Friends.module.scss';
 
-function Friends({ user, friendRecommendations, setActivePage }) {
+function Friends({ user, allUsers, friendRecommendations, setActivePage }) {
   const [friends, setFriends] = useState(user.friends);
-  const [requests, setRequests] = useState(user.friendRequests);
-  const [recommendations, setRecommendations] = useState(friendRecommendations);
+  const [requests, setRequests] = useState(user.friendRequests.slice(0, 10));
+  const [recommendations, setRecommendations] = useState(
+    friendRecommendations.slice(0, 10)
+  );
 
   useEffect(() => {
     setActivePage('friends');
@@ -20,6 +24,7 @@ function Friends({ user, friendRecommendations, setActivePage }) {
     <div className={styles.container}>
       <FriendList friends={friends} />
       <div className={styles.wrapper}>
+        <Search users={allUsers} />
         {requests.length > 0 && (
           <section className={styles.requestsSection}>
             <p>Friend Requests</p>
@@ -33,6 +38,18 @@ function Friends({ user, friendRecommendations, setActivePage }) {
                 />
               ))}
             </div>
+            {requests.length !== user.friendRequests.length && (
+              <button
+                onClick={() =>
+                  setRequests(
+                    user.friendRequests.slice(0, requests.length + 10)
+                  )
+                }
+              >
+                See More <FaCaretDown />
+              </button>
+            )}
+            <hr />
           </section>
         )}
         <section className={styles.recommendationsSection}>
@@ -47,6 +64,17 @@ function Friends({ user, friendRecommendations, setActivePage }) {
               />
             ))}
           </div>
+          {recommendations.length !== friendRecommendations.length && (
+            <button
+              onClick={() =>
+                setRecommendations(
+                  friendRecommendations.slice(0, recommendations.length + 10)
+                )
+              }
+            >
+              See More <FaCaretDown />
+            </button>
+          )}
         </section>
       </div>
     </div>
@@ -54,6 +82,11 @@ function Friends({ user, friendRecommendations, setActivePage }) {
 }
 
 export async function getServerSideProps(context) {
+  context.res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=10, stale-while-revalidate=600'
+  );
+
   const session = await getSession(context);
 
   if (!session) {
@@ -66,6 +99,8 @@ export async function getServerSideProps(context) {
   }
 
   await dbConnect();
+
+  const allUsers = await User.find({}, 'name').sort({ name: 1 });
 
   const user = await User.findById(session.user._id, { password: 0 })
     .populate('friends', 'name image friends')
@@ -106,9 +141,8 @@ export async function getServerSideProps(context) {
   return {
     props: {
       user: JSON.parse(JSON.stringify(user)),
-      friendRecommendations: JSON.parse(
-        JSON.stringify(nonFriends.slice(0, 10))
-      ),
+      allUsers: JSON.parse(JSON.stringify(allUsers)),
+      friendRecommendations: JSON.parse(JSON.stringify(nonFriends)),
     },
   };
 }

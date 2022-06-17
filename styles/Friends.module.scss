@@ -1,17 +1,20 @@
 .container {
   display: flex;
   justify-content: space-between;
-  width: 90%;
+  flex-wrap: wrap;
+  gap: 5rem;
+  width: clamp(95%, 97vw, 100%);
 
-  & > section {
-    margin-top: 3rem;
-  }
+  // section:first-child {
+  //   margin-top: 3rem;
+  //   // width: 20vw;
+  // }
 
   .wrapper {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    width: 65%;
+    width: clamp(40%, 50vw, 60%);
 
     .requestsSection,
     .recommendationsSection {
@@ -24,12 +27,42 @@
         line-height: normal;
       }
 
+      & > button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--color-blue-2);
+        padding: 0.5rem;
+        border-radius: 1rem;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.2);
+        }
+      }
+
+      hr {
+        border: 1px solid grey;
+        margin-top: 1rem;
+      }
+
       .requests,
       .recommendations {
         display: flex;
         flex-wrap: wrap;
-        gap: 2rem;
+        gap: 1rem;
       }
     }
   }
+
+  // @media (max-width: 1067px) {
+  //   flex-direction: column;
+  //   gap: 2rem;
+  //   align-items: center;
+
+  //   & > section {
+  //     width: 100%;
+  //     height: 20vh;
+  //   }
+  // }
 }
