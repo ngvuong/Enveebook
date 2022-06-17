@@ -6,7 +6,6 @@ import useClickOutside from '../../hooks/useClickOutside';
 import {
   FaHome,
   FaUserFriends,
-  FaSearch,
   FaCog,
   FaUserCog,
   FaSignOutAlt,
@@ -14,12 +13,7 @@ import {
 import styles from '../../styles/Navbar.module.scss';
 
 function Navbar({ user, activePage }) {
-  const {
-    triggerRef: settingsTriggerRef,
-    nodeRef: settingsNodeRef,
-    show: settingsShow,
-    setShow: settingsSetShow,
-  } = useClickOutside(false);
+  const { triggerRef, nodeRef, show, setShow } = useClickOutside(false);
 
   return (
     <section className={styles.navbar}>
@@ -48,26 +42,19 @@ function Navbar({ user, activePage }) {
           <FaUserFriends />
         </a>
       </Link>
-      <button
-        className={`${styles.search} ${
-          activePage === 'search' ? styles.active : ''
-        }`}
-      >
-        <FaSearch />
-      </button>
-      <div>
+      <div className={styles.settingsWrapper}>
         <button
           className={`${styles.settings} ${
             activePage === 'settings' ? styles.active : ''
           }`}
-          ref={settingsTriggerRef}
+          ref={triggerRef}
         >
           <FaCog />
         </button>
-        {settingsShow && (
-          <div className={styles.settingsMenu} ref={settingsNodeRef}>
+        {show && (
+          <div className={styles.settingsMenu} ref={nodeRef}>
             <Link href='/settings'>
-              <a onClick={() => settingsSetShow(false)}>
+              <a onClick={() => setShow(false)}>
                 <FaUserCog /> <span>Settings</span>
               </a>
             </Link>
