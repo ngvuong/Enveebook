@@ -18,7 +18,7 @@ function Friends({ user, allUsers, friendRecommendations, setActivePage }) {
 
   useEffect(() => {
     setActivePage('friends');
-  }, []);
+  }, [setActivePage]);
 
   return (
     <div className={styles.container}>
