@@ -23,8 +23,8 @@
     background-color: var(--color-dark);
     padding: 0 2rem;
     border-radius: 2rem;
+    transform: scaleY(0);
     overflow: hidden;
-    visibility: hidden;
 
     p {
       color: #7b6;
@@ -55,9 +55,11 @@
     padding: 3rem 2rem;
     border: 5px solid var(--color-dark-2);
     box-shadow: 0 0 2rem 0 rgba(0, 0, 0, 0.2);
+    transform: scaleY(1);
+    transform-origin: top;
     transition: max-height 0.5s cubic-bezier(0.5, 0, 0.5, 1),
-      padding 0.5s cubic-bezier(0.5, 0, 0.5, 1);
-    visibility: visible;
+      padding 0.5s cubic-bezier(0.5, 0, 0.5, 1),
+      transform 0.5s cubic-bezier(0.5, 0, 0.5, 1);
   }
 
   button {
