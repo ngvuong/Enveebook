@@ -30,7 +30,7 @@ function Settings({ user, setActivePage }) {
     return () => {
       toast.dismiss();
     };
-  }, []);
+  }, [setActivePage]);
 
   const onInputChange = (e) => {
     const file = e.target.files[0];
