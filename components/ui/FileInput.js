@@ -20,4 +20,6 @@ const FileInput = forwardRef(({ name, label, onInputChange }, ref) => {
   );
 });
 
+FileInput.displayName = 'FileInput';
+
 export default FileInput;
