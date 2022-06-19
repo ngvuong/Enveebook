@@ -124,4 +124,6 @@ const NewPostModal = forwardRef(({ user, onClose }, ref) => {
   );
 });
 
+NewPostModal.displayName = 'NewPostModal';
+
 export default NewPostModal;
