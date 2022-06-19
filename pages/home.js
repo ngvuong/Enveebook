@@ -10,7 +10,7 @@ import styles from '../styles/Home.module.scss';
 function Home({ user, posts, setActivePage }) {
   useEffect(() => {
     setActivePage('home');
-  }, []);
+  }, [setActivePage]);
 
   return (
     <div className={styles.home}>
