@@ -42,4 +42,6 @@ const UserListModal = forwardRef(
   }
 );
 
+UserListModal.displayName = 'UserListModal';
+
 export default UserListModal;
