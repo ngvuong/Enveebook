@@ -1,11 +1,18 @@
+import Spinner from '../layout/Spinner';
 import Post from './Post';
 import useFeed from '../../hooks/useFeed';
 
 import { FaHeartBroken } from 'react-icons/fa';
 import styles from '../../styles/Feed.module.scss';
 
-function Feed({ user, posts }) {
-  const { posts: feedPosts, isError, setFeed } = useFeed(user._id, posts);
+function Feed({ user }) {
+  const {
+    posts,
+    isLoading = true,
+    isError,
+  } = useFeed(user._id, {
+    revalidateOnMount: true,
+  });
 
   if (isError) {
     return (
@@ -17,9 +24,11 @@ function Feed({ user, posts }) {
 
   return (
     <section className={styles.feed}>
-      {feedPosts.map((post) => (
-        <Post key={post._id} post={post} user={user} />
-      ))}
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        posts.map((post) => <Post key={post._id} post={post} user={user} />)
+      )}
     </section>
   );
 }
