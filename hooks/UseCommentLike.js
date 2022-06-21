@@ -1,11 +1,9 @@
 import useSWR from 'swr';
 
-function useCommentLike(postId, commentId, fallbackData) {
+function useCommentLike(postId, commentId, options) {
   const { data, error, mutate } = useSWR(
     `/api/posts/${postId}/comments/${commentId}`,
-    {
-      fallbackData,
-    }
+    options
   );
 
   return {
