@@ -1,9 +1,7 @@
 import useSWR from 'swr';
 
-function useFeed(userId, fallbackData) {
-  const { data, error, mutate } = useSWR(`/api/user/${userId}/feed`, {
-    fallbackData,
-  });
+function useFeed(userId, options) {
+  const { data, error, mutate } = useSWR(`/api/user/${userId}/feed`, options);
 
   return {
     posts: data,
