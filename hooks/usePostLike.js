@@ -1,9 +1,7 @@
 import useSWR from 'swr';
 
-function usePostLike(postId, fallbackData) {
-  const { data, error, mutate } = useSWR(`/api/posts/${postId}`, {
-    fallbackData,
-  });
+function usePostLike(postId, options) {
+  const { data, error, mutate } = useSWR(`/api/posts/${postId}`, options);
 
   return {
     likes: data,
