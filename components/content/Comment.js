@@ -19,11 +19,9 @@ function Comment({ comment, onCommentReply, size, recipient, show }) {
   );
   const [focus, setFocus] = useState(null);
   const { setComments } = useComments(comment.post);
-  const { likes, setLike } = useCommentLike(
-    comment.post,
-    comment._id,
-    comment.likes
-  );
+  const { likes, setLike } = useCommentLike(comment.post, comment._id, {
+    fallbackData: comment.likes,
+  });
   const [user] = useUser();
   const {
     triggerRef,

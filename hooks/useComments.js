@@ -1,9 +1,10 @@
 import useSWR from 'swr';
 
-function useComments(postId, fallbackData) {
-  const { data, error, mutate } = useSWR(`/api/posts/${postId}/comments`, {
-    fallbackData,
-  });
+function useComments(postId, options) {
+  const { data, error, mutate } = useSWR(
+    `/api/posts/${postId}/comments`,
+    options
+  );
 
   return {
     comments: data,
