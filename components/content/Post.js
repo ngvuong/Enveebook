@@ -20,8 +20,10 @@ function Post({ post, user }) {
   const [focus, setFocus] = useState(null);
   const { setFeed } = useFeed(user._id);
   const { setPosts } = usePosts(user._id);
-  const { likes, setLike } = usePostLike(post._id, post.likes);
-  const { comments } = useComments(post._id, post.comments);
+  const { likes, setLike } = usePostLike(post._id, {
+    fallbackData: post.likes,
+  });
+  const { comments } = useComments(post._id, { fallbackData: post.comments });
   const { triggerRef, nodeRef, show, setShow } = useClickOutside(false);
 
   const onLike = async () => {
@@ -46,8 +48,8 @@ function Post({ post, user }) {
     }).then((res) => res.json());
 
     if (data.message) {
-      await setFeed();
-      await setPosts();
+      setFeed();
+      setPosts();
 
       toast.success(data.message, {
         toastId: 'post_delete',
