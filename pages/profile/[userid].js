@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
+import Spinner from '../../components/layout/Spinner';
 import Avatar from '../../components/ui/Avatar';
 import FriendList from '../../components/ui/FriendList';
 import NewPostBox from '../../components/ui/NewPostBox';
@@ -17,13 +18,15 @@ function Profile({ user, currentUser, setActivePage }) {
   const [friendStatus, setFriendStatus] = useState(
     user.friends.some((friend) => friend._id === currentUser._id)
       ? 'friend'
-      : user.friendRequests.some((request) => request._id === currentUser._id)
+      : user.friendRequests.includes(currentUser._id)
       ? 'requested'
       : currentUser.friendRequests.includes(user._id)
       ? 'pending'
       : 'none'
   );
-  const { posts, isError } = usePosts(user._id, user.posts);
+  const { posts, isLoading, isError } = usePosts(user._id, {
+    revalidateOnMount: true,
+  });
 
   useEffect(() => {
     setActivePage('profile');
@@ -31,7 +34,7 @@ function Profile({ user, currentUser, setActivePage }) {
     return () => {
       toast.dismiss();
     };
-  }, []);
+  }, [setActivePage]);
 
   const onRequestFriend = async (type) => {
     const data = await fetch(`/api/user/${user._id}/friends`, {
@@ -102,16 +105,18 @@ function Profile({ user, currentUser, setActivePage }) {
         <FriendList friends={friends} />
         <section className={styles.postsSection}>
           {currentUser._id === user._id && <NewPostBox user={user} />}
-          {!isError ? (
+          {isError ? (
+            <p className={styles.error}>
+              <FaHeartBroken /> Cannot load posts
+            </p>
+          ) : isLoading ? (
+            <Spinner />
+          ) : (
             <div className={styles.posts}>
               {posts.map((post) => (
                 <Post key={post._id} post={post} user={currentUser} />
               ))}
             </div>
-          ) : (
-            <p className={styles.error}>
-              <FaHeartBroken /> Cannot load posts
-            </p>
           )}
         </section>
       </div>
@@ -139,30 +144,10 @@ export async function getServerSideProps(context) {
   const { userid } = context.query;
   await dbConnect();
 
-  const user = await User.findById(userid, { password: 0 })
-    .populate({
-      path: 'posts',
-      populate: [
-        { path: 'author', select: 'name image' },
-        {
-          path: 'comments',
-          populate: [
-            { path: 'author', select: 'name image' },
-            { path: 'likes', select: 'name image friends' },
-            {
-              path: 'replies',
-              populate: [
-                { path: 'author', select: 'name image' },
-                { path: 'likes', select: 'name image friends' },
-              ],
-            },
-          ],
-        },
-        { path: 'likes', select: 'name image friends' },
-      ],
-    })
-    .populate('friends', 'name image')
-    .populate('friendRequests', 'name image');
+  const user = await User.findById(userid, { password: 0 }).populate(
+    'friends',
+    'name image'
+  );
 
   return {
     props: {
