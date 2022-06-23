@@ -1,0 +1,44 @@
+.head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 0.6rem;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 0;
+
+  .timestamp {
+    color: var(--color-grey-3);
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .message {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+
+    &.recipient {
+      align-self: flex-start;
+    }
+
+    &.currentUser {
+      align-self: flex-end;
+
+      .messageText {
+        background-color: var(--color-blue-2);
+      }
+    }
+
+    &Text {
+      font-size: 1.5rem;
+      background-color: var(--color-dark-2);
+      padding: 0.5rem;
+      border-radius: 1rem;
+    }
+  }
+}
