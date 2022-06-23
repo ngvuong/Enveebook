@@ -9,6 +9,7 @@ import {
   FaCog,
   FaUserCog,
   FaSignOutAlt,
+  FaRegCommentDots,
 } from 'react-icons/fa';
 import styles from '../../styles/Navbar.module.scss';
 
@@ -40,6 +41,15 @@ function Navbar({ user, activePage }) {
           }`}
         >
           <FaUserFriends />
+        </a>
+      </Link>
+      <Link href='/chat'>
+        <a
+          className={`${styles.chat} ${
+            activePage === 'chat' ? styles.active : ''
+          }`}
+        >
+          <FaRegCommentDots />
         </a>
       </Link>
       <div className={styles.settingsWrapper}>

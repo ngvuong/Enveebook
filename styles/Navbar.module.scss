@@ -82,6 +82,15 @@
     }
   }
 
+  .chat {
+    position: relative;
+
+    &:hover::after {
+      content: 'Chat';
+      @include label;
+    }
+  }
+
   .settings {
     position: relative;
 
