@@ -2,10 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import useClickOutside from '../../hooks/useClickOutside';
 
-import { FaSearch } from 'react-icons/fa';
 import styles from '../../styles/Search.module.scss';
 
-function Search({ users }) {
+function Search({ users, type = 'default', onSelect }) {
   const [results, setResults] = useState(users);
   const [active, setActive] = useState(-1);
   const [searchTerm, setSearchTerm] = useState('');
@@ -70,27 +69,24 @@ function Search({ users }) {
   };
 
   return (
-    <section className={styles.container}>
-      <div className={styles.searchBar}>
-        <label htmlFor='searchInput'>
-          <FaSearch />
-        </label>
-        <div className={styles.search}>
-          <input
-            type='text'
-            id='searchInput'
-            value={searchTerm}
-            onInput={filterResults}
-            onFocus={() => setShow(true)}
-            onClick={() => setShow(true)}
-            onKeyDown={onKeyDown}
-            placeholder='Search users'
-            autoComplete='off'
-            spellCheck='false'
-          />
-          {show && (
-            <div className={styles.results} ref={nodeRef}>
-              {results.map((user, index) => (
+    <div className={styles.search}>
+      <input
+        type='text'
+        id='searchInput'
+        value={searchTerm}
+        onInput={filterResults}
+        onFocus={() => setShow(true)}
+        onClick={() => setShow(true)}
+        onKeyDown={onKeyDown}
+        placeholder='Search'
+        autoComplete='off'
+        spellCheck='false'
+        autoFocus={type === 'default' ? false : true}
+      />
+      {show && results.length > 0 && (
+        <div className={styles.results} ref={nodeRef}>
+          {type === 'default'
+            ? results.map((user, index) => (
                 <Link key={user._id} href={`/profile/${user._id}`}>
                   <a
                     className={active === index ? styles.active : undefined}
@@ -99,12 +95,20 @@ function Search({ users }) {
                     {user.name}
                   </a>
                 </Link>
+              ))
+            : results.map((user, index) => (
+                <span
+                  key={user._id}
+                  className={active === index ? styles.active : undefined}
+                  onClick={() => onSelect(user._id)}
+                  ref={active === index ? linkRef : undefined}
+                >
+                  {user.name}
+                </span>
               ))}
-            </div>
-          )}
         </div>
-      </div>
-    </section>
+      )}
+    </div>
   );
 }
 
