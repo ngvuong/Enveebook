@@ -1,9 +1,9 @@
 import { useEffect, useState, Fragment, useRef } from 'react';
+import Link from 'next/link';
 import Avatar from './Avatar';
 import {
   getFirestore,
   collection,
-  getDocs,
   addDoc,
   onSnapshot,
   query,
@@ -24,9 +24,7 @@ function Chatroom({ chat, recipient, currentUser }) {
 
   useEffect(() => {
     inputRef.current.focus();
-  }, []);
 
-  useEffect(() => {
     const searchQuery = query(
       collection(getFirestore(), `chats/${chat.id}/messages`),
       orderBy('time', 'asc')
@@ -79,7 +77,8 @@ function Chatroom({ chat, recipient, currentUser }) {
   };
 
   const messageList = messages.map((message) => {
-    const author = message.user === recipient._id ? 'recipient' : 'currentUser';
+    const author =
+      message.user === currentUser._id ? 'currentUser' : 'recipient';
 
     return (
       <Fragment key={message.id}>
@@ -101,8 +100,14 @@ function Chatroom({ chat, recipient, currentUser }) {
   return (
     <>
       <div className={styles.head}>
-        <Avatar height='35' width='35' user={recipient} link={false} />
-        {recipient.name}
+        <div>
+          <Link href={`/profile/${recipient._id}`}>
+            <a>
+              <Avatar height='38' width='38' user={recipient} link={false} />
+              {recipient.name}
+            </a>
+          </Link>
+        </div>
       </div>
 
       <div className={styles.messages} onClick={() => inputRef.current.focus()}>
