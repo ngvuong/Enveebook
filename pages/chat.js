@@ -17,7 +17,7 @@ import dbConnect from '../lib/db';
 import { FaPenNib } from 'react-icons/fa';
 import styles from '../styles/Chat.module.scss';
 
-function Chat({ currentUser, users, chats, setActivePage }) {
+function Chat({ currentUser, friends, users, chats, setActivePage }) {
   const [activeChat, setActiveChat] = useState(chats[0]);
 
   useEffect(() => {
@@ -30,10 +30,10 @@ function Chat({ currentUser, users, chats, setActivePage }) {
 
     return (
       <div
+        key={chat.id}
         className={`${styles.portal} ${
           chat.id === activeChat.id ? styles.active : ''
         }`}
-        key={chat.id}
         onClick={() => setActiveChat(chat)}
       >
         <Avatar height='50' width='50' user={recipient} link={false} />
@@ -56,6 +56,7 @@ function Chat({ currentUser, users, chats, setActivePage }) {
       <section className={styles.chatroom}>
         {activeChat ? (
           <Chatroom
+            key={activeChat.id}
             chat={activeChat}
             recipient={
               users[
@@ -87,9 +88,11 @@ export async function getServerSideProps(context) {
     };
   }
 
+  const currentUser = session.user;
+
   const searchQuery = query(
     collection(getFirestore(), 'chats'),
-    where('members', 'array-contains', session.user._id),
+    where('members', 'array-contains', currentUser._id),
     orderBy('updatedAt', 'desc')
   );
 
@@ -117,9 +120,15 @@ export async function getServerSideProps(context) {
     return acc;
   }, {});
 
+  const friends = await User.find(
+    { _id: { $in: currentUser.friends } },
+    'name image'
+  );
+
   return {
     props: {
-      currentUser: session.user,
+      currentUser,
+      friends: JSON.parse(JSON.stringify(friends)),
       users: JSON.parse(JSON.stringify(users)),
       chats: JSON.parse(JSON.stringify(chats)),
     },
