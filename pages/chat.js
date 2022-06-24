@@ -14,49 +14,42 @@ import '../lib/firebase';
 import User from '../models/user';
 import dbConnect from '../lib/db';
 
-import { FaPenAlt } from 'react-icons/fa';
+import { FaPenNib } from 'react-icons/fa';
 import styles from '../styles/Chat.module.scss';
 
-function Chat({ currentUser, users, chats }) {
+function Chat({ currentUser, users, chats, setActivePage }) {
   const [activeChat, setActiveChat] = useState(chats[0]);
+
+  useEffect(() => {
+    setActivePage('chat');
+  }, [setActivePage]);
 
   const chatPortals = chats.map((chat) => {
     const recipient =
       users[chat.members.find((member) => member !== currentUser._id)];
+
     return (
       <div
-        className={styles.portal}
+        className={`${styles.portal} ${
+          chat.id === activeChat.id ? styles.active : ''
+        }`}
         key={chat.id}
-        onClick={() => console.log('hi')}
+        onClick={() => setActiveChat(chat)}
       >
         <Avatar height='50' width='50' user={recipient} link={false} />
         <p>{recipient.name}</p>
       </div>
     );
   });
-  // useEffect(() => {
-  //   const searchQuery = query(
-  //     collection(getFirestore(), 'chats'),
-  //     where('members', 'array-contains', currentUser._id),
-  //     orderBy('updatedAt', 'desc')
-  //   );
 
-  //   getDocs(searchQuery).then((results) => {
-  //     const chatDocs = [];
-  //     results.forEach((doc) => {
-  //       chatDocs.push(doc.data());
-  //     });
-
-  //     setChats(chatDocs);
-  //   });
-  // }, [currentUser]);
-  // console.log(chats);
   return (
     <div className={styles.container}>
       <section className={styles.sideBar}>
         <div className={styles.sideBarHead}>
           <h1>Chats</h1>
-          <FaPenAlt />
+          <button>
+            <FaPenNib />
+          </button>
         </div>
         <div className={styles.portals}>{chatPortals}</div>
       </section>
