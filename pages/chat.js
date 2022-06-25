@@ -16,15 +16,22 @@ import dbConnect from '../lib/db';
 
 import { FaPenNib } from 'react-icons/fa';
 import styles from '../styles/Chat.module.scss';
+import Search from '../components/ui/Search';
 
 function Chat({ currentUser, friends, users, chats, setActivePage }) {
-  const [activeChat, setActiveChat] = useState(chats[0]);
+  const [allChats, setAllChats] = useState(chats);
+  const [activeChat, setActiveChat] = useState(allChats[0]);
+  const [showSearch, setShowSearch] = useState(false);
 
   useEffect(() => {
     setActivePage('chat');
   }, [setActivePage]);
 
-  const chatPortals = chats.map((chat) => {
+  const onCreateChat = (userId) => {
+    console.log(userId);
+  };
+
+  const chatPortals = allChats.map((chat) => {
     const recipient =
       users[chat.members.find((member) => member !== currentUser._id)];
 
@@ -32,9 +39,12 @@ function Chat({ currentUser, friends, users, chats, setActivePage }) {
       <div
         key={chat.id}
         className={`${styles.portal} ${
-          chat.id === activeChat.id ? styles.active : ''
+          activeChat && chat.id === activeChat.id ? styles.active : ''
         }`}
-        onClick={() => setActiveChat(chat)}
+        onClick={() => {
+          setShowSearch(false);
+          setActiveChat(chat);
+        }}
       >
         <Avatar height='50' width='50' user={recipient} link={false} />
         <p>{recipient.name}</p>
@@ -47,13 +57,24 @@ function Chat({ currentUser, friends, users, chats, setActivePage }) {
       <section className={styles.sideBar}>
         <div className={styles.sideBarHead}>
           <h1>Chats</h1>
-          <button>
+          <button
+            onClick={() => {
+              setActiveChat(null);
+              setShowSearch(true);
+            }}
+          >
             <FaPenNib />
           </button>
         </div>
         <div className={styles.portals}>{chatPortals}</div>
       </section>
       <section className={styles.chatroom}>
+        {showSearch && (
+          <div className={styles.searchContainer}>
+            To:
+            <Search users={friends} type='chat' onSelect={onCreateChat} />
+          </div>
+        )}
         {activeChat ? (
           <Chatroom
             key={activeChat.id}
