@@ -7,7 +7,7 @@ import FriendList from '../../components/ui/FriendList';
 import NewPostBox from '../../components/ui/NewPostBox';
 import Post from '../../components/content/Post';
 import usePosts from '../../hooks/usePosts';
-import User from '../../models/User';
+import User from '../../models/user';
 import dbConnect from '../../lib/db';
 
 import { FaUserCheck, FaUserPlus, FaHeartBroken } from 'react-icons/fa';
