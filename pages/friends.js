@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { getSession } from 'next-auth/react';
-import Search from '../components/ui/Search';
+import SearchBar from '../components/ui/SearchBar';
 import FriendList from '../components/ui/FriendList';
 import UserCard from '../components/ui/UserCard';
-import User from '../models/User';
+import User from '../models/user';
 import dbConnect from '../lib/db';
 
 import { FaCaretDown } from 'react-icons/fa';
@@ -24,7 +24,7 @@ function Friends({ user, allUsers, friendRecommendations, setActivePage }) {
     <div className={styles.container}>
       <FriendList friends={friends} />
       <div className={styles.wrapper}>
-        <Search users={allUsers} />
+        <SearchBar users={allUsers} />
         {requests.length > 0 && (
           <section className={styles.requestsSection}>
             <p>Friend Requests</p>
