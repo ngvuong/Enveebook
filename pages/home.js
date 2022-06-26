@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { getSession } from 'next-auth/react';
 import Feed from '../components/content/Feed';
 import NewPostBox from '../components/ui/NewPostBox';
-import Post from '../models/post';
-import dbConnect from '../lib/db';
+// import Post from '../models/post';
+// import dbConnect from '../lib/db';
 
 import styles from '../styles/Home.module.scss';
 
@@ -37,38 +37,38 @@ export async function getServerSideProps(context) {
     };
   }
 
-  await dbConnect();
+  // await dbConnect();
 
-  const authorList = [session.user._id, ...session.user.friends];
+  // const authorList = [session.user._id, ...session.user.friends];
 
-  const posts = await Post.find({ author: { $in: authorList } })
-    .populate('author', 'name image')
-    .populate({
-      path: 'comments',
-      populate: [
-        { path: 'author', select: 'name image' },
-        {
-          path: 'likes',
-          select: 'name image friends',
-        },
-        {
-          path: 'replies',
-          populate: [
-            { path: 'author', select: 'name image' },
-            { path: 'likes', select: 'name image friends' },
-          ],
-        },
-      ],
-    })
-    .populate('likes', 'name image friends')
-    .sort({
-      createdAt: -1,
-    });
+  // const posts = await Post.find({ author: { $in: authorList } })
+  //   .populate('author', 'name image')
+  //   .populate({
+  //     path: 'comments',
+  //     populate: [
+  //       { path: 'author', select: 'name image' },
+  //       {
+  //         path: 'likes',
+  //         select: 'name image friends',
+  //       },
+  //       {
+  //         path: 'replies',
+  //         populate: [
+  //           { path: 'author', select: 'name image' },
+  //           { path: 'likes', select: 'name image friends' },
+  //         ],
+  //       },
+  //     ],
+  //   })
+  //   .populate('likes', 'name image friends')
+  //   .sort({
+  //     createdAt: -1,
+  //   });
 
   return {
     props: {
       user: session.user,
-      posts: JSON.parse(JSON.stringify(posts)),
+      // posts: JSON.parse(JSON.stringify(posts)),
     },
   };
 }
