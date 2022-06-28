@@ -6,9 +6,11 @@ import {
   getFirestore,
   collection,
   getDocs,
+  addDoc,
   query,
   orderBy,
   where,
+  serverTimestamp,
 } from 'firebase/firestore';
 import '../lib/firebase';
 import User from '../models/user';
@@ -27,8 +29,28 @@ function Chat({ currentUser, friends, users, chats, setActivePage }) {
     setActivePage('chat');
   }, [setActivePage]);
 
-  const onCreateChat = (userId) => {
-    console.log(userId);
+  const onCreateChat = async (userId) => {
+    const existingChat = allChats.find((chat) => chat.members.includes(userId));
+
+    if (existingChat) {
+      setActiveChat(existingChat);
+      setShowSearch(false);
+    } else {
+      const chatData = {
+        members: [userId, currentUser._id],
+        updatedAt: serverTimestamp(),
+      };
+      const docRef = await addDoc(
+        collection(getFirestore(), 'chats'),
+        chatData
+      );
+
+      chatData.id = docRef.id;
+
+      setAllChats([chatData, ...chats]);
+      setActiveChat(chatData);
+      setShowSearch(false);
+    }
   };
 
   const chatPortals = allChats.map((chat) => {
@@ -57,21 +79,22 @@ function Chat({ currentUser, friends, users, chats, setActivePage }) {
       <section className={styles.sideBar}>
         <div className={styles.sideBarHead}>
           <h1>Chats</h1>
-          <button
+          <label
+            htmlFor='searchInput'
             onClick={() => {
               setActiveChat(null);
               setShowSearch(true);
             }}
           >
             <FaPenNib />
-          </button>
+          </label>
         </div>
         <div className={styles.portals}>{chatPortals}</div>
       </section>
       <section className={styles.chatroom}>
         {showSearch && (
           <div className={styles.searchContainer}>
-            To:
+            <span>To:</span>
             <Search users={friends} type='chat' onSelect={onCreateChat} />
           </div>
         )}
@@ -118,25 +141,23 @@ export async function getServerSideProps(context) {
   );
 
   const chats = [];
-  const userIds = [];
+  // const userIds = [];
 
   const querySnapshot = await getDocs(searchQuery);
   querySnapshot.forEach((doc) => {
     const docData = doc.data();
     docData.id = doc.id;
-    docData.members.forEach((id) => {
-      if (!userIds.includes(id)) {
-        userIds.push(id);
-      }
-    });
+    // docData.members.forEach((id) => {
+    //   if (!userIds.includes(id)) {
+    //     userIds.push(id);
+    //   }
+    // });
     chats.push(docData);
   });
 
   await dbConnect();
 
-  const users = [
-    ...(await User.find({ _id: { $in: userIds } }, 'name image')),
-  ].reduce((acc, curr) => {
+  const users = [...(await User.find({}, 'name image'))].reduce((acc, curr) => {
     acc[curr._id] = curr;
     return acc;
   }, {});
