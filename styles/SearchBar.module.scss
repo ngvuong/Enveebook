@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  width: 100%;
+
+  .searchBar {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background-color: var(--color-black);
+    padding: 2rem;
+    border: 1px solid var(--color-dark-2);
+    border-radius: 1rem;
+    box-shadow: 0px 0px 1rem rgba(0, 0, 0, 0.2);
+
+    label {
+      color: var(--color-grey-3);
+      font-size: 2rem;
+    }
+
+    input {
+      background-color: var(--color-dark-2);
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+    }
+  }
+}
