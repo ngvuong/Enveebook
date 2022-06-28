@@ -9,7 +9,7 @@ import {
   query,
   orderBy,
   serverTimestamp,
-  setDoc,
+  updateDoc,
   doc,
 } from 'firebase/firestore';
 import { formatDate } from '../../lib/dateFormat';
@@ -66,11 +66,9 @@ function Chatroom({ chat, recipient, currentUser }) {
 
       inputRef.current.value = '';
 
-      await setDoc(
-        doc(getFirestore(), 'chats', chat.id),
-        { updatedAt: serverTimestamp() },
-        { merge: true }
-      );
+      await updateDoc(doc(getFirestore(), 'chats', chat.id), {
+        updatedAt: serverTimestamp(),
+      });
     } catch (err) {
       console.error(err);
     }
