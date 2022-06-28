@@ -22,20 +22,32 @@
       font-size: 3.2rem;
       color: var(--color-primary);
     }
-  }
 
-  .status {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: bold;
-    background-color: var(--color-blue-2);
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    margin-left: auto;
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: var(--color-blue-2);
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      margin-left: auto;
 
-    svg {
-      font-size: 2rem;
+      svg {
+        font-size: 2rem;
+      }
+    }
+
+    .message {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: var(--color-dark-2);
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+
+      svg {
+        font-size: 2rem;
+      }
     }
   }
 

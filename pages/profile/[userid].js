@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getSession } from 'next-auth/react';
+import Link from 'next/link';
 import { toast } from 'react-toastify';
 import Spinner from '../../components/layout/Spinner';
 import Avatar from '../../components/ui/Avatar';
@@ -10,7 +11,12 @@ import usePosts from '../../hooks/usePosts';
 import User from '../../models/user';
 import dbConnect from '../../lib/db';
 
-import { FaUserCheck, FaUserPlus, FaHeartBroken } from 'react-icons/fa';
+import {
+  FaUserCheck,
+  FaUserPlus,
+  FaHeartBroken,
+  FaFacebookMessenger,
+} from 'react-icons/fa';
 import styles from '../../styles/Profile.module.scss';
 
 function Profile({ user, currentUser, setActivePage }) {
@@ -94,12 +100,19 @@ function Profile({ user, currentUser, setActivePage }) {
   return (
     <div className={styles.container}>
       <section className={styles.head}>
-        <Avatar height='150' width='150' user={user} />
+        <Avatar height='150' width='150' user={user} link={false} />
         <div>
           <h1>{user.name}</h1>
           <p>{user.bio}</p>
         </div>
         {statusDisplay}
+        {friendStatus === 'friend' && (
+          <Link href='/chat'>
+            <a className={styles.message}>
+              <FaFacebookMessenger /> Message
+            </a>
+          </Link>
+        )}
       </section>
       <div className={styles.main}>
         <FriendList friends={friends} />
