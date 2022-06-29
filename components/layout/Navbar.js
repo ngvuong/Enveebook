@@ -9,7 +9,7 @@ import {
   FaCog,
   FaUserCog,
   FaSignOutAlt,
-  FaRegCommentDots,
+  FaFacebookMessenger,
 } from 'react-icons/fa';
 import styles from '../../styles/Navbar.module.scss';
 
@@ -49,7 +49,7 @@ function Navbar({ user, activePage }) {
             activePage === 'chat' ? styles.active : ''
           }`}
         >
-          <FaRegCommentDots />
+          <FaFacebookMessenger />
         </a>
       </Link>
       <div className={styles.settingsWrapper}>
