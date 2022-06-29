@@ -13,6 +13,7 @@
   padding: 1rem;
   border: 2px solid var(--color-dark-2);
   border-radius: 1rem;
+  z-index: 1;
 
   button,
   a {
@@ -136,5 +137,32 @@
     height: 100%;
     background-color: var(--color-blue-2);
     border-radius: 0 0.5rem 0.5rem 0;
+  }
+}
+
+.trigger {
+  position: fixed;
+  display: none;
+  top: 2rem;
+  left: 0;
+  width: 1.5rem;
+  height: 5rem;
+  background-color: var(--color-blue-2);
+  border-radius: 0.5rem;
+}
+
+@media (max-width: 500px) {
+  .navbar {
+    transform: translateX(-105%);
+    transition: all 0.25s ease-in;
+
+    &.show {
+      transform: translateX(0);
+      transition: all 0.25s ease-in;
+    }
+
+    &:not(.show) + .trigger {
+      display: block;
+    }
   }
 }

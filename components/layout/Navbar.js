@@ -14,67 +14,78 @@ import {
 import styles from '../../styles/Navbar.module.scss';
 
 function Navbar({ user, activePage }) {
+  const {
+    triggerRef: navTriggerRef,
+    nodeRef: navNodeRef,
+    show: navShow,
+  } = useClickOutside(false);
   const { triggerRef, nodeRef, show, setShow } = useClickOutside(false);
 
   return (
-    <section className={styles.navbar}>
-      <button
-        className={`${styles.profile} ${
-          activePage === 'profile' ? styles.active : ''
-        }`}
+    <>
+      <section
+        className={`${styles.navbar} ${navShow ? styles.show : ''}`}
+        ref={navNodeRef}
       >
-        <Avatar height='30' width='30' user={user} />
-      </button>
-      <Link href='/home'>
-        <a
-          className={`${styles.home} ${
-            activePage === 'home' ? styles.active : ''
-          }`}
-        >
-          <FaHome />
-        </a>
-      </Link>
-      <Link href='/friends'>
-        <a
-          className={`${styles.friends} ${
-            activePage === 'friends' ? styles.active : ''
-          }`}
-        >
-          <FaUserFriends />
-        </a>
-      </Link>
-      <Link href='/chat'>
-        <a
-          className={`${styles.chat} ${
-            activePage === 'chat' ? styles.active : ''
-          }`}
-        >
-          <FaFacebookMessenger />
-        </a>
-      </Link>
-      <div className={styles.settingsWrapper}>
         <button
-          className={`${styles.settings} ${
-            activePage === 'settings' ? styles.active : ''
+          className={`${styles.profile} ${
+            activePage === 'profile' ? styles.active : ''
           }`}
-          ref={triggerRef}
         >
-          <FaCog />
+          <Avatar height='30' width='30' user={user} />
         </button>
-        {show && (
-          <div className={styles.settingsMenu} ref={nodeRef}>
-            <Link href='/settings'>
-              <a onClick={() => setShow(false)}>
-                <FaUserCog /> <span>Settings</span>
-              </a>
-            </Link>
-            <button onClick={() => signOut()}>
-              <FaSignOutAlt /> <span>Log Out</span>
-            </button>
-          </div>
-        )}
-      </div>
-    </section>
+        <Link href='/home'>
+          <a
+            className={`${styles.home} ${
+              activePage === 'home' ? styles.active : ''
+            }`}
+          >
+            <FaHome />
+          </a>
+        </Link>
+        <Link href='/friends'>
+          <a
+            className={`${styles.friends} ${
+              activePage === 'friends' ? styles.active : ''
+            }`}
+          >
+            <FaUserFriends />
+          </a>
+        </Link>
+        <Link href='/chat'>
+          <a
+            className={`${styles.chat} ${
+              activePage === 'chat' ? styles.active : ''
+            }`}
+          >
+            <FaFacebookMessenger />
+          </a>
+        </Link>
+        <div className={styles.settingsWrapper}>
+          <button
+            className={`${styles.settings} ${
+              activePage === 'settings' ? styles.active : ''
+            }`}
+            ref={triggerRef}
+          >
+            <FaCog />
+          </button>
+          {show && (
+            <div className={styles.settingsMenu} ref={nodeRef}>
+              <Link href='/settings'>
+                <a onClick={() => setShow(false)}>
+                  <FaUserCog /> <span>Settings</span>
+                </a>
+              </Link>
+              <button onClick={() => signOut()}>
+                <FaSignOutAlt /> <span>Log Out</span>
+              </button>
+            </div>
+          )}
+        </div>
+      </section>
+      <div className={styles.trigger} ref={navTriggerRef}></div>
+    </>
   );
 }
 
