@@ -85,7 +85,12 @@ function Chatroom({ chat, recipient, currentUser }) {
             ? formatDate(new Date(message.time.seconds * 1000).toISOString())
             : 'Now'}
         </p>
-        <div className={`${styles.message} ${styles[author]}`}>
+        <div
+          className={`${styles.message} ${styles[author]}`}
+          onMouseUp={(e) =>
+            window.getSelection().toString() ? e.stopPropagation() : null
+          }
+        >
           {author === 'recipient' && (
             <Avatar height='28' width='28' user={recipient} link={false} />
           )}
@@ -101,14 +106,17 @@ function Chatroom({ chat, recipient, currentUser }) {
         <div>
           <Link href={`/profile/${recipient._id}`}>
             <a>
-              <Avatar height='38' width='38' user={recipient} link={false} />
+              <Avatar height='40' width='40' user={recipient} link={false} />
               {recipient.name}
             </a>
           </Link>
         </div>
       </div>
 
-      <div className={styles.messages} onClick={() => inputRef.current.focus()}>
+      <div
+        className={styles.messages}
+        onMouseUp={() => inputRef.current.focus()}
+      >
         {messageList}
         <div ref={scrollRef}></div>
       </div>
