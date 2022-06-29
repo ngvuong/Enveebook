@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { getSession } from 'next-auth/react';
+import ReactTooltip from 'react-tooltip';
 import Avatar from '../components/ui/Avatar';
 import Chatroom from '../components/ui/Chatroom';
 import {
@@ -24,6 +25,11 @@ function Chat({ currentUser, friends, users, chats, setActivePage }) {
   const [allChats, setAllChats] = useState(chats);
   const [activeChat, setActiveChat] = useState(allChats[0]);
   const [showSearch, setShowSearch] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     setActivePage('chat');
@@ -58,19 +64,35 @@ function Chat({ currentUser, friends, users, chats, setActivePage }) {
       users[chat.members.find((member) => member !== currentUser._id)];
 
     return (
-      <div
-        key={chat.id}
-        className={`${styles.portal} ${
-          activeChat && chat.id === activeChat.id ? styles.active : ''
-        }`}
-        onClick={() => {
-          setShowSearch(false);
-          setActiveChat(chat);
-        }}
-      >
-        <Avatar height='50' width='50' user={recipient} link={false} />
-        <p>{recipient.name}</p>
-      </div>
+      <Fragment key={chat.id}>
+        <div
+          className={`${styles.portal} ${
+            activeChat && chat.id === activeChat.id ? styles.active : ''
+          }`}
+          onClick={() => {
+            setShowSearch(false);
+            setActiveChat(chat);
+          }}
+          data-tip
+          data-for={chat.id}
+        >
+          <div className={styles.avatarWrapper}>
+            <Avatar height='50' width='50' user={recipient} link={false} />
+          </div>
+          <p>{recipient.name}</p>
+        </div>
+        {isMounted && (
+          <ReactTooltip
+            id={chat.id}
+            effect='solid'
+            place='right'
+            backgroundColor='#f1f1f1'
+            textColor='#1f1f1f'
+          >
+            <span>{recipient.name}</span>
+          </ReactTooltip>
+        )}
+      </Fragment>
     );
   });
 
@@ -78,16 +100,18 @@ function Chat({ currentUser, friends, users, chats, setActivePage }) {
     <div className={styles.container}>
       <section className={styles.sideBar}>
         <div className={styles.sideBarHead}>
-          <h1>Chats</h1>
-          <label
-            htmlFor='searchInput'
-            onClick={() => {
-              setActiveChat(null);
-              setShowSearch(true);
-            }}
-          >
-            <FaPenNib />
-          </label>
+          <div>
+            <h1>Chats</h1>
+            <label
+              htmlFor='searchInput'
+              onClick={() => {
+                setActiveChat(null);
+                setShowSearch(true);
+              }}
+            >
+              <FaPenNib />
+            </label>
+          </div>
         </div>
         <div className={styles.portals}>{chatPortals}</div>
       </section>
@@ -141,17 +165,11 @@ export async function getServerSideProps(context) {
   );
 
   const chats = [];
-  // const userIds = [];
 
   const querySnapshot = await getDocs(searchQuery);
   querySnapshot.forEach((doc) => {
     const docData = doc.data();
     docData.id = doc.id;
-    // docData.members.forEach((id) => {
-    //   if (!userIds.includes(id)) {
-    //     userIds.push(id);
-    //   }
-    // });
     chats.push(docData);
   });
 
