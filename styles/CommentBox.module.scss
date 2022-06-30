@@ -4,13 +4,19 @@
   gap: 1rem;
   margin-top: 1rem;
 
+  .avatarWrapper {
+    display: flex;
+    cursor: pointer;
+  }
+
   form {
     flex: 1;
 
     div {
       display: flex;
       align-items: center;
-      flex-flow: row-reverse;
+      flex-direction: row-reverse;
+      font-size: 1.5rem;
       background: var(--color-dark-2);
       padding: 0.5rem 1rem;
       border-radius: 2rem;
@@ -18,12 +24,15 @@
       span {
         background-color: #33559980;
         margin-right: -0.5rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: clip;
       }
     }
 
     input {
       flex: 1;
-      font-size: 1.5rem;
+      width: 100%;
       background-color: var(--color-dark-2);
       padding: 0;
       outline: none;

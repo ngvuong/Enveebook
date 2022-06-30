@@ -21,16 +21,15 @@ function CommentBox({
   const { setComments } = useComments(postId);
 
   useEffect(() => {
-    if (focus === null) {
-      return;
-    } else {
+    if (focus !== null) {
       inputRef.current.focus();
-      if (!inputText.trim() && recipient) {
+
+      if (!inputRef.current.value.trim() && recipient) {
         setReplyRecipient('@' + recipient);
         setInputText('  ');
       }
     }
-  }, [focus, recipient, inputText]);
+  }, [focus, recipient]);
 
   const onInputChange = (e) => {
     const value = e.target.value;
@@ -42,6 +41,7 @@ function CommentBox({
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
     const text = inputText.trim();
 
     if (!text) {
@@ -79,10 +79,13 @@ function CommentBox({
 
   return (
     <div className={styles.container}>
-      {user ? (
-        <Avatar height={size} width={size} user={user} />
-      ) : (
-        <span style={{ width: size + 'px', height: size + 'px' }}></span>
+      {user && (
+        <div
+          className={styles.avatarWrapper}
+          onClick={() => inputRef.current.focus()}
+        >
+          <Avatar height={size} width={size} user={user} link={false} />
+        </div>
       )}
       <form action='' method='POST' onSubmit={onSubmit}>
         <div>
