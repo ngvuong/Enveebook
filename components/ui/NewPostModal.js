@@ -91,7 +91,7 @@ const NewPostModal = forwardRef(({ user, onClose }, ref) => {
             onChange={onTextareaChange}
             placeholder={`What's on your mind, ${user.name.split(' ')[0]}?`}
             cols='30'
-            rows='4'
+            rows='3'
             autoFocus
           />
           {image && (
