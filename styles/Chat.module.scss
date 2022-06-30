@@ -5,37 +5,44 @@
   height: 90vh;
   background-color: var(--color-dark);
   border-radius: 1rem;
+  box-shadow: 1rem 1rem 1rem rgba(0, 0, 0, 0.5);
 
   .sideBar {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    width: 30%;
-    padding: 1rem;
+    max-width: 30rem;
+    padding: 1rem 0 1rem 1rem;
 
     &Head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--color-dark-2);
+      padding-right: 1rem;
 
-      h1 {
-        font-size: 2.5rem;
-      }
-
-      button {
+      div {
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
-        width: 4rem;
-        height: 4rem;
-        font-size: 2.5rem;
-        padding: 1rem;
-        border-radius: 50%;
+        gap: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--color-dark-2);
 
-        &:hover {
+        h1 {
+          font-size: 2.5rem;
+        }
+
+        label {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 4rem;
+          height: 4rem;
+          font-size: 2.5rem;
           background-color: var(--color-dark-2);
+          padding: 1rem;
+          border-radius: 50%;
+          cursor: pointer;
+
+          &:hover {
+            filter: brightness(1.2);
+          }
         }
       }
     }
@@ -43,6 +50,8 @@
     .portals {
       display: flex;
       flex-direction: column;
+      height: 100%;
+      padding: 1rem 1rem 0 0;
       overflow-y: auto;
 
       &::-webkit-scrollbar {
@@ -64,20 +73,32 @@
         cursor: pointer;
 
         &.active {
-          background-color: rgba(30, 100, 220, 0.2);
+          background-color: rgba(30, 100, 220, 0.3);
         }
 
         &:not(.active):hover {
           background-color: var(--color-dark-2);
+        }
+
+        .avatarWrapper {
+          width: 5rem;
+          min-width: 5rem;
+          height: 5rem;
+        }
+
+        p {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: clip;
         }
       }
     }
   }
 
   .chatroom {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    width: 70%;
     padding: 1rem 0 1rem 1rem;
     border-left: 1px solid var(--color-dark-2);
 
@@ -93,9 +114,42 @@
         height: 100%;
 
         div {
-          width: 50%;
+          width: fit-content;
         }
       }
     }
+  }
+
+  @media (max-width: 768px) {
+    width: 80%;
+
+    .sideBar {
+      &Head {
+        div {
+          justify-content: center;
+          h1 {
+            display: none;
+          }
+        }
+      }
+
+      .portals {
+        .portal {
+          .avatarWrapper {
+            width: 3rem;
+            min-width: 3rem;
+            height: 3rem;
+          }
+
+          p {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 500px) {
+    width: 100%;
   }
 }

@@ -77,7 +77,13 @@ function Chat({ currentUser, friends, users, chats, setActivePage }) {
           data-for={chat.id}
         >
           <div className={styles.avatarWrapper}>
-            <Avatar height='50' width='50' user={recipient} link={false} />
+            <Avatar
+              height='50'
+              width='50'
+              flexSize='100%'
+              user={recipient}
+              link={false}
+            />
           </div>
           <p>{recipient.name}</p>
         </div>
@@ -108,9 +114,21 @@ function Chat({ currentUser, friends, users, chats, setActivePage }) {
                 setActiveChat(null);
                 setShowSearch(true);
               }}
+              data-tip
+              data-for='new-chat'
             >
               <FaPenNib />
             </label>
+            {isMounted && (
+              <ReactTooltip
+                id='new-chat'
+                effect='solid'
+                backgroundColor='#f1f1f1'
+                textColor='#1f1f1f'
+              >
+                <span>New Chat</span>
+              </ReactTooltip>
+            )}
           </div>
         </div>
         <div className={styles.portals}>{chatPortals}</div>
