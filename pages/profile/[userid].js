@@ -100,8 +100,16 @@ function Profile({ user, currentUser, setActivePage }) {
   return (
     <div className={styles.container}>
       <section className={styles.head}>
-        <Avatar height='150' width='150' user={user} link={false} />
-        <div>
+        <div className={styles.avatarWrapper}>
+          <Avatar
+            height='150'
+            width='150'
+            flexSize='100%'
+            user={user}
+            link={false}
+          />
+        </div>
+        <div className={styles.userInfo}>
           <h1>{user.name}</h1>
           <p>{user.bio}</p>
         </div>
