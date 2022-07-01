@@ -12,14 +12,23 @@ import {
   FaFacebookMessenger,
 } from 'react-icons/fa';
 import styles from '../../styles/Navbar.module.scss';
+import { useEffect } from 'react';
 
 function Navbar({ user, activePage }) {
   const {
     triggerRef: navTriggerRef,
     nodeRef: navNodeRef,
     show: navShow,
+    setShow: setNavShow,
   } = useClickOutside(false);
   const { triggerRef, nodeRef, show, setShow } = useClickOutside(false);
+
+  useEffect(() => {
+    console.log(navShow);
+    // if (navShow) {
+    setNavShow(false);
+    // }
+  }, [activePage]);
 
   return (
     <>
