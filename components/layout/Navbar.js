@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import Avatar from '../ui/Avatar';
@@ -12,7 +13,6 @@ import {
   FaFacebookMessenger,
 } from 'react-icons/fa';
 import styles from '../../styles/Navbar.module.scss';
-import { useEffect } from 'react';
 
 function Navbar({ user, activePage }) {
   const {
@@ -24,11 +24,8 @@ function Navbar({ user, activePage }) {
   const { triggerRef, nodeRef, show, setShow } = useClickOutside(false);
 
   useEffect(() => {
-    console.log(navShow);
-    // if (navShow) {
     setNavShow(false);
-    // }
-  }, [activePage]);
+  }, [activePage, setNavShow]);
 
   return (
     <>
