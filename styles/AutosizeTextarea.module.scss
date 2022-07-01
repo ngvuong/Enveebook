@@ -19,8 +19,12 @@
     background-color: var(--color-black);
     border-radius: 1rem;
   }
-}
 
-.textarea:focus {
-  outline: none;
+  &:focus {
+    outline: none;
+  }
+
+  @media (max-height: 500px) {
+    max-height: 7rem;
+  }
 }
