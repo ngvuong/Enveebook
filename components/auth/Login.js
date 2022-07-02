@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, forwardRef } from 'react';
 import router from 'next/router';
 import { signIn } from 'next-auth/react';
 import AuthForm from './AuthForm';
@@ -12,7 +12,7 @@ import {
 } from 'react-icons/ai';
 import styles from '../../styles/AuthForm.module.scss';
 
-function Login({ onSignup }) {
+const Login = forwardRef((_props, ref) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -122,11 +122,13 @@ function Login({ onSignup }) {
         <AiFillFacebook /> Log In with Facebook
       </button>
       <hr />
-      <button type='button' className={styles.btn_green} onClick={onSignup}>
+      <button type='button' className={styles.btn_green} ref={ref}>
         <AiOutlineUserAdd /> Sign Up
       </button>
     </AuthForm>
   );
-}
+});
+
+Login.displayName = 'Login';
 
 export default Login;
