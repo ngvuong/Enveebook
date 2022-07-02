@@ -3,15 +3,15 @@ import { getSession } from 'next-auth/react';
 import router from 'next/router';
 import Head from 'next/head';
 import Login from '../components/auth/Login';
-import Overlay from '../components/layout/Overlay';
 import Spinner from '../components/layout/Spinner';
 import Register from '../components/auth/Register';
+import useClickOutside from '../hooks/useClickOutside';
 
 import styles from '../styles/Welcome.module.scss';
 
 export default function Welcome() {
-  const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const { triggerRef, nodeRef, show, setShow } = useClickOutside(false);
 
   useEffect(() => {
     getSession().then((session) => {
@@ -47,12 +47,8 @@ export default function Welcome() {
         </p>
       </div>
 
-      <Login onSignup={() => setShowModal(true)} />
-      {showModal && (
-        <Overlay>
-          <Register onClose={() => setShowModal(false)} />
-        </Overlay>
-      )}
+      <Login ref={triggerRef} />
+      {show && <Register onClose={() => setShow(false)} ref={nodeRef} />}
     </div>
   );
 }
