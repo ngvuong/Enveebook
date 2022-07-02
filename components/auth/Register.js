@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, forwardRef } from 'react';
 import { signIn } from 'next-auth/react';
+import Overlay from '../layout/Overlay';
 import AuthForm from './AuthForm';
 
 import {
@@ -10,7 +11,7 @@ import {
 } from 'react-icons/ai';
 import styles from '../../styles/AuthForm.module.scss';
 
-function Register({ onClose }) {
+const Register = forwardRef(({ onClose }, ref) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -90,134 +91,134 @@ function Register({ onClose }) {
   };
 
   return (
-    <AuthForm onSubmit={onSubmit}>
-      <h2>Sign Up</h2>
-      <hr />
-      {isLoading && <span className={styles.spinner}></span>}
-      <div>
-        <label htmlFor='name'>
-          Name<span>*</span>
-        </label>
-        <input
-          type='text'
-          name='name'
-          id='name'
-          onChange={onChange}
-          value={name}
-          className={nameError ? styles.invalid : ''}
-          placeholder='Name'
-          minLength='3'
-          autoFocus
-          required
-        />
-        {nameError ? (
-          <AiFillExclamationCircle className={styles.icon} />
-        ) : (
-          <AiFillCheckCircle className={styles.icon} />
-        )}
-        {nameError && <p role='alert'>{nameError}</p>}
-      </div>
-      <div>
-        <label htmlFor='signup_email'>
-          Email<span>*</span>
-        </label>
-        <input
-          type='email'
-          name='email'
-          id='signup_email'
-          onChange={onChange}
-          value={email}
-          className={emailError ? styles.invalid : ''}
-          placeholder='Email'
-          required
-        />
-        {emailError ? (
-          <AiFillExclamationCircle className={styles.icon} />
-        ) : (
-          <AiFillCheckCircle className={styles.icon} />
-        )}
-        {emailError && <p role='alert'>{emailError}</p>}
-      </div>
-      <div>
-        <label htmlFor='signup_password'>
-          Password<span>*</span>
-        </label>
-        <input
-          type='password'
-          name='password'
-          id='signup_password'
-          onChange={onChange}
-          value={password}
-          className={passwordError ? styles.invalid : ''}
-          placeholder='Password'
-          minLength='6'
-          required
-        />
-        {passwordError ? (
-          <AiFillExclamationCircle className={styles.icon} />
-        ) : (
-          <AiFillCheckCircle className={styles.icon} />
-        )}
-        {passwordError && <p role='alert'>{passwordError}</p>}
-      </div>
-      <div>
-        <label htmlFor='confirmPassword'>
-          Confirm Password<span>*</span>
-        </label>
-        <input
-          type='password'
-          name='confirmPassword'
-          id='confirmPassword'
-          onChange={onChange}
-          value={confirmPassword}
-          className={confirmPasswordError ? styles.invalid : ''}
-          placeholder='Confirm Password'
-          minLength='6'
-          required
-        />
-        {confirmPasswordError ? (
-          <AiFillExclamationCircle className={styles.icon} />
-        ) : (
-          <AiFillCheckCircle className={styles.icon} />
-        )}
-        {confirmPasswordError && <p role='alert'>{confirmPasswordError}</p>}
-      </div>
-      <button
-        type='submit'
-        className={styles.btn_green}
-        disabled={
-          !name ||
-          !email ||
-          !password ||
-          !confirmPassword ||
-          nameError ||
-          emailError ||
-          passwordError ||
-          confirmPasswordError
-        }
-      >
-        <AiOutlineUserAdd /> Sign Up
-      </button>
-      <button
-        type='button'
-        className={styles.btn_blue}
-        onClick={() => {
-          setErrors({});
-          setIsLoading(true);
-          signIn('facebook');
-        }}
-      >
-        <AiFillFacebook /> Sign Up with Facebook
-      </button>
-      <button
-        type='button'
-        className={styles.btn_close}
-        onClick={() => onClose()}
-      >
-        ✕
-      </button>
-    </AuthForm>
+    <Overlay>
+      <AuthForm onSubmit={onSubmit} nodeRef={ref}>
+        <h2>Sign Up</h2>
+        <hr />
+        {isLoading && <span className={styles.spinner}></span>}
+        <div>
+          <label htmlFor='name'>
+            Name<span>*</span>
+          </label>
+          <input
+            type='text'
+            name='name'
+            id='name'
+            onChange={onChange}
+            value={name}
+            className={nameError ? styles.invalid : ''}
+            placeholder='Name'
+            minLength='3'
+            autoFocus
+            required
+          />
+          {nameError ? (
+            <AiFillExclamationCircle className={styles.icon} />
+          ) : (
+            <AiFillCheckCircle className={styles.icon} />
+          )}
+          {nameError && <p role='alert'>{nameError}</p>}
+        </div>
+        <div>
+          <label htmlFor='signup_email'>
+            Email<span>*</span>
+          </label>
+          <input
+            type='email'
+            name='email'
+            id='signup_email'
+            onChange={onChange}
+            value={email}
+            className={emailError ? styles.invalid : ''}
+            placeholder='Email'
+            required
+          />
+          {emailError ? (
+            <AiFillExclamationCircle className={styles.icon} />
+          ) : (
+            <AiFillCheckCircle className={styles.icon} />
+          )}
+          {emailError && <p role='alert'>{emailError}</p>}
+        </div>
+        <div>
+          <label htmlFor='signup_password'>
+            Password<span>*</span>
+          </label>
+          <input
+            type='password'
+            name='password'
+            id='signup_password'
+            onChange={onChange}
+            value={password}
+            className={passwordError ? styles.invalid : ''}
+            placeholder='Password'
+            minLength='6'
+            required
+          />
+          {passwordError ? (
+            <AiFillExclamationCircle className={styles.icon} />
+          ) : (
+            <AiFillCheckCircle className={styles.icon} />
+          )}
+          {passwordError && <p role='alert'>{passwordError}</p>}
+        </div>
+        <div>
+          <label htmlFor='confirmPassword'>
+            Confirm Password<span>*</span>
+          </label>
+          <input
+            type='password'
+            name='confirmPassword'
+            id='confirmPassword'
+            onChange={onChange}
+            value={confirmPassword}
+            className={confirmPasswordError ? styles.invalid : ''}
+            placeholder='Confirm Password'
+            minLength='6'
+            required
+          />
+          {confirmPasswordError ? (
+            <AiFillExclamationCircle className={styles.icon} />
+          ) : (
+            <AiFillCheckCircle className={styles.icon} />
+          )}
+          {confirmPasswordError && <p role='alert'>{confirmPasswordError}</p>}
+        </div>
+        <button
+          type='submit'
+          className={styles.btn_green}
+          disabled={
+            !name ||
+            !email ||
+            !password ||
+            !confirmPassword ||
+            nameError ||
+            emailError ||
+            passwordError ||
+            confirmPasswordError
+          }
+        >
+          <AiOutlineUserAdd /> Sign Up
+        </button>
+        <button
+          type='button'
+          className={styles.btn_blue}
+          onClick={() => {
+            setErrors({});
+            setIsLoading(true);
+            signIn('facebook');
+          }}
+        >
+          <AiFillFacebook /> Sign Up with Facebook
+        </button>
+        <button type='button' className={styles.btn_close} onClick={onClose}>
+          ✕
+        </button>
+      </AuthForm>
+    </Overlay>
   );
-}
+});
+
+Register.displayName = 'Register';
 
 export default Register;
