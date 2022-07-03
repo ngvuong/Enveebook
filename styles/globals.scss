@@ -79,3 +79,15 @@ textarea {
   border: none;
   resize: vertical;
 }
+
+@media (max-width: 500px) {
+  html {
+    font-size: 50%;
+  }
+}
+
+@media (max-height: 500px) {
+  html {
+    font-size: 50%;
+  }
+}
