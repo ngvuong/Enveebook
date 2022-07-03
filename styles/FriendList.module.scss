@@ -3,30 +3,39 @@
   flex-direction: column;
   gap: 1rem;
   width: 25%;
-  height: 40vh;
+  height: fit-content;
+  max-height: 50vh;
   background-color: var(--color-black);
-  padding: 1rem;
+  padding: 1rem 0 1rem 1rem;
+  border: 1px solid var(--color-dark-2);
   border-radius: 1rem;
   box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.5);
 
-  .friends {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    overflow-y: hidden;
+  h3 {
+    line-height: normal;
+    margin-right: 1rem;
+  }
 
-    &:hover {
-      overflow-y: auto;
-    }
+  hr {
+    margin-right: 1rem;
+  }
+
+  .friends {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    overflow-y: auto;
 
     div {
       display: flex;
       align-items: center;
       gap: 1rem;
+      padding: 0.5rem;
 
       a {
         color: var(--color-primary);
         font-size: 1.3rem;
+        font-weight: 600;
+        word-break: break-word;
 
         &:hover {
           text-decoration: underline;
