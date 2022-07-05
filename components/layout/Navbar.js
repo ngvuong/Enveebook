@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
+import { useTheme } from 'next-themes';
 import Avatar from '../ui/Avatar';
 import useClickOutside from '../../hooks/useClickOutside';
 
@@ -11,10 +12,13 @@ import {
   FaUserCog,
   FaSignOutAlt,
   FaFacebookMessenger,
+  FaSun,
+  FaMoon,
 } from 'react-icons/fa';
 import styles from '../../styles/Navbar.module.scss';
 
 function Navbar({ user, activePage }) {
+  const { theme, setTheme } = useTheme();
   const {
     triggerRef: navTriggerRef,
     nodeRef: navNodeRef,
@@ -29,7 +33,7 @@ function Navbar({ user, activePage }) {
 
   return (
     <>
-      <section
+      <nav
         className={`${styles.navbar} ${navShow ? styles.show : ''}`}
         ref={navNodeRef}
       >
@@ -78,6 +82,15 @@ function Navbar({ user, activePage }) {
           </button>
           {show && (
             <div className={styles.settingsMenu} ref={nodeRef}>
+              <button
+                onClick={() => {
+                  theme === 'dark' ? setTheme('light') : setTheme('dark');
+                  setShow(false);
+                }}
+              >
+                {theme === 'dark' ? <FaMoon /> : <FaSun />}
+                Theme
+              </button>
               <Link href='/settings'>
                 <a onClick={() => setShow(false)}>
                   <FaUserCog /> <span>Settings</span>
@@ -89,7 +102,7 @@ function Navbar({ user, activePage }) {
             </div>
           )}
         </div>
-      </section>
+      </nav>
       <div className={styles.trigger} ref={navTriggerRef}></div>
     </>
   );
