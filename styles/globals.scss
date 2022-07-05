@@ -18,6 +18,19 @@
   --color-grey-3: #999;
 }
 
+[data-theme='light'] {
+  --color-primary: #750;
+  --color-gold-dark: #550;
+  --color-white: #ccc;
+  --color-black: #f1f1f1;
+  --color-text: #282828;
+  --color-background: #dbdbdb;
+  --color-dark: #ebebeb;
+  --color-dark-2: #dedede;
+  --color-grey-2: #616161;
+  --color-blue: #3498db;
+}
+
 html {
   font-size: 62.5%;
   scroll-behavior: smooth;
