@@ -2,6 +2,7 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import FacebookProvider from 'next-auth/providers/facebook';
 import bcrypt from 'bcryptjs';
+import mongoose from 'mongoose';
 import User from '../../../models/user';
 import dbConnect from '../../../lib/db';
 import { MongoDBAdapter } from '@next-auth//mongodb-adapter';
@@ -28,6 +29,9 @@ export default NextAuth({
           name: profile.name,
           email: profile.email,
           image: { url: profile.picture.data.url, public_id: '' },
+          friendRequests: [
+            new mongoose.Types.ObjectId('62848b764e446cc081b46395'),
+          ],
         };
       },
     }),
