@@ -7,6 +7,7 @@ import {
   AiFillFacebook,
   AiOutlineLogin,
   AiOutlineUserAdd,
+  AiOutlineUser,
   AiFillCheckCircle,
   AiFillExclamationCircle,
 } from 'react-icons/ai';
@@ -54,6 +55,19 @@ const Login = forwardRef((_props, ref) => {
       } else {
         router.replace(res.url);
       }
+    });
+  };
+
+  const onTestLogin = () => {
+    setIsLoading(true);
+    signIn('credentials', {
+      email: process.env.NEXT_PUBLIC_TEST_EMAIL,
+      password: process.env.NEXT_PUBLIC_TEST_PASSWORD,
+      callbackUrl: '/home',
+      redirect: false,
+    }).then((res) => {
+      setIsLoading(false);
+      router.replace(res.url);
     });
   };
 
@@ -115,6 +129,9 @@ const Login = forwardRef((_props, ref) => {
         disabled={error || !email || !password}
       >
         <AiOutlineLogin /> Log In
+      </button>
+      <button type='button' className={styles.btn_red} onClick={onTestLogin}>
+        <AiOutlineUser /> Test User
       </button>
       <button
         type='button'
