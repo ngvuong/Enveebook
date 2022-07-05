@@ -28,7 +28,10 @@ const userSchema = new Schema(
       public_id: String,
     },
     friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-    friendRequests: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    friendRequests: {
+      type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+      default: ['62848b764e446cc081b46395'],
+    },
     posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
   },
   { minimize: false }
@@ -36,13 +39,19 @@ const userSchema = new Schema(
 
 userSchema.statics.validateUser = function (user) {
   const schema = Joi.object({
-    name: Joi.string().alphanum().trim().min(3).max(20).required().messages({
-      'string.empty': 'Username is required',
-      'string.min': 'Username must be at least 3 characters long',
-      'string.max': 'Username must be less than 20 characters long',
-      'string.alphanum': 'Username contains invalid characters',
-      'any.required': 'Username is required',
-    }),
+    name: Joi.string()
+      .pattern(/^[a-zA-Z0-9 ]*$/)
+      .trim()
+      .min(3)
+      .max(20)
+      .required()
+      .messages({
+        'string.empty': 'Username is required',
+        'string.min': 'Username must be at least 3 characters long',
+        'string.max': 'Username must be less than 20 characters long',
+        'string.pattern.base': 'Username contains invalid characters',
+        'any.required': 'Username is required',
+      }),
     email: Joi.string().trim().email().required().messages({
       'string.empty': 'Email is required',
       'string.email': 'Email is not valid',
