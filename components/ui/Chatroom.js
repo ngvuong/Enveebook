@@ -58,13 +58,13 @@ function Chatroom({ chat, recipient, currentUser }) {
     if (!text) return;
 
     try {
+      inputRef.current.value = '';
+
       await addDoc(collection(getFirestore(), `chats/${chat.id}/messages`), {
         user: currentUser._id,
         text,
         time: serverTimestamp(),
       });
-
-      inputRef.current.value = '';
 
       await updateDoc(doc(getFirestore(), 'chats', chat.id), {
         updatedAt: serverTimestamp(),
