@@ -3,7 +3,9 @@ import { SessionProvider } from 'next-auth/react';
 import { SWRConfig } from 'swr';
 import { UserProvider } from '../contexts/userContext';
 import { ToastContainer } from 'react-toastify';
+import { ThemeProvider } from 'next-themes';
 import Layout from '../components/layout/Layout';
+
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/globals.scss';
 
@@ -13,18 +15,20 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <SessionProvider session={session}>
       <UserProvider>
-        <Layout activePage={activePage}>
-          <SWRConfig
-            value={{
-              fetcher: (...args) => fetch(...args).then((res) => res.json()),
-              errorRetryCount: 3,
-              revalidateOnMount: false,
-            }}
-          >
-            <Component {...pageProps} setActivePage={setActivePage} />
-          </SWRConfig>
-          <ToastContainer position='top-center' autoClose={3000} limit={1} />
-        </Layout>
+        <ThemeProvider defaultTheme='dark'>
+          <Layout activePage={activePage}>
+            <SWRConfig
+              value={{
+                fetcher: (...args) => fetch(...args).then((res) => res.json()),
+                errorRetryCount: 3,
+                revalidateOnMount: false,
+              }}
+            >
+              <Component {...pageProps} setActivePage={setActivePage} />
+            </SWRConfig>
+            <ToastContainer position='top-center' autoClose={3000} limit={1} />
+          </Layout>
+        </ThemeProvider>
       </UserProvider>
     </SessionProvider>
   );
