@@ -113,9 +113,9 @@ const Register = forwardRef(({ onClose }, ref) => {
             required
           />
           {nameError ? (
-            <AiFillExclamationCircle className={styles.icon} />
+            <AiFillExclamationCircle className={styles.errorIcon} />
           ) : (
-            <AiFillCheckCircle className={styles.icon} />
+            <AiFillCheckCircle className={styles.checkIcon} />
           )}
           {nameError && <p role='alert'>{nameError}</p>}
         </div>
@@ -134,9 +134,9 @@ const Register = forwardRef(({ onClose }, ref) => {
             required
           />
           {emailError ? (
-            <AiFillExclamationCircle className={styles.icon} />
+            <AiFillExclamationCircle className={styles.errorIcon} />
           ) : (
-            <AiFillCheckCircle className={styles.icon} />
+            <AiFillCheckCircle className={styles.checkIcon} />
           )}
           {emailError && <p role='alert'>{emailError}</p>}
         </div>
@@ -156,9 +156,9 @@ const Register = forwardRef(({ onClose }, ref) => {
             required
           />
           {passwordError ? (
-            <AiFillExclamationCircle className={styles.icon} />
+            <AiFillExclamationCircle className={styles.errorIcon} />
           ) : (
-            <AiFillCheckCircle className={styles.icon} />
+            <AiFillCheckCircle className={styles.checkIcon} />
           )}
           {passwordError && <p role='alert'>{passwordError}</p>}
         </div>
@@ -178,9 +178,9 @@ const Register = forwardRef(({ onClose }, ref) => {
             required
           />
           {confirmPasswordError ? (
-            <AiFillExclamationCircle className={styles.icon} />
+            <AiFillExclamationCircle className={styles.errorIcon} />
           ) : (
-            <AiFillCheckCircle className={styles.icon} />
+            <AiFillCheckCircle className={styles.checkIcon} />
           )}
           {confirmPasswordError && <p role='alert'>{confirmPasswordError}</p>}
         </div>
