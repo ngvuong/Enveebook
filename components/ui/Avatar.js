@@ -26,7 +26,7 @@ function Avatar({ height, width, flexSize, user, link = true }) {
           style={{
             width: flexSize ? flexSize : `${width}px`,
             height: flexSize ? flexSize : `${height}px`,
-            fontSize: `${width / 2}px`,
+            fontSize: `${(width / 20) * 0.95}rem`,
           }}
         >
           {user.name[0]}
