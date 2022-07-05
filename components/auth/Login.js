@@ -73,6 +73,7 @@ const Login = forwardRef((_props, ref) => {
         </label>
         <input
           type='email'
+          className={error ? styles.invalid : undefined}
           name='email'
           id='email'
           value={email}
@@ -82,9 +83,9 @@ const Login = forwardRef((_props, ref) => {
           required
         />
         {error ? (
-          <AiFillExclamationCircle className={styles.icon} />
+          <AiFillExclamationCircle className={styles.errorIcon} />
         ) : (
-          <AiFillCheckCircle className={styles.icon} />
+          <AiFillCheckCircle className={styles.checkIcon} />
         )}
       </div>
       <div>
@@ -93,6 +94,7 @@ const Login = forwardRef((_props, ref) => {
         </label>
         <input
           type='password'
+          className={error ? styles.invalid : undefined}
           name='password'
           id='password'
           value={password}
@@ -102,9 +104,9 @@ const Login = forwardRef((_props, ref) => {
           required
         />
         {error ? (
-          <AiFillExclamationCircle className={styles.icon} />
+          <AiFillExclamationCircle className={styles.errorIcon} />
         ) : (
-          <AiFillCheckCircle className={styles.icon} />
+          <AiFillCheckCircle className={styles.checkIcon} />
         )}
       </div>
       <button
