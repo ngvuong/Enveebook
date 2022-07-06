@@ -14,19 +14,30 @@
     border-radius: 1rem;
     box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.5);
 
-    div {
-      max-width: 30%;
+    .avatarWrapper {
+      width: 15rem;
+      height: 15rem;
     }
 
-    h1 {
-      font-size: 3.2rem;
-      color: var(--color-primary);
+    .userInfo {
+      max-width: 30%;
+      line-height: normal;
+
+      h1 {
+        font-size: 3.2rem;
+        color: var(--color-primary);
+      }
+
+      p {
+        word-break: break-all;
+      }
     }
 
     .status {
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      font-weight: bold;
       background-color: var(--color-blue-2);
       padding: 0.5rem 1rem;
       border-radius: 0.5rem;
@@ -75,5 +86,51 @@
         font-size: 2rem;
       }
     }
+  }
+
+  @media (max-width: 768px) {
+    width: 80%;
+
+    .head {
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+
+      .avatarWrapper {
+        width: 10rem;
+        height: 10rem;
+      }
+      .userInfo {
+        max-width: 60%;
+        text-align: center;
+      }
+
+      .status {
+        margin-left: 0;
+      }
+    }
+    .main {
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+
+      & > section:first-child {
+        width: 100%;
+        height: auto;
+        max-height: 30vh;
+
+        h3 {
+          text-align: center;
+        }
+      }
+
+      .postsSection {
+        width: 100%;
+      }
+    }
+  }
+
+  @media (max-width: 500px) {
+    width: 100%;
   }
 }
