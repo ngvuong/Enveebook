@@ -4,18 +4,25 @@
   align-items: center;
   gap: 1rem;
   background-color: var(--color-black);
-  padding: 2rem;
+  padding: 2.5rem;
+  border: 1px solid var(--color-dark-2);
   border-radius: 1rem;
-
-  a {
-    width: 5rem;
-    height: 5rem;
-  }
+  box-shadow: 1rem 1rem 1rem 0 rgba(0, 0, 0, 0.5);
 
   & > input {
     flex: 1;
+    width: 100%;
     background-color: var(--color-dark-2);
     padding: 1rem;
     border-radius: 2rem;
+
+    &:hover {
+      filter: brightness(1.2);
+      cursor: pointer;
+    }
+  }
+
+  @media (max-width: 500px) {
+    padding: 1rem;
   }
 }
