@@ -17,7 +17,7 @@ export default async function handler(req, res) {
   }
 
   const form = new IncomingForm({
-    uploadDir: './',
+    uploadDir: '/temp',
   });
 
   return new Promise(() => {
