@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import NewPostModal from './NewPostModal';
 import Avatar from './Avatar';
 import useClickOutside from '../../hooks/useClickOutside';
