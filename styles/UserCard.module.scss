@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 2rem;
   justify-content: space-between;
-  width: clamp(14rem, 13vw, 17rem);
+  width: clamp(12rem, 15vw, 18rem);
   line-height: normal;
   background-color: var(--color-black);
   padding: 0 1rem 2rem;
@@ -39,7 +39,7 @@
       width: fit-content;
       min-height: 1.75rem;
       color: var(--color-grey-3);
-      font-size: 1.5rem;
+      font-size: 1.3rem;
 
       &:hover {
         text-decoration: underline;
