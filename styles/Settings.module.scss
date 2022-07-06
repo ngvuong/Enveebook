@@ -5,6 +5,10 @@
   align-items: center;
   width: 60%;
 
+  p {
+    text-align: center;
+  }
+
   .buttons {
     display: flex;
     gap: 1rem;
@@ -89,10 +93,10 @@
   }
 
   @media (max-width: 768px) {
-    width: 90%;
+    width: 80%;
+  }
 
-    form {
-      width: 90%;
-    }
+  @media (max-width: 500px) {
+    width: 100%;
   }
 }
