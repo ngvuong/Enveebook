@@ -5,7 +5,7 @@
   padding: 2.5rem 2.5rem 0;
   border: 1px solid var(--color-dark-2);
   border-radius: 1rem;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.5);
 
   .head {
     display: flex;
@@ -13,18 +13,20 @@
     gap: 1rem;
     margin-bottom: 1rem;
 
-    a {
-      color: var(--color-primary);
-      font-weight: 600;
+    div {
+      a {
+        color: var(--color-primary);
+        font-weight: 600;
 
-      &:hover {
-        text-decoration: underline;
+        &:hover {
+          text-decoration: underline;
+        }
       }
-    }
 
-    p {
-      color: #999;
-      font-size: 1.2rem;
+      p {
+        color: #999;
+        font-size: 1.2rem;
+      }
     }
   }
 
@@ -113,6 +115,15 @@
 
     &:hover {
       box-shadow: 0 0 1rem var(--color-red-2);
+    }
+  }
+
+  @media (max-width: 500px) {
+    min-width: fit-content;
+    padding: 1rem 1rem 0;
+
+    .imageContainer {
+      margin: 1rem -0.5rem;
     }
   }
 }
