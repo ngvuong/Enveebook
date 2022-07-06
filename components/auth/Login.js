@@ -72,7 +72,7 @@ const Login = forwardRef((_props, ref) => {
   };
 
   return (
-    <AuthForm onSubmit={onSubmit}>
+    <AuthForm onSubmit={onSubmit} className={`${styles.login} ${styles.form}`}>
       <h2>Log In</h2>
       <hr />
       {error && (

@@ -2,13 +2,13 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
   width: 50%;
   color: var(--color-black);
   background: var(--color-white);
   padding: 2rem;
   border-radius: 0.6rem;
-  box-shadow: 0 0 1rem 1rem var(--color-black);
+  box-shadow: 1rem 1rem 1rem rgba(0, 0, 0, 0.2);
 
   .spinner {
     position: absolute;
@@ -35,7 +35,6 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    color: var(--color-black);
 
     label {
       width: max-content;
@@ -89,10 +88,6 @@
       display: none;
     }
 
-    input:focus:placeholder-shown {
-      outline: 3px solid var(--color-primary);
-    }
-
     input:focus-visible {
       outline: none;
     }
@@ -143,6 +138,10 @@
     background-color: var(--color-purple);
   }
 
+  .btn_red {
+    background-color: var(--color-red);
+  }
+
   .btn_blue {
     background-color: var(--color-blue);
 
@@ -159,21 +158,39 @@
     position: absolute;
     top: 1rem;
     right: 1rem;
-    color: var(--color-black);
+    font-size: 2rem;
+    color: var(--color-grey-3);
     line-height: 1;
     padding: 0;
   }
 
   @media (max-height: 500px) {
-    gap: 0.5rem;
-    max-height: 95vh;
-    padding: 1rem;
-    overflow: auto;
+    &.register {
+      gap: 0.5rem;
+      max-height: 95vh;
+      line-height: normal;
+      padding: 1rem;
+      overflow: auto;
+    }
+
+    &.login {
+      gap: 1rem;
+      line-height: normal;
+      padding: 1rem;
+    }
+
+    div {
+      .errorIcon,
+      .checkIcon {
+        top: 2.5rem;
+      }
+    }
   }
 }
 
 [data-theme='light'] {
   .form {
-    background: #444;
+    color: #1f1f1f;
+    background: var(--color-black);
   }
 }

@@ -92,7 +92,11 @@ const Register = forwardRef(({ onClose }, ref) => {
 
   return (
     <Overlay>
-      <AuthForm onSubmit={onSubmit} nodeRef={ref}>
+      <AuthForm
+        onSubmit={onSubmit}
+        className={`${styles.form} ${styles.register}`}
+        nodeRef={ref}
+      >
         <h2>Sign Up</h2>
         <hr />
         {isLoading && <span className={styles.spinner}></span>}
