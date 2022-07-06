@@ -21,6 +21,7 @@ function Comment({ comment, onCommentReply, size, recipient, show }) {
   const { setComments } = useComments(comment.post);
   const { likes, setLike } = useCommentLike(comment.post, comment._id, {
     fallbackData: comment.likes,
+    revalidateOnFocus: false,
   });
   const [user] = useUser();
   const {
