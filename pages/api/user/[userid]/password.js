@@ -10,6 +10,12 @@ export default async function handler(req, res) {
   const { currentPassword, newPassword, confirmPassword } = req.body;
   const { userid } = req.query;
 
+  if (userid === '62848b764e446cc081b46395') {
+    return res
+      .status(400)
+      .json({ error: 'Cannot change the password for this user' });
+  }
+
   if (!currentPassword || !newPassword || !confirmPassword) {
     return res.status(400).json({ error: 'Please fill out all fields' });
   }
