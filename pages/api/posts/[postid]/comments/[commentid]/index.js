@@ -1,5 +1,6 @@
 import Comment from '../../../../../../models/comment';
 import Post from '../../../../../../models/post';
+import '../../../../../../models/user';
 import dbConnect from '../../../../../../lib/db';
 
 export default async function handler(req, res) {
