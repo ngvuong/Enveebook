@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { getSession } from 'next-auth/react';
+import Head from 'next/head';
 import Feed from '../components/content/Feed';
 import NewPostBox from '../components/ui/NewPostBox';
 
@@ -12,6 +13,9 @@ function Home({ user, setActivePage }) {
 
   return (
     <div className={styles.home}>
+      <Head>
+        <title>Home | Enveebook</title>
+      </Head>
       <NewPostBox user={user} />
       <Feed user={user} />
     </div>

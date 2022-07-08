@@ -1,7 +1,9 @@
 import { useState, useEffect, Fragment } from 'react';
 import { getSession } from 'next-auth/react';
+import Head from 'next/head';
 import ReactTooltip from 'react-tooltip';
 import Avatar from '../components/ui/Avatar';
+import Search from '../components/ui/Search';
 import Chatroom from '../components/ui/Chatroom';
 import {
   getFirestore,
@@ -19,7 +21,6 @@ import dbConnect from '../lib/db';
 
 import { FaPenNib } from 'react-icons/fa';
 import styles from '../styles/Chat.module.scss';
-import Search from '../components/ui/Search';
 
 function Chat({ currentUser, friends, users, chats, setActivePage }) {
   const [allChats, setAllChats] = useState(chats);
@@ -104,6 +105,9 @@ function Chat({ currentUser, friends, users, chats, setActivePage }) {
 
   return (
     <div className={styles.container}>
+      <Head>
+        <title>Chat | Enveebook</title>
+      </Head>
       <section className={styles.sideBar}>
         <div className={styles.sideBarHead}>
           <div>

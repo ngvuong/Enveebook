@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getSession } from 'next-auth/react';
+import Head from 'next/head';
 import SearchBar from '../components/ui/SearchBar';
 import FriendList from '../components/ui/FriendList';
 import UserCard from '../components/ui/UserCard';
@@ -22,6 +23,9 @@ function Friends({ user, allUsers, friendRecommendations, setActivePage }) {
 
   return (
     <div className={styles.container}>
+      <Head>
+        <title>Friends | Enveebook</title>
+      </Head>
       <FriendList friends={friends} />
       <div className={styles.wrapper}>
         <SearchBar users={allUsers} />

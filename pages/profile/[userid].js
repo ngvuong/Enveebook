@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getSession } from 'next-auth/react';
+import Head from 'next/head';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 import Spinner from '../../components/layout/Spinner';
@@ -99,6 +100,9 @@ function Profile({ user, currentUser, setActivePage }) {
 
   return (
     <div className={styles.container}>
+      <Head>
+        <title>Profile | Enveebook</title>
+      </Head>
       <section className={styles.head}>
         <div className={styles.avatarWrapper}>
           <Avatar

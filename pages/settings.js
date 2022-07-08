@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { getSession } from 'next-auth/react';
+import Head from 'next/head';
 import { toast } from 'react-toastify';
 import Avatar from '../components/ui/Avatar';
 import FileInput from '../components/ui/FileInput';
@@ -205,6 +206,9 @@ function Settings({ user, setActivePage }) {
 
   return (
     <div className={styles.container}>
+      <Head>
+        <title>Settings | Enveebook</title>
+      </Head>
       <Avatar height='150' width='150' user={currentUser || user} />
       <p>{currentUser?.bio || user.bio}</p>
       <div className={styles.buttons}>
